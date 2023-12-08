@@ -22,35 +22,36 @@ UserRoute.post("/register", verifyToken, (req, res, next) => {
   registerStudent(req, res, next);
 });
 
-UserRoute.post("/recent-students", verifyToken, (req, res) => {
-  Student.find(
-    {
-      createdAt: {
-        $gte: "2023-09-27T00:00:00.000Z",
+UserRoute.post("/recent-students", verifyToken, async (req, res) => {
+  try {
+    let students = await Student.find(
+      {
+        // createdAt: {
+        //   $gte: "2023-09-27T00:00:00.000Z",
+        // },
+        status: { $in: ["PENDING", "NOTINTERESTED"] },
       },
-      status: { $in: ["PENDING", "NOTINTERESTED"] },
-    },
-    {
-      _id: 1,
-      name: 1,
-      email: 1,
-      createdAt: 1,
-      status: 1,
-    }
-  )
-    .then((value) => {
-      if (value) {
-        console.log(value);
-        res.status(200).send({ students: value });
-      } else {
-        res.status(200).send({ msg: "students not found" });
+      {
+        _id: 1,
+        name: 1,
+        email: 1,
+        createdAt: 1,
+        status: 1,
       }
-    })
-    .catch((err) => {
-      res
-        .status(400)
-        .send({ reason: "error during finding recent student", err: err });
-    });
+    );
+    if (students) {
+      console.log(students);
+      res.status(200).send({ students });
+    } else {
+      res.status(200).send({ msg: "students not found" });
+    }
+  } catch (error) {
+    res
+      .status(400)
+      .send({ reason: "error during finding recent student", err: err });
+  }
+
+   
 });
 
 // user/student/email="heera9331"

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../utils/api";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -8,11 +8,13 @@ const RecentRegisteredStudent = () => {
   const [recentStudents, setRecentStudents] = useState([]);
   const { token, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const getRecentStudents = async () => {
     try {
       let res = await axios.post(`${api}/user/recent-students`, { token });
       // console.log(res);
       if (res.statusText === "OK") {
+        console.log(res);
         setRecentStudents(res.data.students);
       } else {
         dispatch({ type: "LOGOUT" });

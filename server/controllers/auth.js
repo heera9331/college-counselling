@@ -12,7 +12,8 @@ export const login = async (req, res, next) => {
     console.log("email - ", email);
     console.log("password - ", password);
 
-    // console.log(await User.find());
+    
+    // console.log(await User.find())
     let user = await User.findOne({ email: email });
 
     if (user) {

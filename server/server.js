@@ -36,18 +36,18 @@ app.get("/test", async (req, res, next) => {
   // let newUser = await User.insertMany([
   //   { name: "test", email: "test@gmail.com", password: "test", isAdmin: false },
   // ]);
+  
 
   let users = await User.find();
 
   res.json({ users });
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000; 
 app.listen(PORT, "0.0.0.0", () => {
   console.log("ip address:port number - " + PORT);
 
-  // connectDB(process.env.MONGODB_URL);
-  connectDB(process.env.MONGODB_URL_LOCAL);
+  connectDB(process.env.MONGODB_URL); 
 
   console.log("connections success");
 });
