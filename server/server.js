@@ -6,48 +6,38 @@ import AuthRoute from "./routes/auth.js";
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-
-import User from "./models/User.js";
-
+ 
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Middleware for parsing URL-encoded request bodies
-
-// app.get("/test", async (req, res, next) => {
-//   console.log(req.);
-
-//   res.json({ msg: "working" });
-// });
+// Middleware for parsing URL-encoded request bodies 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// --- server side routing
+
+// admin routing
 app.use("/admin", AdminRoute);
+
+// normal user or counsellor routing
 app.use("/user", UserRoute);
+
+// auth routing for authentication and authorization, token verification
 app.use("/auth", AuthRoute);
 
+// simple testing route, checking route, server is working or not?
 app.get("/", (req, res, next) => {
   res.send({ msg: "reply from server" });
-});
+}); 
 
-app.get("/test", async (req, res, next) => {
-  // let newUser = await User.insertMany([
-  //   { name: "test", email: "test@gmail.com", password: "test", isAdmin: false },
-  // ]);
-  
-
-  let users = await User.find();
-
-  res.json({ users });
-});
-
+// server is running on post -> 8000
 const PORT = process.env.PORT || 8000; 
 app.listen(PORT, "0.0.0.0", () => {
   console.log("ip address:port number - " + PORT);
 
-  connectDB(process.env.MONGODB_URL); 
-
+  // establishing the connection with mongo database (NoSQL Database)
+  connectDB(process.env.MONGODB_URL_LOCAL); 
   console.log("connections success");
 });

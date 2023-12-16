@@ -1,7 +1,5 @@
-import { useState, useEffect, useContext } from "react";
-// import logo from "../../assets/images/logo.png";
-import { Link } from "react-router-dom";
-// import Account from "../Login/Account";
+import { useState, useEffect, useContext } from "react"; 
+import { Link } from "react-router-dom"; 
 import { AuthContext } from "../../contexts/AuthContext";
 import Account from "../Login/Account";
 

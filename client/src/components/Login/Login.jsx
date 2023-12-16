@@ -8,27 +8,6 @@ import api from "../../utils/api";
 import Button from "../../components/Button";
 import InputField from "../../components/InputField";
 
-const Toast = () => {
-  const closeBtn = (e) => {};
-  return (
-    <div
-      className="container rounded"
-      style={{
-        backgroundColor: "royalblue",
-        position: "fixed",
-        zIndex: 11,
-        top: 65,
-        right: 0,
-        width: "20%",
-        padding: "10px",
-      }}
-    >
-      <h3>Message</h3>
-      <p className="text-light">login success</p>
-    </div>
-  );
-};
-
 const Login = () => {
   const navigate = useNavigate();
   const { dispatch, token } = useContext(AuthContext);
@@ -62,7 +41,6 @@ const Login = () => {
     } catch (error) {
       console.log("error captured");
       alert(error.response.data.msg);
-      // alert(error.code)
     }
   };
 
