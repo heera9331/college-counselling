@@ -115,6 +115,18 @@ const Login = () => {
             }}
           />
         </form>
+        <div>
+          If you want to test this web application <br />
+          -- Login by Admin
+          <br />
+          Login by - email - admin@gmail.com
+          <br />
+          Password - admin
+          <br />
+          <br />
+          -- Login by counsellor -- <br /> email = user@gmail.com password =
+          user
+        </div>
       </div>
     </>
   );

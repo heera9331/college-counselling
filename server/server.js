@@ -38,6 +38,6 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log("ip address:port number - " + PORT);
 
   // establishing the connection with mongo database (NoSQL Database)
-  connectDB(process.env.MONGODB_URL_LOCAL); 
+  connectDB(process.env.MONGODB_URL); 
   console.log("connections success");
 });
