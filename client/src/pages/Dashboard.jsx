@@ -2,10 +2,17 @@
 import verifyToken from "../utils/VerifyToken";
 import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext, useAuthContext } from "../contexts/AuthContext";
+import Loading from "../components/Loading";
+
 import api from "../utils/api";
-import { AuthContext } from "../contexts/AuthContext";
 
 const StudentRow = ({ idx, student }) => {
+  const { loading } = useAuthContext();
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <tr>
       <td>{idx + 1}</td>
@@ -27,6 +34,12 @@ const StudentRow = ({ idx, student }) => {
 };
 
 const DisplayStudents = ({ title, students }) => {
+  const { loading } = useAuthContext();
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="container my-4 position-relative" style={{ top: "60px" }}>
       {/* table heading */}
@@ -60,6 +73,11 @@ const DisplayStudents = ({ title, students }) => {
 
 const CounsellorRow = ({ idx, user }) => {
   // console.log(user);
+  const { loading } = useAuthContext();
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <tr>
@@ -85,10 +103,13 @@ const CounsellorRow = ({ idx, user }) => {
  */
 const DisplayCounsellors = ({ users }) => {
   // console.log(users);
+  const { loading } = useAuthContext();
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="container">
-       
       <table className="table table-striped">
         <thead>
           <tr>
@@ -123,6 +144,14 @@ const DisplayCounsellors = ({ users }) => {
 const Dashboard = () => {
   const { isAdmin, token } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { loading, setLoading } = useAuthContext();
+
+  const [students, setStudents] = React.useState({
+    PENDING: [],
+    INTERESTED: [],
+    NOTINTERESTED: [],
+  });
+  const [counsellors, setCounsellors] = React.useState([]);
 
   useEffect(() => {
     if (token === "null") {
@@ -130,16 +159,9 @@ const Dashboard = () => {
     }
   }, [navigate, token]);
 
-  const [students, setStudents] = React.useState({
-    PENDING: [],
-    INTERESTED: [],
-    NOTINTERESTED: [],
-  });
-
-  const [counsellors, setCounsellors] = React.useState([]);
-
   const getStudents = async (status) => {
     try {
+      setLoading(true);
       const response = await fetch(`${api}/admin/dashboard/get-students`, {
         method: "POST",
         headers: {
@@ -167,10 +189,13 @@ const Dashboard = () => {
     } catch (error) {
       // console.log(error);
     }
+
+    setLoading(false);
   };
 
   const getCounsellors = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`${api}/admin/dashboard/get-counsellors`, {
         method: "post",
         headers: {
@@ -194,6 +219,7 @@ const Dashboard = () => {
     } catch (error) {
       // console.log(error);
     }
+    setLoading(false);
   };
 
   React.useEffect(() => {
@@ -204,6 +230,7 @@ const Dashboard = () => {
 
     const fetchData = async () => {
       // fatch all the student by the use of status
+      setLoading(true);
       try {
         await Promise.all([
           getStudents("PENDING"),
@@ -212,15 +239,24 @@ const Dashboard = () => {
           getCounsellors(),
         ]);
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
+
+      setLoading(false);
     };
 
+    setLoading(true);
     fetchData();
+    setLoading(false);
     // console.log(students);
     // console.log(counsellors);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, isAdmin]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div
@@ -273,9 +309,12 @@ const Dashboard = () => {
       </div>
 
       {/* printing counsellors */}
-      <div className="container position-relative" style={{
-        marginTop: "100px"
-      }}>
+      <div
+        className="container position-relative"
+        style={{
+          marginTop: "100px",
+        }}
+      >
         <h3>Counsellors</h3>
         {counsellors && <DisplayCounsellors users={counsellors} />}
       </div>

@@ -1,12 +1,18 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState, useCallback, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import verifyToken from "../../utils/VerifyToken";
 import axios from "axios";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext, useAuthContext } from "../../contexts/AuthContext";
+import Loading from "../Loading";
 
 import api from "../../utils/api";
 
 const Student = ({ title, students }) => {
+  const { loading } = useAuthContext();
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <>
       {title && (
@@ -55,7 +61,7 @@ const Student = ({ title, students }) => {
 
 const Profile = () => {
   const { token } = useContext(AuthContext);
-
+  const { loading, setLoading } = useAuthContext();
   const [user, setUser] = useState({});
   const [students, setStudents] = useState([]);
 
@@ -94,6 +100,7 @@ const Profile = () => {
 
   const filter = useCallback(() => {
     console.log("filter applied");
+    setLoading(true);
     if (students.length !== 0) {
       let pending = students.filter((student) => student.status === "pending");
       let interested = students.filter(
@@ -108,6 +115,8 @@ const Profile = () => {
         interested: interested.length,
         notinterested: notinterested.length,
       }));
+
+      setLoading(false);
     } else {
       console.log("no students");
     }
@@ -123,12 +132,18 @@ const Profile = () => {
     // }
 
     // console.log(token);
+    setLoading(true);
     getUser();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     filter();
   }, [filter]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

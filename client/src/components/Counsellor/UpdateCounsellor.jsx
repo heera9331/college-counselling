@@ -1,12 +1,13 @@
 import React from "react";
 import verifyToken from "../../utils/VerifyToken";
 import api from "../../utils/api";
+import { useAuthContext } from "../../contexts/authContext";
+import Loading from "../Loading";
 
 const updateUser = async (user) => {
   try {
     let token = localStorage.getItem("token");
 
-     
     let response = await fetch(
       `${api}/admin/update-user?id=${user._id}&token=${token}`,
       {
@@ -38,9 +39,12 @@ const updateUser = async (user) => {
 const UpdateCounsellor = () => {
   const isAdmin = localStorage.getItem("isAdmin");
   const token = localStorage.getItem("token");
+  const { loading, setLoading } = useAuthContext();
 
   React.useEffect(() => {
+    setLoading(true);
     const isTokenValid = verifyToken(token);
+    setLoading(false);
 
     if (!isTokenValid) {
       window.location.href = "/login";
@@ -57,7 +61,7 @@ const UpdateCounsellor = () => {
   const search = async (event) => {
     try {
       event.preventDefault();
-
+      setLoading(true);
       let result = await fetch(
         `${api}/admin/user/search?query=${query}&token=${token}`,
         {
@@ -72,10 +76,17 @@ const UpdateCounsellor = () => {
       result = await result.json();
       // console.log(result.result);
       setUsers(result.result);
+      setLoading(false);
     } catch (err) {
       console.log("problem in search", err);
     }
+    setLoading(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="container my-4">
       <h3>Update Counsellor Details</h3>

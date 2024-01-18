@@ -1,10 +1,18 @@
-import { createContext, useEffect, useReducer } from "react";
+/* eslint-disable react/prop-types */
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 
 const INITIAL_STATE = {
   userId: localStorage.getItem("userId") || null,
   isAdmin: localStorage.getItem("isAdmin") || null,
   token: localStorage.getItem("token") || null,
 };
+
 export const AuthContext = createContext(INITIAL_STATE);
 
 const AuthReducer = (state, action) => {
@@ -32,7 +40,12 @@ const AuthReducer = (state, action) => {
   }
 };
 
+export const useAuthContext = () => {
+  return useContext(AuthContext);
+};
+
 export const AuthContextProvider = ({ children }) => {
+  const [loading, setLoading] = useState(false);
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
 
   useEffect(() => {
@@ -48,6 +61,8 @@ export const AuthContextProvider = ({ children }) => {
         isAdmin: state.isAdmin,
         token: state.token,
         dispatch,
+        loading,
+        setLoading,
       }}
     >
       {children}

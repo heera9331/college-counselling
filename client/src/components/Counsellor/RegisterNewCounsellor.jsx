@@ -1,8 +1,12 @@
 import React from "react";
 import api from "../../utils/api";
 import verifyToken from "../../utils/VerifyToken";
+import { useAuthContext } from "../../contexts/authContext";
+import Loading from "../Loading";
 
 const RegisterNewCounsellor = () => {
+  const { loading, setLoading } = useAuthContext();
+
   const [user, setUser] = React.useState({
     name: "",
     email: "",
@@ -32,6 +36,7 @@ const RegisterNewCounsellor = () => {
       if (!user.name || !user.email || !user.password) {
         alert("All values must not be empty");
       } else {
+        setLoading(true);
         let response = await fetch(`${api}/admin/register`, {
           method: "POST",
           headers: {
@@ -42,6 +47,8 @@ const RegisterNewCounsellor = () => {
             user: user,
           }),
         });
+
+        setLoading(true);
 
         if (response.ok) {
           const data = await response.json();
@@ -61,7 +68,13 @@ const RegisterNewCounsellor = () => {
       console.error("An error occurred:", err);
       alert("An error occurred while processing your request.");
     }
+
+    setLoading(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container my-4">

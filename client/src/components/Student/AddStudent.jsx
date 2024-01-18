@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import api from "../../utils/api";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../contexts/authContext";
+import Loading from "../Loading";
 
 const AddStudent = () => {
-  const navigate = useNavigate();
-
+  const { loading, setLoading } = useAuthContext();
   const [newStudent, setNewStudent] = React.useState({
     name: "",
     mobile: "",
@@ -28,7 +30,7 @@ const AddStudent = () => {
   const registerNow = async () => {
     const API = `${api}/user/register`;
     // console.log(newStudent);
-
+    setLoading(true);
     let res = await fetch(API, {
       method: "POST",
       headers: {
@@ -48,7 +50,12 @@ const AddStudent = () => {
       res = await res.json();
       alert(res.msg);
     }
+    setLoading(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container my-4">
@@ -214,7 +221,7 @@ const AddStudent = () => {
                     }}
                   >
                     <option value="">==SELECT ROUTE==</option>
-                    
+
                     <option value="BANDA">BANDA</option>
                     <option value="RAHLI">RAHLI</option>
                     <option value="SAGAR">SAGAR</option>

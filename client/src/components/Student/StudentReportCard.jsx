@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../utils/api";
+import { useAuthContext } from "../../contexts/AuthContext";
+import Loading from "../Loading";
 
 const StudentReportCard = () => {
   const params = useParams();
   // console.log(params);
 
   const [student, setStudent] = useState({});
-  const [printing, setPrinting] = useState(false);
+  const { loading, setLoading } = useAuthContext();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -15,6 +17,7 @@ const StudentReportCard = () => {
 
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await fetch(`${api}/admin/view-report/get-student`, {
           method: "post",
           headers: {
@@ -29,15 +32,21 @@ const StudentReportCard = () => {
         let res = await response.json();
         // console.log(res);
         setStudent(res.student);
+        setLoading(false);
       } catch (error) {
         // console.log(error);
         return null;
       }
       // return null;
+      setLoading(false);
     };
 
     fetchData();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext, useAuthContext } from "../contexts/AuthContext";
 
-import RecentRegisteredStudent  from "../components/Student/RecentRegisteredStudent";
+import RecentRegisteredStudent from "../components/Student/RecentRegisteredStudent";
 import UpdateStudent from "../components/Student/UpdateStudent";
 import RemoveStudent from "../components/Student/RemoveStudent";
 import AddStudent from "../components/Student/AddStudent";
@@ -20,12 +20,11 @@ const Home = () => {
     if (token === "null") navigate("/login");
   }, [token, navigate]);
 
-  
   /**
    * this state is store information of other componenet is opened of not?
    * by default we render only one component that is default component.
-   * 
-   */ 
+   *
+   */
   const [isAnother, setIsAnother] = useState("default");
   return (
     <>

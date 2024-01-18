@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext, useAuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/api";
 import { Link } from "react-router-dom";
+import Loading from "../Loading";
 
 const UpdateStudent = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const UpdateStudent = () => {
   const [updateStudent, setUpdateStudent] = useState(null);
   const [tmp, setTmp] = useState(null);
   const { token, isAdmin } = useContext(AuthContext);
+  const { loading, setLoading } = useAuthContext();
 
   useEffect(() => {
     if (token === "null" || isAdmin === "false") {
@@ -25,7 +27,7 @@ const UpdateStudent = () => {
   const search = async (event) => {
     try {
       event.preventDefault();
-
+      setLoading(true);
       let result = await fetch(
         `${api}/admin/student/search?query=${query}&token=${token}`,
         {
@@ -43,11 +45,13 @@ const UpdateStudent = () => {
     } catch (err) {
       // console.log("problem in search");
     }
+
+    setLoading(false);
   };
 
   const saveDetails = async () => {
     // console.log(tmp);
-
+    setLoading(true);
     let res = confirm("Are you sure want to update details");
 
     if (res) {
@@ -63,6 +67,7 @@ const UpdateStudent = () => {
         }
       } catch (error) {
         // console.log("error", error);
+        setLoading(false);
         alert(error.response.data.error.message);
         navigate("/login");
       }
@@ -71,8 +76,12 @@ const UpdateStudent = () => {
       setUpdateStudent(null);
       setTmp(null);
     }
-  };
 
+    setLoading(false);
+  };
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="container my-4">
       <h2>Update Student</h2>

@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import csvDownload from "json-to-csv-export";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext, useAuthContext } from "../contexts/AuthContext";
 
 // component
 import { Link } from "react-router-dom";
@@ -10,6 +11,7 @@ import Students from "./view-report/Students";
 // ExcelToJsonConverter.js
 import * as XLSX from "xlsx";
 import Spreadsheet from "react-spreadsheet";
+import Loading from "../components/Loading";
 
 const jsonTo2dArray = (users) => {
   try {
@@ -93,7 +95,7 @@ const ExcelToJsonConverter = () => {
 const ViewReport = () => {
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const { loading, setLoading } = useAuthContext();
   /**
    * this state is used to store number of student fetch from database
    * initially it is a empty array of
@@ -125,6 +127,7 @@ const ViewReport = () => {
    */
   const getStudents = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`${api}/admin/view-reports`, {
         method: "POST",
         headers: {
@@ -135,6 +138,7 @@ const ViewReport = () => {
       const data = await response.json();
       setStudents(data.result);
       // console.log(students);
+      setLoading(false);
     } catch (error) {
       // console.log(error);
     }
@@ -157,10 +161,13 @@ const ViewReport = () => {
   }, [token, navigate]);
 
   React.useEffect(() => {
+    setLoading(true);
     getStudents();
+    setLoading(false);
   }, []);
 
   React.useEffect(() => {
+    setLoading(true);
     let genCnt = students.filter(
       (student) => student.category === "GEN"
     ).length;
@@ -179,8 +186,13 @@ const ViewReport = () => {
       ["ST", stCnt],
     ]);
     // console.log(cate);
+    setLoading(false);
   }, []);
   // const options = {};
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

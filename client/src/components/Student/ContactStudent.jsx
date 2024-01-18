@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import DisplayMessage from "../../pages/view-report/DisplayMessage";
 import api from "../../utils/api";
 import { useParams, useNavigate } from "react-router-dom";
+import Loading from "../Loading";
+import { useAuthContext } from "../../contexts/authContext";
 
 const Student = () => {
   const params = useParams();
@@ -10,13 +12,14 @@ const Student = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   // console.log(id);
+  const { loading, setLoading } = useAuthContext();
 
   const getStudent = async () => {
     if (!id) {
       // console.log("id not defined");
       navigate("/");
     }
-
+    setLoading(true);
     const response = await fetch(`${api}/user/student/${id}`, {
       method: "POST",
       headers: {
@@ -30,6 +33,8 @@ const Student = () => {
       // console.log(result);
       setStudent(result.student);
     }
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -54,7 +59,7 @@ const Student = () => {
 
   const updateChat = () => {
     const token = localStorage.getItem("token");
-
+    setLoading(true);
     fetch(`${api}/user/student/update/${chat.id}`, {
       method: "POST",
       headers: {
@@ -67,17 +72,21 @@ const Student = () => {
           // console.log(await response.json());
           alert("Successfully updated");
           // window.location.href = "/home";
-          navigate('/home');
+          navigate("/home");
         } else {
           alert("There is some mistake");
         }
       })
       .catch((reason) => {
         // console.log(reason);
-
       });
+
+    setLoading(false);
   };
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div
       className="container border mt-4 p-4 position-relative"

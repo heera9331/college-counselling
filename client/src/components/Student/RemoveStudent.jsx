@@ -1,12 +1,18 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/rules-of-hooks */
 import React from "react";
 import verifyToken from "../../utils/VerifyToken";
 import api from "../../utils/api";
+import { useAuthContext } from "../../contexts/authContext";
+import Loading from "../Loading";
 
 const removeStudent = async (id) => {
   let token = localStorage.getItem("token");
   let isAdmin = localStorage.getItem("isAdmin");
-
+  const { loading, setLoading } = useAuthContext();
   // console.log(id);
+
+  setLoading(true);
   let response = await fetch(
     `${api}/admin/remove-student?id=${id}&token=${token}`,
     {
@@ -18,6 +24,8 @@ const removeStudent = async (id) => {
     }
   );
 
+  setLoading(false);
+
   if (response.ok) {
     alert("successfully removed");
     window.location.href = "/home/remove-student";
@@ -28,6 +36,11 @@ const removeStudent = async (id) => {
 };
 
 export const DisplayStudent = ({ student }) => {
+  const { loading, setLoading } = useAuthContext();
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <>
       <tr>
@@ -64,16 +77,13 @@ export const DisplayStudent = ({ student }) => {
 const Student = () => {
   const isAdmin = localStorage.getItem("isAdmin");
   const token = localStorage.getItem("token");
-
+  const { loading, setLoading } = useAuthContext();
   React.useEffect(() => {
     const isTokenValid = verifyToken(token);
 
     if (!isTokenValid) {
       window.location.href = "/login";
     }
-
-    // console.log(isAdmin);
-    // console.log(token);
   }, [token, isAdmin]);
 
   const [query, setQuery] = React.useState("");
@@ -82,7 +92,7 @@ const Student = () => {
   const search = async (event) => {
     try {
       event.preventDefault();
-
+      setLoading(true);
       let result = await fetch(
         `${api}/admin/student/search?query=${query}&token=${token}`,
         {
@@ -100,7 +110,13 @@ const Student = () => {
     } catch (err) {
       // console.log("problem in search");
     }
+
+    setLoading(false);
   };
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
   return (
     <div className="container my-4">
       <h3>Remove Student</h3>

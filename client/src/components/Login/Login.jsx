@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
-
+import { AuthContext, useAuthContext } from "../../contexts/AuthContext";
+import Loading from "../Loading";
 import api from "../../utils/api";
 
 import Button from "../../components/Button";
@@ -11,8 +11,10 @@ import InputField from "../../components/InputField";
 const Login = () => {
   const navigate = useNavigate();
   const { dispatch, token } = useContext(AuthContext);
+  const { loading, setLoading } = useAuthContext();
 
   useEffect(() => {
+    console.log(token);
     if (token !== "null") navigate("/home");
   }, [token, navigate]);
 
@@ -23,8 +25,8 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const res = await axios.post(`${api}/auth/login`, user);
-
       console.log("response from server=>", res);
       if (res.statusText === "OK") {
         dispatch({
@@ -35,7 +37,7 @@ const Login = () => {
             isAdmin: res.data.isAdmin,
           },
         });
-
+        setLoading(false);
         navigate("/home");
       }
     } catch (error) {
@@ -43,6 +45,10 @@ const Login = () => {
       alert(error.response.data.msg);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -115,18 +121,6 @@ const Login = () => {
             }}
           />
         </form>
-        <div>
-          If you want to test this web application <br />
-          -- Login by Admin
-          <br />
-          Login by - email - admin@gmail.com
-          <br />
-          Password - admin
-          <br />
-          <br />
-          -- Login by counsellor -- <br /> email = user@gmail.com password =
-          user
-        </div>
       </div>
     </>
   );

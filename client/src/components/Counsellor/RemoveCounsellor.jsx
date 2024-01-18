@@ -1,11 +1,14 @@
 import React from "react";
 import verifyToken from "../../utils/VerifyToken";
 import api from "../../utils/api";
-
+import { useAuthContext } from "../../contexts/authContext";
+import Loading from "../Loading";
 const deleteUser = async (id) => {
   let token = localStorage.getItem("token");
   let isAdmin = localStorage.getItem("isAdmin");
+  const { loading, setLoading } = useAuthContext();
 
+  setLoading(true);
   let response = await fetch(
     `${api}/admin/remove-user?id=${id}&token=${token}`,
     {
@@ -16,6 +19,8 @@ const deleteUser = async (id) => {
       body: JSON.stringify({ isAdmin: isAdmin, token: token }),
     }
   );
+
+  setLoading(false);
 
   // console.log(await response.json());
 };
@@ -53,6 +58,7 @@ const DisplayUser = ({ user }) => {
 const RemoveCounsellor = () => {
   const isAdmin = localStorage.getItem("isAdmin");
   const token = localStorage.getItem("token");
+  const { loading, setLoading } = useAuthContext();
 
   React.useEffect(() => {
     const isTokenValid = verifyToken(token);
@@ -71,7 +77,7 @@ const RemoveCounsellor = () => {
   const search = async (event) => {
     try {
       event.preventDefault();
-
+      setLoading(true);
       let result = await fetch(
         `${api}/admin/user/search?query=${query}&token=${token}`,
         {
@@ -79,17 +85,24 @@ const RemoveCounsellor = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({token: token, query})
+          body: JSON.stringify({ token: token, query }),
         }
       );
 
       result = await result.json();
       // console.log(result.result);
       setUsers(result.result);
+      setLoading(false);
     } catch (err) {
       console.log("problem in search");
     }
+
+    setLoading(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="container my-4">
       <h3>Remove Counsellor</h3>

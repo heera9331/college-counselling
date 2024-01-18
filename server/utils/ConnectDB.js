@@ -9,9 +9,8 @@ import User from "../models/User.js";
 const connectDB = async (URL) => {
   // url may be local server or online privided link by mongodb
   try {
-    await mongoose.connect(URL);
-    console.log("Connected to mongoDB.");
-  } catch (error) { 
+    let res = await mongoose.connect(URL);
+  } catch (error) {
     throw error;
   }
 };

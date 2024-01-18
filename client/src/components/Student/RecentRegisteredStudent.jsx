@@ -1,16 +1,19 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext, useAuthContext } from "../../contexts/AuthContext";
+import Loading from "../Loading";
 import api from "../../utils/api";
-import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
 
 const RecentRegisteredStudent = () => {
   const [recentStudents, setRecentStudents] = useState([]);
   const { token, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { loading, setLoading } = useAuthContext();
 
   const getRecentStudents = async () => {
     try {
+      setLoading(true);
       let res = await axios.post(`${api}/user/recent-students`, { token });
       // console.log(res);
       if (res.statusText === "OK") {
@@ -22,15 +25,22 @@ const RecentRegisteredStudent = () => {
       }
     } catch (err) {
       dispatch({ type: "LOGOUT" });
+      setLoading(false);
       navigate("/login");
       // console.log(err);
     }
+
+    setLoading(false);
   };
 
   useEffect(() => {
     // console.log("getting recent student");
     getRecentStudents();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container mt-4">
