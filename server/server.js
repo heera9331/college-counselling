@@ -38,7 +38,5 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log("ip address:port number - " + PORT);
 
   // establishing the connection with mongo database (NoSQL Database)
-  const dbUri = process.env.MONGODB_URL_LOCAL;
-  connectDB(dbUri);
-  console.log("connections success");
+  connectDB();
 });

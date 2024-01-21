@@ -1,17 +1,18 @@
 import mongoose from "mongoose";
 
-// import model
-import Student from "../models/Student.js";
-import User from "../models/User.js";
+const connection = {};
 
-// connection with database
-
-const connectDB = async (URL) => {
-  // url may be local server or online privided link by mongodb
+const connectDB = async () => {
   try {
-    let res = await mongoose.connect(URL);
+    if (connection.isConnected) {
+      console.log("Using existing connection");
+      return;
+    }
+    console.log(process.env.MONGO_LOCAL);
+    const db = await mongoose.connect(process.env.MONGO_LOCAL);
+    connection.isConnected = db.connections[0].readyState;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
