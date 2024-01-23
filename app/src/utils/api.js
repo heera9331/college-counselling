@@ -1,2 +1,2 @@
-const api = "http://192.168.29.32:8000";
+const api = "https://eager-mittens-bass.cyclic.app/";
 export default api;
