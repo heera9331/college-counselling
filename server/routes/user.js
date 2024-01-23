@@ -36,6 +36,7 @@ UserRoute.post("/recent-students", verifyToken, async (req, res) => {
         name: 1,
         email: 1,
         createdAt: 1,
+        registeredBy: 1,
         status: 1,
       }
     );
@@ -50,8 +51,6 @@ UserRoute.post("/recent-students", verifyToken, async (req, res) => {
       .status(400)
       .send({ reason: "error during finding recent student", err: err });
   }
-
-   
 });
 
 // user/student/email="heera9331"
@@ -167,31 +166,15 @@ UserRoute.post("/student/update/:id", verifyToken, async (req, res, next) => {
 
 UserRoute.post("/profile/", verifyToken, async (req, res, next) => {
   try {
-    let token = req.body.token;
     let userId = req.body.userId;
-
-    jwt.verify(token, process.env.PRIVATE_KEY, async (err, payload) => {
-      if (err) {
-        res.status(400).send({ msg: "error in payload", err: err });
-      } else {
-        let tmp = await User.findById(userId);
-        let email = tmp.email;
-
-        try {
-          let students = await Student.find({ registeredBy: email });
-          let user = await User.findById(userId);
-          // console.log(user);
-          // console.log(students);
-          res.status(200).json({ user, students });
-        } catch (error) {
-          console.log(error);
-          res.status(500).json({ error: error });
-        }
-      }
-    });
+    console.log(userId);
+    let tmp = await User.findById(userId);
+    let email = tmp.email;
+    let user = await User.findById(userId);
+    let students = await Student.find({ registeredBy: email });
+    res.json({ user, students });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ error: error });
+    res.status(501).json(error);
   }
 });
 

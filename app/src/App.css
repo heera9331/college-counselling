@@ -1,0 +1,42 @@
+/* backgrounds */
+
+.bg-primary {
+  background-color: rgb(25, 47, 89);
+}
+
+.bg-secondary {
+  background-color: rgb(46, 87, 165);
+}
+
+.bg-dark {
+  background-color: rgb(10, 20, 37);
+}
+
+.bg-white {
+  background-color: rgb(244, 242, 238);
+}
+
+.bg-yellow {
+  background-color: rgb(242, 111, 4);
+}
+
+/* font colors */
+.text-primary {
+  color: rgb(25, 47, 89);
+}
+
+.text-secondary {
+  color: rgb(10, 20, 37);
+}
+
+.text-dark {
+  color: rgb(10, 20, 37);
+}
+
+.text-white {
+  color: rgb(244, 242, 238);
+}
+
+.text-yellow {
+  color: rgb(242, 111, 4);
+}

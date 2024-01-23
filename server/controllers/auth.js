@@ -6,54 +6,47 @@ import fs from "fs";
 export const login = async (req, res, next) => {
   console.log("/auth/login");
   try {
-    console.log(req.body);
     let email = req.body.email;
     let password = req.body.password;
     console.log("email - ", email);
     console.log("password - ", password);
 
-    
-    // console.log(await User.find())
-    let user = await User.findOne({ email: email });
-
-    if (user) {
-      if (password === user.password) {
-        // generating token -> payload is {isAdmin: true and email: "admin email"}
-        // jwt.sign(payload, "secrete key", callback==> (err, token)
-        jwt.sign(
-          { email: user.email, isAdmin: user.isAdmin },
-          process.env.PRIVATE_KEY,
-          { expiresIn: "1h" },
-          (err, token) => {
-            console.log(token);
-            // error nahi hai
-            if (!err) {
-              console.log("logined");
-              res.status(200).send({
-                token: token,
-                isAdmin: user.isAdmin,
-                userId: user._id,
-              });
-            }
-            // token nahi generate hua
-            if (!token) res.status(400).send({ msg: "token generation error" });
-          }
-        );
-      } else {
-        res.status(400).send({ msg: "wrong password" });
-      }
-    } else {
-      res.status(401).json({ msg: "user not found" });
+    if (!email || !password) {
+      return res.json({ error: "Missing fields" });
     }
 
-    // User.findOne({ email: email }).then((user) => {
-    //   if (user) {
-    //   } else {
-    //     res.status(401).json({ msg: "user not found" });
-    //   }
-    // });
+    // console.log(await User.find())
+    let user = await User.findOne({ email, password });
+
+    if (!user) {
+      return res.json({ error: "User not found" });
+    }
+
+    // generating token -> payload is {isAdmin: true and email: "admin email"}
+    // jwt.sign(payload, "secrete key", callback==> (err, token)
+
+    jwt.sign(
+      { email: user.email, isAdmin: user.isAdmin },
+      process.env.PRIVATE_KEY,
+      { expiresIn: "1h" },
+      (err, token) => {
+        console.log(token);
+        // error nahi hai
+        if (!err) {
+          console.log("logined");
+          return res.send({
+            token: token,
+            isAdmin: user.isAdmin,
+            userId: user._id,
+          });
+        }
+        // token nahi generate hua
+
+        return res.json({ error: "token generation error" });
+      }
+    );
   } catch (error) {
-    res.send({ msg: "error", error });
+    res.send({ msg: "something went wrong", error });
   }
 };
 
