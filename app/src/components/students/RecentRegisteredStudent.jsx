@@ -9,38 +9,43 @@ import ContactStudent from "../../components/students/ContactStudent";
 import Button from "../Button";
 import useAuthContext from "../../hooks/useAuthContext";
 
+// ... (other imports)
+
 const RecentRegisteredStudent = () => {
   const [recentStudents, setRecentStudents] = useState([]);
-
   const { token } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   const [studentId, setStudentId] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const getRecentStudents = async () => {
     try {
       setLoading(true);
-      let res = await axios.post(`${api}/user/recent-students`, { token });
-      // console.log(res);
-      if (res.statusText === "OK") {
-        console.log(res);
+      const res = await axios.post(`${api}/user/recent-students`, { token });
+
+      if (res.status === 200) {
+        console.log(res.data);
         setRecentStudents(res.data.students);
       } else {
+        console.error(
+          "Failed to fetch recent students:",
+          res.status,
+          res.statusText
+        );
         navigate("/login");
       }
     } catch (err) {
-      console.log(err);
+      console.error("Error during API request:", err);
+      // Handle the error, e.g., show an error message to the user
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
-    // console.log("getting recent student");
     getRecentStudents();
-  }, []);
+  }, []); // Empty dependency array means the effect runs once after the initial render
 
   if (loading) {
     return <Loading />;

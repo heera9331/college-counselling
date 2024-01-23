@@ -3,10 +3,9 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import verifyToken from "../../utils/VerifyToken";
 import axios from "axios";
-
 import Loading from "../Loading";
-
 import api from "../../utils/api";
+import useAuthContext from "../../hooks/useAuthContext";
 
 const Student = ({ title, students }) => {
   return (
@@ -16,7 +15,7 @@ const Student = ({ title, students }) => {
           <h3>{title}</h3>
         </div>
       )}
-      {students && students.length !== 0 ? (
+      {students && students.length !== 0 && (
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -45,79 +44,76 @@ const Student = ({ title, students }) => {
           </thead>
 
           <tbody>
-            {students &&
-              students.length !== 0 &&
-              students.map((student, idx) => {
-                return (
-                  <tr
-                    key={idx}
-                    className={`${
-                      idx % 2 != 0 ? "bg-gray-200" : "bg-gray-100"
-                    } text-black`}
-                  >
-                    <td className="px-6 py-3">{idx + 1}</td>
-                    <td className="px-6 py-3">{student.name}</td>
-                    <td className="px-6 py-3">{student.category}</td>
-                    <td className="px-6 py-3">{student.route}</td>
-                    <td className="px-6 py-3">{student.mobile}</td>
-                    <td className="px-6 py-3">{student.status}</td>
-                    <td className="px-6 py-3">
-                      {new Date(student.createdAt).toLocaleDateString()}
-                    </td>
-                  </tr>
-                );
-              })}
+            {students.map((student, idx) => (
+              <tr
+                key={idx}
+                className={`${
+                  idx % 2 !== 0 ? "bg-gray-200" : "bg-gray-100"
+                } text-black`}
+              >
+                <td className="px-6 py-3">{idx + 1}</td>
+                <td className="px-6 py-3">{student?.name}</td>
+                <td className="px-6 py-3">{student?.category}</td>
+                <td className="px-6 py-3">{student?.route}</td>
+                <td className="px-6 py-3">{student?.mobile}</td>
+                <td className="px-6 py-3">{student?.status}</td>
+                <td className="px-6 py-3">
+                  {new Date(student?.createdAt).toLocaleDateString()}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
-      ) : (
-        ""
       )}
     </>
   );
 };
 
+// ... (other imports)
+
 const Profile = () => {
-  const token = localStorage.getItem("token");
+  const { token } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
   const [students, setStudents] = useState([]);
-
-  const navigate = useNavigate();
-
   const [stats, setStats] = useState({
     interested: 0,
     pending: 0,
     notinterested: 0,
   });
 
+  const navigate = useNavigate();
   const params = useParams();
   let userId = params.userId;
 
   const getUser = async () => {
     try {
-      let response = await axios.post(`${api}/user/profile`, { token, userId });
-      if (response.statusText === "OK") {
-        setUser(await response.data.user);
-        setStudents(await response.data.students);
+      setLoading(true);
+      const response = await axios.post(`${api}/user/profile`, {
+        token,
+        userId,
+      });
 
-        // Call filter after setting the students state
-        // filter();
-      } else {
-        // console.log(response.response);
-        console.log("response.response");
+      if (response.data) {
+        setUser(response.data.user);
+        setStudents(response.data.students);
       }
     } catch (error) {
-      console.log("catch block");
-      let msg = error.response.data.error.message;
+      console.error("Error during API request:", error);
+      let msg =
+        error?.response?.data?.error?.message ||
+        "An unexpected error occurred.";
       alert(msg);
       navigate("/login");
+    } finally {
+      setLoading(false);
     }
   };
 
   const filter = useCallback(() => {
     console.log("filter applied");
     setLoading(true);
-    if (students.length !== 0) {
+    if (students.length > 0) {
       let pending = students.filter((student) => student.status === "pending");
       let interested = students.filter(
         (student) => student.status === "interested"
@@ -131,8 +127,6 @@ const Profile = () => {
         interested: interested.length,
         notinterested: notinterested.length,
       }));
-
-      setLoading(false);
     } else {
       console.log("no students");
     }
@@ -146,11 +140,11 @@ const Profile = () => {
     setLoading(true);
     getUser();
     setLoading(false);
-  }, [token]);
+  }, [token, navigate]);
 
   useEffect(() => {
     filter();
-  }, [filter]);
+  }, [filter, students]);
 
   if (loading) {
     return <Loading />;
