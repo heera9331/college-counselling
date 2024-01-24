@@ -5,16 +5,17 @@ import api from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading";
 import useAuthContext from "../../hooks/useAuthContext";
+import Input from "../Input";
 
 const ContactStudent = (props) => {
   const [id] = useState(props.id);
   const [student, setStudent] = useState({});
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
-  const { loading, setLoading } = useAuthContext();
+  const { token } = useAuthContext();
   const [date] = useState(new Date());
   const [isInterested, setIsInterested] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const [chat, setChat] = useState({
     id: id,
@@ -45,20 +46,19 @@ const ContactStudent = (props) => {
   };
 
   const updateChat = () => {
-    const token = localStorage.getItem("token");
     setLoading(true);
     fetch(`${api}/user/student/update/${chat.id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token: token, chatData: chat }),
+      body: JSON.stringify({ token, chatData: chat }),
     })
       .then(async (response) => {
         if (response.ok) {
           // console.log(await response.json());
           alert("Successfully updated");
-          // window.location.href = "/home";
+
           navigate("/home");
         } else {
           alert("There is some mistake");
@@ -80,12 +80,8 @@ const ContactStudent = (props) => {
   }
 
   return (
-    <div
-      className="container border mt-4 p-4 position-relative"
-      style={{ top: "60px" }}
-    >
-      <h2>Student</h2>
-      <div className="container">
+    <div>
+      <div className="flex flex-col gap-1">
         <p>Current Date {date.toUTCString()}</p>
 
         {student && (
@@ -93,53 +89,41 @@ const ContactStudent = (props) => {
             <p className={student.status === "PENDING" ? "info" : "danger"}>
               Current Status - {student.status}
             </p>
-            <div className="mb-3 mt-3">
-              <label htmlFor="studentName" className="form-label">
-                Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="studentName"
-                id="studentName"
-                placeholder={student.name}
-                readOnly
-              />
-            </div>
-            <div className="mb-3 mt-3">
+
+            <div className="flex flex-col gap-2 my-2">
               <label htmlFor="studentEmail" className="form-label">
                 Email
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control rouned-sm p-1 focus:outline-none"
                 name="studentEmail"
                 id="studentEmail"
-                placeholder={student.email}
+                placeholder={`${student.email}`}
                 readOnly
               />
             </div>
-            <div className="mb-3 mt-3">
+            <div className="flex flex-col gap-2 my-2">
               <label htmlFor="studentMobile" className="form-label">
                 Mobile
               </label>
               <input
                 type="text"
-                className="form-control"
+                className=" rouned-sm p-1 focus:outline-none"
                 name="studentMobile"
                 id="studentMobile"
-                placeholder={student.mobile}
+                placeholder={`${student.mobile}`}
                 readOnly
               />
             </div>
-            <div className="mb-3 mt-3">
+            <div className="flex flex-col gap-2 my-2">
               <label htmlFor="studentReply" className="form-label">
                 Reply of Student
               </label>
               <input
                 value={chat.reply}
                 type="text"
-                className="form-control"
+                className=" rouned-sm p-1 focus:outline-none"
                 name="studentReply"
                 id="studentReply"
                 placeholder="conversation"
@@ -148,35 +132,40 @@ const ContactStudent = (props) => {
                 }}
               />
 
-              <select
-                name="status"
-                id="status"
-                className="mt-4"
-                value={chat.status}
-                onChange={(event) => {
-                  if (event.target.value === "INTERESTED") {
-                    setIsInterested(1);
-                  } else {
-                    setIsInterested(0);
-                  }
-                  setChat({ ...chat, status: event.target.value });
-                }}
-              >
-                <option value="PENDING">PENDING</option>
-                <option value="NOTINTERESTED">NOTINTERESTED</option>
-                <option value="INTERESTED">INTERESTED</option>
-              </select>
+              <div className="flex flex-col gap-2 my-2">
+                <label htmlFor="status" className="p-1">
+                  Status
+                </label>
+                <select
+                  name="status"
+                  id="status"
+                  className="rouned-sm p-1 focus:outline-none"
+                  value={chat.status}
+                  onChange={(event) => {
+                    if (event.target.value === "INTERESTED") {
+                      setIsInterested(1);
+                    } else {
+                      setIsInterested(0);
+                    }
+                    setChat({ ...chat, status: event.target.value });
+                  }}
+                >
+                  <option value="PENDING">PENDING</option>
+                  <option value="NOTINTERESTED">NOTINTERESTED</option>
+                  <option value="INTERESTED">INTERESTED</option>
+                </select>
+              </div>
             </div>
 
             {isInterested === 1 ? (
               <>
-                <div className="mb-3 mt-3">
+                <div className="flex flex-col gap-2 my-2">
                   <label htmlFor="category" className="form-label">
-                    Select Branch:
+                    Select Category:
                   </label>
 
                   <select
-                    className="mx-2"
+                    className="rouned-sm p-1 focus:outline-none"
                     value={student.category}
                     onChange={(e) => {
                       // console.log(e.target.value);
@@ -195,14 +184,14 @@ const ContactStudent = (props) => {
                     <option value="AL/ML">AL/ML</option>
                   </select>
                 </div>
-                <div className="mb-3 mt-3">
+                <div className="flex flex-col gap-2 my-2">
                   <label htmlFor="school" className="form-label">
                     School Name
                   </label>
                   <input
                     value={chat.school}
                     type="text"
-                    className="form-control"
+                    className="rouned-sm p-1 focus:outline-none"
                     name="school"
                     id="school"
                     placeholder="Enter School Name"
@@ -211,14 +200,14 @@ const ContactStudent = (props) => {
                     }}
                   />
                 </div>
-                <div className="mb-3 mt-3">
+                <div className="flex flex-col gap-2 my-2">
                   <label htmlFor="marks" className="form-label">
                     Marks (In %)
                   </label>
                   <input
                     value={chat.marks}
                     type="number"
-                    className="form-control"
+                    className="rouned-sm p-1 focus:outline-none"
                     name="marks"
                     id="marks"
                     placeholder="Without % sign - i.e. 83"
@@ -233,7 +222,7 @@ const ContactStudent = (props) => {
             ) : null}
 
             <button
-              className="btn btn-primary"
+              className="bg-blue-800 py-1 px-2 text-white rounded-sm focus:bg-blue-900"
               onClick={() => {
                 // console.log(chat);
                 updateChat();
@@ -250,9 +239,25 @@ const ContactStudent = (props) => {
           <h2>Previous Conversation</h2>
 
           <div className="container" style={{ backgroundColor: "#e9ecef" }}>
-            {/* {student.chats.map((chat, idx) => {
-              return <DisplayMessage chat={chat} key={idx} />;
-            })} */}
+            {student.chats.map((chat, idx) => {
+              console.log(chat);
+              return (
+                <div
+                  key={idx}
+                  className="my-4 py-4 flex flex-col gap-2 relative border-b-2"
+                >
+                  <p className="bg-white py-1 m-auto text-center rounded-sm">
+                    {chat.timestamp}
+                  </p>
+                  <p className="bg-white py-1 w-fit rounded-sm px-2">
+                    {chat.teacher}
+                  </p>
+                  <p className="bg-white py-1 w-fit rounded-sm absolute right-0 -bottom-2 px-2">
+                    {chat.msg}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       ) : null}

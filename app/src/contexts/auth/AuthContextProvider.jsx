@@ -5,11 +5,16 @@ import { useEffect } from "react";
 
 const AuthContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
-  const [token, setToken] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [userId, setUserID] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [isAdmin, setIsAdmin] = useState(
+    JSON.parse(localStorage.getItem("isAdmin")) || false
+  );
+  const [userId, setUserID] = useState(localStorage.getItem("userId") || null);
 
   const login = (token, isAdmin, userId) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("isAdmin", isAdmin);
+    localStorage.setItem("userId", userId);
     setToken(token);
     setIsAdmin(isAdmin);
     setUserID(userId);
@@ -20,6 +25,7 @@ const AuthContextProvider = ({ children }) => {
     setIsAdmin(false);
     setUserID(null);
     setError(null);
+    localStorage.clear();
   };
 
   useEffect(() => {}, [error, token, isAdmin, userId]);

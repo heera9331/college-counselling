@@ -39,6 +39,7 @@ function App() {
                 </>
               )}
               {/* <Route path="/*" element={<Login />} /> */}
+              <Route path="/*" element={<Login />} />
             </Routes>
           </div>
         </div>

@@ -7,10 +7,12 @@ import api from "../../utils/api";
 import { useState } from "react";
 import Loading from "../Loading";
 import useAuthContext from "../../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 const RegisterStudent = () => {
   const [loading, setLoading] = useState(false);
   const { token } = useAuthContext();
+  const navigate = useNavigate();
   const [student, setStudent] = useState({
     name: "",
     mobile: "",
@@ -45,9 +47,10 @@ const RegisterStudent = () => {
     });
     if (res.ok) {
       let result = await res.json();
-      // console.log(result);
+      console.log(result);
       alert("Successfully registered");
       clear();
+      navigate("/");
     } else {
       res = await res.json();
       alert(res.msg);

@@ -1,20 +1,26 @@
 import Input from "../../components/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../utils/api";
 import useAuthContext from "../../hooks/useAuthContext";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
-  const { login, token } = useAuthContext();
+  const { login } = useAuthContext();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  let timeout = false;
 
   const handleLogin = async () => {
     try {
       console.log(user);
+      setLoading(true);
+      timeout = setTimeout(() => {}, 2000);
       let res = await axios.post(`${api}/auth/login`, user);
       let data = res.data;
+      setLoading(false);
       if (data.error) {
         alert(data.error);
       } else {
@@ -23,9 +29,22 @@ const Login = () => {
         navigate("/");
       }
     } catch (error) {
+      setLoading(false);
+      alert("Server connection timeout");
       console.error("Error during login:", error);
     }
+    setLoading(false);
   };
+
+  useEffect(() => {
+    return () => {
+      clearInterval(timeout);
+    };
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center m-auto">
