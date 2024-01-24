@@ -8,7 +8,8 @@ const validateStudent = (student) => {
     !student.name ||
     !student.mobile ||
     !student.category ||
-    !student.route
+    !student.route ||
+    !student.mobile.length === 10
   ) {
     return false;
   }
