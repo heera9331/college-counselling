@@ -38,6 +38,7 @@ const RecentRegisteredStudent = () => {
     } catch (err) {
       console.error("Error during API request:", err);
       // Handle the error, e.g., show an error message to the user
+      
     } finally {
       setLoading(false);
     }

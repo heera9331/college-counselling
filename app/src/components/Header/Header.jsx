@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const { isAdmin, userId, token, logout } = useAuthContext();
   const nav = useNavigate();
+
   useEffect(() => {}, [userId, isAdmin, token]);
   return (
     <header
@@ -37,6 +38,12 @@ const Header = () => {
               </>
             )}
             <Link
+              to={"/"}
+              className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+            >
+              Home
+            </Link>
+            <Link
               to={`/profile/${userId}`}
               className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
             >
@@ -55,7 +62,7 @@ const Header = () => {
             </Link>
           </>
         )}
-        {!token && <Link to={"/login"}>Login</Link>}
+        {/* {!token && <Link to={"/login"}>Login</Link>} */}
       </div>
     </header>
   );

@@ -6,8 +6,19 @@ import axios from "axios";
 import Loading from "../Loading";
 import api from "../../utils/api";
 import useAuthContext from "../../hooks/useAuthContext";
+import verifyToken from "../../utils/VerifyToken";
 
 const Student = ({ title, students }) => {
+  const { token } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === "null") {
+      navigate("/login");
+    }
+
+    verifyToken(token);
+  });
   return (
     <>
       {title && (

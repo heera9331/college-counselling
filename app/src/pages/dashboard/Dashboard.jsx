@@ -116,6 +116,15 @@ const CounsellorRow = ({ idx, user }) => {
  * @description - display counsellors
  */
 const DisplayCounsellors = ({ users }) => {
+  const { token } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === "token" || !token) {
+      navigate("/login");
+    }
+    verifyToken(token);
+  });
   return (
     <div className="container">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

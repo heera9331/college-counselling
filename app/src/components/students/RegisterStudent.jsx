@@ -9,6 +9,8 @@ import Loading from "../Loading";
 import useAuthContext from "../../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 
+import toast, { Toaster } from "react-hot-toast";
+
 const RegisterStudent = () => {
   const [loading, setLoading] = useState(false);
   const { token } = useAuthContext();
@@ -49,11 +51,13 @@ const RegisterStudent = () => {
       let result = await res.json();
       console.log(result);
       alert("Successfully registered");
+      // toast.success("Successfully registered");
       clear();
       navigate("/");
     } else {
       res = await res.json();
-      alert(res.msg);
+      toast.error(res.msg);
+      // alert(res.msg);
     }
     setLoading(false);
   };
@@ -68,6 +72,7 @@ const RegisterStudent = () => {
 
   return (
     <div>
+      <Toaster position="top-center" toastOptions={{ duration: 1000 }} />
       <Input
         labelColor={"text-black"}
         inputColor={"text-black"}

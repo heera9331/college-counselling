@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import verifyToken from "../../utils/VerifyToken";
 import React, { useContext, useEffect, useState } from "react";
 import api from "../../utils/api";
 import { useNavigate } from "react-router-dom";
@@ -157,6 +158,7 @@ const ViewReport = () => {
     if (token === "null") {
       navigate("/login");
     }
+    verifyToken(token);
   }, [token, navigate]);
 
   // formate date and add a field sNO
