@@ -39,6 +39,7 @@
 - add animations and transitions
 - Authorization using header
 - change date formate ✔
+- apply pagination in every table ✔
 
 ## ISSUES
 

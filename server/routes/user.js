@@ -13,6 +13,7 @@ import User from "../models/User.js";
 
 const UserRoute = express.Router();
 
+// user/eourere45454
 UserRoute.get("/:id", verifyToken, (req, res, next) => {
   res.send({ msg: "array kam kar to raha hu" });
 });
@@ -24,6 +25,13 @@ UserRoute.post("/register", verifyToken, (req, res, next) => {
 
 UserRoute.post("/recent-students", verifyToken, async (req, res) => {
   try {
+    let currentPage = req.query.page;
+    let pageSize = req.query.size;
+
+    console.log(req.query);
+    let totalStudent = await Student.countDocuments({
+      status: { $in: ["PENDING", "NOTINTERESTED"] },
+    });
     let students = await Student.find(
       {
         // createdAt: {
@@ -39,10 +47,13 @@ UserRoute.post("/recent-students", verifyToken, async (req, res) => {
         registeredBy: 1,
         status: 1,
       }
-    );
+    )
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+
     if (students) {
       console.log(students);
-      res.status(200).send({ students });
+      res.status(200).send({ students, total: totalStudent });
     } else {
       res.status(200).send({ msg: "students not found" });
     }
@@ -166,13 +177,22 @@ UserRoute.post("/student/update/:id", verifyToken, async (req, res, next) => {
 
 UserRoute.post("/profile/", verifyToken, async (req, res, next) => {
   try {
+    let currentPage = req.query.page;
+    let pageSize = req.query.size;
+
+    console.log(pageSize);
     let userId = req.body.userId;
     console.log(userId);
     let tmp = await User.findById(userId);
     let email = tmp.email;
     let user = await User.findById(userId);
-    let students = await Student.find({ registeredBy: email });
-    res.json({ user, students });
+    let total = await Student.find({}).countDocuments({
+      registeredBy: user.email,
+    });
+    let students = await Student.find({ registeredBy: email })
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+    res.json({ user, students, total });
   } catch (error) {
     res.status(501).json(error);
   }

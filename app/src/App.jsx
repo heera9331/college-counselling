@@ -19,35 +19,40 @@ function App() {
   const { token } = useAuthContext();
 
   useEffect(() => {}, [token]);
-  return (
-    <BrowserRouter>
-      <div className="m-auto" style={{ maxWidth: "1440px" }}>
-        <Header />
-        <div className="grid" style={{ gridTemplateColumns: "2fr 9fr" }}>
-          <LeftSidebar />
-          <div>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/logout" element={<Logout />} />
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              {token && (
-                <>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/profile/:userId" element={<Profile />} />
-                  <Route path="/view-report" element={<ViewReport />} />
-                </>
-              )}
-              {/* <Route path="/*" element={<Login />} /> */}
-              <Route path="/*" element={<Login />} />
-            </Routes>
-          </div>
-        </div>
 
-        <Footer />
-      </div>
-    </BrowserRouter>
-  );
+  try {
+    return (
+      <BrowserRouter>
+        <div className="m-auto" style={{ maxWidth: "1440px" }}>
+          <Header />
+          <div className="grid" style={{ gridTemplateColumns: "2fr 9fr" }}>
+            <LeftSidebar />
+            <div>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/logout" element={<Logout />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
+                {token && (
+                  <>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/profile/:userId" element={<Profile />} />
+                    <Route path="/view-report" element={<ViewReport />} />
+                  </>
+                )}
+                {/* <Route path="/*" element={<Login />} /> */}
+                <Route path="/*" element={<Login />} />
+              </Routes>
+            </div>
+          </div>
+
+          <Footer />
+        </div>
+      </BrowserRouter>
+    );
+  } catch (error) {
+    alert("something went wrong, sorry for inconvenience");
+  }
 }
 
 export default App;

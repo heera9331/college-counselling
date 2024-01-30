@@ -34,32 +34,36 @@ const RegisterStudent = () => {
   });
 
   const register = async () => {
-    const API = `${api}/user/register`;
-    // console.log(newStudent);
-    setLoading(true);
-    let res = await fetch(API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        student,
-        token,
-      }),
-    });
-    if (res.ok) {
-      let result = await res.json();
-      console.log(result);
-      alert("Successfully registered");
-      // toast.success("Successfully registered");
-      clear();
-      navigate("/");
-    } else {
-      res = await res.json();
-      toast.error(res.msg);
-      // alert(res.msg);
+    try {
+      const API = `${api}/user/register`;
+      // console.log(newStudent);
+      setLoading(true);
+      let res = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          student,
+          token,
+        }),
+      });
+      if (res.ok) {
+        let result = await res.json();
+        console.log(result);
+        alert("Successfully registered");
+        // toast.success("Successfully registered");
+        clear();
+        navigate("/");
+      } else {
+        res = await res.json();
+        toast.error(res.msg);
+        // alert(res.msg);
+      }
+      setLoading(false);
+    } catch (error) {
+      alert("something went wrong, sorry for inconvenience");
     }
-    setLoading(false);
   };
 
   const clear = () => {

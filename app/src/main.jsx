@@ -4,10 +4,16 @@ import App from "./App.jsx";
 import "./index.css";
 import AuthContextProvider from "./contexts/auth/AuthContextProvider.jsx";
 
+// ReactDOM.createRoot(document.getElementById("root")).render(
+//   <React.StrictMode>
+//     <AuthContextProvider>
+//       <App />
+//     </AuthContextProvider>
+//   </React.StrictMode>
+// );
+
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
-  </React.StrictMode>
+  <AuthContextProvider>
+    <App />
+  </AuthContextProvider>
 );

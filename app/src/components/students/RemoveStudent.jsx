@@ -10,26 +10,30 @@ import { useNavigate } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 
 const removeStudent = async (id) => {
-  const { token, isAdmin } = useAuthContext();
+  try {
+    const { token, isAdmin } = useAuthContext();
 
-  // console.log(id);
+    // console.log(id);
 
-  let response = await fetch(
-    `${api}/admin/remove-student?id=${id}&token=${token}`,
-    {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ isAdmin: isAdmin, token }),
+    let response = await fetch(
+      `${api}/admin/remove-student?id=${id}&token=${token}`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ isAdmin: isAdmin, token }),
+      }
+    );
+
+    if (response.ok) {
+      alert("successfully removed");
+    } else {
+      // console.log(await response.json());
+      alert("error");
     }
-  );
-
-  if (response.ok) {
-    alert("successfully removed");
-  } else {
-    // console.log(await response.json());
-    alert("error");
+  } catch (error) {
+    alert("something went wrong, sorry for inconvenience");
   }
 };
 

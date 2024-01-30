@@ -90,7 +90,8 @@ AdminRoute.post(
         .catch((err) => {
           console.log("error while search");
           res.send({ msg: "error while search" + err });
-        });
+        })
+        .limit(15);
     } catch (err) {
       console.error(err);
       res.status(500).send({ msg: "error" });
@@ -196,7 +197,7 @@ AdminRoute.post(
       let _id = req.body.student._id;
       let updated = req.body.student;
 
-      console.log('updated', updated)
+      console.log("updated", updated);
 
       let reponse = await Student.updateOne({ _id }, { $set: updated });
 

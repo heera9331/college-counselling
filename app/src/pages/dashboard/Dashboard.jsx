@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
-import verifyToken from "../../utils/VerifyToken";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import Loading from "../../components/Loading";
+import InterestedStudents from "./InterestedStudents";
+import PendingStudents from "./PendingStudents";
+import NotInterestedStudents from "./NotInterestedStudents";
+import Counsellors from "./Counsellors";
 
 import api from "../../utils/api";
 
-const StudentRow = ({ idx, student }) => {
+export const StudentRow = ({ idx, student }) => {
   return (
     <tr
       className={`${idx % 2 != 0 ? "bg-gray-200" : "bg-gray-100"} text-black`}
@@ -17,13 +20,13 @@ const StudentRow = ({ idx, student }) => {
       <td className="px-6 py-3">{student.category}</td>
       <td className="px-6 py-3">{student.route}</td>
       <td className="px-6 py-3">{student.mobile}</td>
-      <td className="px-6 py-3">{student.status}</td>
       <td className="px-6 py-3">{student.registeredBy}</td>
       <td className="px-6 py-3">
         {new Date(student.createdAt).toDateString() +
           " " +
           new Date(student.createdAt).toLocaleTimeString()}
       </td>
+      <td className="px-6 py-3">{student.status}</td>
 
       <td className="px-6 py-3">
         <Link to={`/view-report/student/${student._id}`}>
@@ -36,57 +39,7 @@ const StudentRow = ({ idx, student }) => {
   );
 };
 
-const DisplayStudents = ({ title, students }) => {
-  return (
-    <div className="container my-4 position-relative" style={{ top: "60px" }}>
-      {/* table heading */}
-
-      <h3 className="text-xl font-semibold underline">{title}</h3>
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-fixed">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            {/* student table headers */}
-            <th scope="col" className="px-6 py-3">
-              S. No.
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Student Name
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Category
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Route
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Mobile
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Status
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Registered By
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Date
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* row in table */}
-          {students.map((student, idx) => {
-            return <StudentRow key={idx} student={student} idx={idx} />;
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
-const CounsellorRow = ({ idx, user }) => {
+export const CounsellorRow = ({ idx, user }) => {
   const [loading] = useState(false);
 
   if (loading) {
@@ -102,7 +55,7 @@ const CounsellorRow = ({ idx, user }) => {
       <td className="px-6 py-3">{user.email}</td>
       <td className="px-6 py-3">{user.isAdmin ? "Admin" : "Counsellor"}</td>
       <td className="px-6 py-3">
-      {new Date(user.createdAt).toDateString() +
+        {new Date(user.createdAt).toDateString() +
           " " +
           new Date(user.createdAt).toLocaleTimeString()}
       </td>
@@ -114,57 +67,6 @@ const CounsellorRow = ({ idx, user }) => {
         </Link>
       </td>
     </tr>
-  );
-};
-
-/**
- *
- * @param {*} param0
- * @returns
- * @description - display counsellors
- */
-const DisplayCounsellors = ({ users }) => {
-  const { token } = useAuthContext();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token === "token" || !token) {
-      navigate("/login");
-    }
-    verifyToken(token);
-  });
-  return (
-    <div className="container">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" className="px-6 py-3">
-              S.No.
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Name
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Email
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Position
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Date
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, idx) => {
-            return <CounsellorRow key={idx} user={user} idx={idx} />;
-          })}
-        </tbody>
-      </table>
-    </div>
   );
 };
 
@@ -246,11 +148,8 @@ const Dashboard = () => {
       // console.log(response);
 
       if (response.ok) {
-        // console.log("get counsellors");
-        response.json().then((result) => {
-          setCounsellors(result);
-          // console.log(counsellors);
-        });
+        let data = await response.json();
+        setCounsellors(data.users);
       }
     } catch (error) {
       // console.log(error);
@@ -326,30 +225,10 @@ const Dashboard = () => {
             </p>
           </div>
         </div>
-        {<DisplayStudents title={"Pending"} students={students.PENDING} />}
-        {
-          <DisplayStudents
-            title={"Not Interested"}
-            students={students.NOTINTERESTED}
-          />
-        }
-        {
-          <DisplayStudents
-            title={"Interested"}
-            students={students.INTERESTED}
-          />
-        }
-      </div>
-
-      {/* printing counsellors */}
-      <div
-        className="container position-relative"
-        style={{
-          marginTop: "100px",
-        }}
-      >
-        <h3 className="underline text-xl font-semibold">Counsellors</h3>
-        {counsellors && <DisplayCounsellors users={counsellors} />}
+        <InterestedStudents />
+        <PendingStudents />
+        <NotInterestedStudents />
+        <Counsellors />
       </div>
     </div>
   );

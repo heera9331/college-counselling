@@ -17,7 +17,7 @@ export const registerStudent = (req, res, next) => {
       console.log(err);
       res.status(404).json({ error: err });
     }
-  }); 
+  });
 
   console.log(student);
   if (!validateStudent(student)) {
@@ -32,8 +32,8 @@ export const registerStudent = (req, res, next) => {
     })
     .catch((err) => {
       // bad request
-      console.log('student insertmany',err);
-      res.status(400).send({ msg: "user already exist" , error: err});
+      console.log("student insertmany", err);
+      res.status(400).send({ msg: "user already exist", error: err });
     });
 };
 
@@ -53,8 +53,11 @@ export const getStudent = (req, res, next) => {
         });
     } else {
       Student.findOne(
-        { _id: id, status: { $in: ["PENDING", "NOTINTERESTED", "PARTIALINTERESTED"] } },
-        { mobile: 1, name: 1, email: 1, chats: 1,status: 1 }
+        {
+          _id: id,
+          status: { $in: ["PENDING", "NOTINTERESTED", "PARTIALINTERESTED"] },
+        },
+        { mobile: 1, name: 1, email: 1, chats: 1, status: 1 }
       )
         .then((value) => {
           if (value) {
@@ -106,8 +109,6 @@ export const getStudents = (req, res, next) => {
         console.log("error while search");
         res.status(400).json({ msg: "error while search", error: err });
       });
-
-
   } catch (err) {
     console.log(err);
     res.status(505).json({ error: err });
@@ -116,25 +117,34 @@ export const getStudents = (req, res, next) => {
 
 // get students by category
 
-export const getStudentByCategory = (req, res, next) => {
+export const getStudentByCategory = async (req, res, next) => {
   try {
+    let currentPage = req.query.page || 1;
+    let pageSize = req.query.size || 15;
     let searchKeyword = req.query.query;
     let status = req.body.status;
     console.log(status);
     // Perform the search in the User collection
-    Student.find({ status: status })
-      .then((users) => {
-        console.log(users);
-        res.send({ query: searchKeyword, result: users });
-        console.log("data sent -> /admin/search");
-      })
-      .catch((err) => {
-        console.log("error while search");
-        res.json({ msg: "error while search", error: err });
-      });
+    let total = await Student.countDocuments({ status });
+    let users = await Student.find({ status })
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+
+    return res.json({ query: searchKeyword, result: users, total });
+    // old code
+    // Student.find({ status: status })
+    //   .then((users) => {
+    //     console.log(users);
+    //     res.send({ query: searchKeyword, result: users });
+    //     console.log("data sent -> /admin/search");
+    //   })
+    //   .catch((err) => {
+    //     console.log("error while search");
+    //     res.json({ msg: "error while search", error: err });
+    //   });
   } catch (error) {
-    console.log(err);
-    res.status(505).json({ error: err });
+    console.log(error);
+    res.status(505).json({ error });
   }
 };
 
@@ -161,8 +171,7 @@ export const updateStudent = (req, res, next) => {
       });
     } else {
       // admin
-
-    }  
+    }
     res.status(200).json(result);
   } catch (err) {
     res.status(505).send({ error: err });

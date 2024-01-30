@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 const verifyToken = (req, res, next) => {
   try {
+    console.log(req);
     console.log(req.body);
     let token = req.body.token || req.params.token;
     console.log(token);

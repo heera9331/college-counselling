@@ -47,26 +47,30 @@ const ContactStudent = (props) => {
 
   const updateChat = () => {
     setLoading(true);
-    fetch(`${api}/user/student/update/${chat.id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token, chatData: chat }),
-    })
-      .then(async (response) => {
-        if (response.ok) {
-          // console.log(await response.json());
-          alert("Successfully updated");
-
-          navigate("/home");
-        } else {
-          alert("There is some mistake");
-        }
+    try {
+      fetch(`${api}/user/student/update/${chat.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, chatData: chat }),
       })
-      .catch((reason) => {
-        // console.log(reason);
-      });
+        .then(async (response) => {
+          if (response.ok) {
+            // console.log(await response.json());
+            alert("Successfully updated");
+
+            navigate("/home");
+          } else {
+            alert("There is some mistake");
+          }
+        })
+        .catch((reason) => {
+          // console.log(reason);
+        });
+    } catch (error) {
+      alert("something went wrong, sorry for inconvenience");
+    }
 
     setLoading(false);
   };

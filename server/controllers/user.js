@@ -83,8 +83,14 @@ const getUser = async (req, res, next) => {
 
 const getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
-    res.status(200).json(users);
+    let currentPage = req.query.page || 1;
+    let pageSize = req.query.size || 10;
+
+    let total = await User.countDocuments();
+    const users = await User.find()
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+    res.status(200).json({ users, total });
   } catch (err) {
     next();
   }

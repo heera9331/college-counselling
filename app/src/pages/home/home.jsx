@@ -16,7 +16,11 @@ const Home = () => {
     verifyToken(token);
   }, [token, navigate]);
 
-  return <div>{token && <RecentRegisteredStudent />}</div>;
+  try {
+    return <div>{token && <RecentRegisteredStudent />}</div>;
+  } catch (error) {
+    alert("something went wrong, sorry for inconvenience");
+  }
 };
 
 export default Home;

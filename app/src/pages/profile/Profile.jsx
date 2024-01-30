@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import verifyToken from "../../utils/VerifyToken";
+import Button from "../../components/Button";
 import axios from "axios";
 import Loading from "../Loading";
 import api from "../../utils/api";
@@ -78,6 +79,38 @@ const Student = ({ title, students }) => {
           </tbody>
         </table>
       )}
+
+      {students.length != 0 && (
+        <div className="flex items-center justify-center mt-10 gap-2 m-auto">
+          <Button
+            text={"<<"}
+            onClick={() => {
+              setCurrentPage(1);
+            }}
+          />
+          <Button
+            text={"<"}
+            onClick={() => {
+              if (currentPage > 1) {
+                setCurrentPage(currentPage - 1);
+              }
+            }}
+          />
+          <div>Total {`${currentPage}/${Math.ceil(total / pageSize)}`}</div>
+          <Button
+            text={">"}
+            onClick={() => {
+              setCurrentPage(currentPage + 1);
+            }}
+          />
+          <Button
+            text={">>"}
+            onClick={() => {
+              setCurrentPage(10);
+            }}
+          />
+        </div>
+      )}
     </>
   );
 };
@@ -85,6 +118,11 @@ const Student = ({ title, students }) => {
 // ... (other imports)
 
 const Profile = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  // total students present in student collection
+  const [total, setTotal] = useState(0);
+  const [pageSize] = useState(10);
+
   const { token } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
@@ -110,6 +148,8 @@ const Profile = () => {
       if (response.data) {
         setUser(response.data.user);
         setStudents(response.data.students);
+        console.log(response.data);
+        setTotal(response.data.total);
       }
     } catch (error) {
       console.error("Error during API request:", error);
@@ -153,7 +193,7 @@ const Profile = () => {
     setLoading(true);
     getUser();
     setLoading(false);
-  }, [token, navigate]);
+  }, [token, navigate, currentPage]);
 
   useEffect(() => {
     filter();
@@ -184,6 +224,9 @@ const Profile = () => {
           </div>
           <div className="container border p-2">Email - {user.email}</div>
           <div className="container border p-2">
+            Number of students - {stats && <span>{students.length}</span>}
+          </div>
+          <div className="container border p-2">
             Number pending students - {stats && <span>{stats.pending}</span>}
           </div>
 
@@ -198,6 +241,42 @@ const Profile = () => {
 
           {students && (
             <div className="bg-blue-800 text-white">
+              <h1>Hi</h1>
+              {students.length != 0 && (
+                <div className="flex items-center justify-center my-2 gap-2 m-auto">
+                  <Button
+                    text={"<<"}
+                    onClick={() => {
+                      setCurrentPage(1);
+                    }}
+                  />
+                  <Button
+                    text={"<"}
+                    onClick={() => {
+                      if (currentPage > 1) {
+                        setCurrentPage(currentPage - 1);
+                      }
+                    }}
+                  />
+                  <div>
+                    Total {`${currentPage}/${Math.ceil(total / pageSize)}`}
+                  </div>
+                  <Button
+                    text={">"}
+                    onClick={() => {
+                      if (Math.ceil(total / pageSize) > currentPage) {
+                        setCurrentPage(currentPage + 1);
+                      }
+                    }}
+                  />
+                  <Button
+                    text={">>"}
+                    onClick={() => {
+                      setCurrentPage(Math.ceil(total / pageSize));
+                    }}
+                  />
+                </div>
+              )}
               <Student title={""} students={students} />
             </div>
           )}

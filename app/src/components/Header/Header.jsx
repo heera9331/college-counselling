@@ -16,7 +16,7 @@ const Header = () => {
       style={{ maxWidth: "1440px" }}
     >
       <h1 className="text-3xl font-semibold">
-        <Link to={"/"}>React App</Link>
+        <Link to={"/"}>CounselPro Connect</Link>
       </h1>
       <div className="options flex items-center justify-center gap-4">
         {token && (

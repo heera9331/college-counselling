@@ -7,11 +7,16 @@ import axios from "axios";
 import Dialog from "../../components/Dialog";
 import ContactStudent from "../../components/students/ContactStudent";
 import useAuthContext from "../../hooks/useAuthContext";
-
+import Button from "../Button";
 // ... (other imports)
 
 const RecentRegisteredStudent = () => {
   const [recentStudents, setRecentStudents] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  // total students present in student collection
+  const [total, setTotal] = useState(0);
+  const [pageSize] = useState(15);
+
   const { token } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -21,11 +26,15 @@ const RecentRegisteredStudent = () => {
   const getRecentStudents = async () => {
     try {
       setLoading(true);
-      const res = await axios.post(`${api}/user/recent-students`, { token });
+      const res = await axios.post(
+        `${api}/user/recent-students?page=${currentPage}&size=${pageSize}`,
+        { token }
+      );
 
       if (res.status === 200) {
         console.log(res.data);
         setRecentStudents(res.data.students);
+        setTotal(res.data.total);
       } else {
         console.error(
           "Failed to fetch recent students:",
@@ -40,11 +49,16 @@ const RecentRegisteredStudent = () => {
     } finally {
       setLoading(false);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     getRecentStudents();
-  }, []); // Empty dependency array means the effect runs once after the initial render
+  }, [currentPage]); // Empty dependency array means the effect runs once after the initial render
+
+  useEffect(() => {
+    console.log(currentPage);
+  }, [currentPage]);
 
   if (loading) {
     return <Loading />;
@@ -61,7 +75,39 @@ const RecentRegisteredStudent = () => {
           <ContactStudent id={studentId} />
         </Dialog>
       )}
-
+      {recentStudents.length != 0 && (
+        <div className="flex items-center justify-center my-2 gap-2 m-auto">
+          <Button
+            text={"<<"}
+            onClick={() => {
+              setCurrentPage(1);
+            }}
+          />
+          <Button
+            text={"<"}
+            onClick={() => {
+              if (currentPage > 1) {
+                setCurrentPage(currentPage - 1);
+              }
+            }}
+          />
+          <div>Total {`${currentPage}/${Math.ceil(total / pageSize)}`}</div>
+          <Button
+            text={">"}
+            onClick={() => {
+              if (Math.ceil(total / pageSize) > currentPage) {
+                setCurrentPage(currentPage + 1);
+              }
+            }}
+          />
+          <Button
+            text={">>"}
+            onClick={() => {
+              setCurrentPage(Math.ceil(total / pageSize));
+            }}
+          />
+        </div>
+      )}
       <div className="mx-2 shadow-md overflow-auto">
         <table
           className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-x-scroll table-fixed
@@ -126,6 +172,8 @@ const RecentRegisteredStudent = () => {
           </tbody>
         </table>
       </div>
+
+      {recentStudents.length == 0 && "No Students"}
     </div>
   );
 };
