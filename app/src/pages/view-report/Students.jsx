@@ -24,28 +24,17 @@ const columns = [
     accessor: "mobile",
   },
   {
-    Header: "Status",
-    accessor: "status",
-  },
-  {
     Header: "Date",
     accessor: "createdAt",
+  },
+  {
+    Header: "Status",
+    accessor: "status",
   },
 ];
 
 const Students = ({ students }) => {
   // console.log(students);
-  if (!students) {
-    return;
-  }
-  students.map((student, idx) => {
-    let tmp = student;
-    let date = new Date(student.createdAt);
-    tmp.createdAt = date.toLocaleDateString() + " " + date.toLocaleTimeString();
-    tmp.sNo = idx + 1;
-
-    return tmp;
-  });
 
   // let data = students;
   // console.log(data);
@@ -72,6 +61,18 @@ const Students = ({ students }) => {
   } = useTable({ columns, data: students }, useSortBy, usePagination);
 
   useEffect(() => {}, []);
+
+  if (!students) {
+    return;
+  }
+  students.map((student, idx) => {
+    let tmp = student; 
+    tmp.createdAt = new Date(student.createdAt).toDateString() + " " + new Date(student.createdAt).toLocaleTimeString();
+    tmp.sNo = idx + 1;
+
+    return tmp;
+  });
+  // {new Date(student.createdAt).toDateString() + " " + new Date(student.createdAt).toLocaleTimeString()}
 
   return (
     <div className="container my-4">

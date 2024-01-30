@@ -19,7 +19,11 @@ const StudentRow = ({ idx, student }) => {
       <td className="px-6 py-3">{student.mobile}</td>
       <td className="px-6 py-3">{student.status}</td>
       <td className="px-6 py-3">{student.registeredBy}</td>
-      <td className="px-6 py-3">{student.createdAt}</td>
+      <td className="px-6 py-3">
+        {new Date(student.createdAt).toDateString() +
+          " " +
+          new Date(student.createdAt).toLocaleTimeString()}
+      </td>
 
       <td className="px-6 py-3">
         <Link to={`/view-report/student/${student._id}`}>
@@ -97,7 +101,11 @@ const CounsellorRow = ({ idx, user }) => {
       <td className="px-6 py-3">{user.name}</td>
       <td className="px-6 py-3">{user.email}</td>
       <td className="px-6 py-3">{user.isAdmin ? "Admin" : "Counsellor"}</td>
-      <td className="px-6 py-3">{user.createdAt}</td>
+      <td className="px-6 py-3">
+      {new Date(user.createdAt).toDateString() +
+          " " +
+          new Date(user.createdAt).toLocaleTimeString()}
+      </td>
       <td className="px-6 py-3">
         <Link to={`/profile/${user._id}`}>
           <button className="bg-blue-800 py-2 px-2 text-white rounded-sm">

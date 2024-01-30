@@ -5,10 +5,10 @@
 - re-structure the route -> auth ✔
 - add admin functionalities ✔
 - re-struecture react components folder ✔
-- admin can register, update, remove user  ✔
+- admin can register, update, remove user ✔
 - admin can register , remove student ✔
-- add footer ✔ 
-- dashboard ...✔ 
+- add footer ✔
+- dashboard ...✔
 - issue -> while fetching recent student -> notinterested student are not in result, only pending fetched ✔
 - issue -> not interested status is not update on students table ✔
 - view report of a student ✔
@@ -19,7 +19,7 @@
 - view report table ✔
 - table sorting, pagination ✔
 - table (page size) ✔
-- export report 
+- export report
 - add category into student model (GEN, OBC, ST, SC) ✔
 - add drop down menu into the fronted options when counsellor choosing a branch of interested student
 - add routes to the student model ✔
@@ -30,17 +30,19 @@
 - add profile button at the place of logout (logout and profile options in account icon) ✔
 - context switch api ✔
 - make reusable buttons ✔
-- bearer authorization token  
-- report export button  
+- bearer authorization token
+- report export button
 - update student by admin ✔
-- search functionality -> admin search, home user search, dashboard search
+- search functionality -> admin search, home user search, dashboard search ✔
 
 - add toast after completion of website
 - add animations and transitions
-
+- Authorization using header
+- change date formate ✔
 
 ## ISSUES
 
 ### 1-ISSUES
+
 - Application is not working on entire network instead of local computer ✔
 - reason -> nodejs is not running on network so that why client make request to localhost, but server is running in my computer not entire network.

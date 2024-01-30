@@ -21,6 +21,18 @@ const Header = () => {
       <div className="options flex items-center justify-center gap-4">
         {token && (
           <>
+            <Link
+              to={"/"}
+              className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+            >
+              Home
+            </Link>
+            <Link
+              to={`/profile/${userId}`}
+              className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+            >
+              Profile
+            </Link>
             {isAdmin && (
               <>
                 <Link
@@ -37,18 +49,6 @@ const Header = () => {
                 </Link>
               </>
             )}
-            <Link
-              to={"/"}
-              className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
-            >
-              Home
-            </Link>
-            <Link
-              to={`/profile/${userId}`}
-              className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
-            >
-              Profile
-            </Link>
 
             <Link
               to={"#"}

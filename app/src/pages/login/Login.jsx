@@ -5,7 +5,6 @@ import api from "../../utils/api";
 import useAuthContext from "../../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
-import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
@@ -22,20 +21,18 @@ const Login = () => {
       let res = await axios.post(`${api}/auth/login`, user);
       let data = res.data;
       setLoading(false);
-      if (data.error) {
-        toast.error(data.error);
-        // alert(data.error);
+      if (data.error) { 
+        alert(data.error);
       } else {
         console.log(data);
         login(data.token, data.isAdmin, data.userId);
         setLoading(false);
-        toast.success("Login success");
+         
         navigate("/");
       }
     } catch (error) {
       setLoading(false);
-      // alert("Server connection timeout");
-      toast.error("Server connection timeout");
+      alert("Server connection timeout"); 
       console.error("Error during login:", error);
     }
     setLoading(false);
@@ -57,7 +54,6 @@ const Login = () => {
         className="bg-primary p-4 m-auto rounded-sm "
         style={{ width: "450px" }}
       >
-        <Toaster position="top-center" toastOptions={{ duration: 1000 }} />
         <form
           action="#"
           method="post"
@@ -99,8 +95,7 @@ const Login = () => {
             <button className="p-1 text-white font-semibold">Login</button>
           </div>
         </form>
-      </div>
-      <Toaster position="top-center" reverseOrder={true} />
+      </div> 
     </div>
   );
 };

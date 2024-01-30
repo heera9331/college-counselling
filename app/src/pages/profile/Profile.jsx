@@ -69,7 +69,9 @@ const Student = ({ title, students }) => {
                 <td className="px-6 py-3">{student?.mobile}</td>
                 <td className="px-6 py-3">{student?.status}</td>
                 <td className="px-6 py-3">
-                  {new Date(student?.createdAt).toLocaleDateString()}
+                  {new Date(student.createdAt).toDateString() +
+                    " " +
+                    new Date(student.createdAt).toLocaleTimeString()}
                 </td>
               </tr>
             ))}

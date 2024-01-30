@@ -6,7 +6,6 @@ import api from "../../utils/api";
 import axios from "axios";
 import Dialog from "../../components/Dialog";
 import ContactStudent from "../../components/students/ContactStudent";
-import Button from "../Button";
 import useAuthContext from "../../hooks/useAuthContext";
 
 // ... (other imports)
@@ -38,7 +37,6 @@ const RecentRegisteredStudent = () => {
     } catch (err) {
       console.error("Error during API request:", err);
       // Handle the error, e.g., show an error message to the user
-      
     } finally {
       setLoading(false);
     }
@@ -103,8 +101,9 @@ const RecentRegisteredStudent = () => {
                     <td className="px-6 py-3">{idx + 1}</td>
                     <td className="px-6 py-3">{student.name}</td>
                     <td className="px-6 py-3">
-                      {new Date(student.createdAt).toLocaleDateString()} -
-                      {new Date(student.createdAt).toLocaleTimeString()}
+                      {new Date(student.createdAt).toDateString() +
+                        " " +
+                        new Date(student.createdAt).toLocaleTimeString()}
                     </td>
                     <td className="px-6 py-3">{student.registeredBy}</td>
                     <td className="px-6 py-3">{student.status}</td>

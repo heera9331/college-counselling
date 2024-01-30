@@ -1,13 +1,16 @@
-import api from "./api"; 
+import api from "./api";
 
 const verifyToken = (token) => {
   try {
-    if (token === "null") {
+    if (token === "null" || !token) {
       return false;
     }
 
     return fetch(`${api}/auth/verify-token/${token}`, {
       method: "POST",
+      headers: {
+        Authorization: `${token}`,
+      },
     })
       .then((response) => {
         if (response.ok) {
