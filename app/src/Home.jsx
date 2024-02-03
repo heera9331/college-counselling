@@ -24,16 +24,17 @@ const HomePage = () => {
           <img className="w-[512px]" src={`${homeImage}`} alt="home" />
         </div>
       </div>
-      {/*  features*/}
+
       <div className={"flex flex-col "}>
         <h2 className={"text-3xl font-bold py-2"}>Features</h2>
-        <div>
+        <div className={"m-auto items-center justify-content-center"}>
+          {/*  features*/}
+          <img className="text-left w-80" src={`${dashboardImg}`} alt="dashboard"/>
           <h2 className={"text-2xl font-semibold py-2"}>Interactive Dashboard</h2>
-          <img className="w-100" src={`${dashboardImg}`} alt="dashboard"/>
         </div>
-        <div>
-          <h2 className={"text-2xl font-semibold py-2"}>Custom Reports</h2>
-          <img className="w-100" src={`${reportsImg}`} alt="reports"/>
+        <div className={"m-auto items-center justify-content-center"}>
+          <img className="w-80" src={`${reportsImg}`} alt="reports"/>
+          <h2 className={"align-right text-2xl font-semibold py-2"}>Custom Reports</h2>
         </div>
       </div>
       {/* Contact */}
