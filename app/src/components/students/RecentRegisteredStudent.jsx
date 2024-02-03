@@ -153,7 +153,7 @@ const RecentRegisteredStudent = () => {
                     </td>
                     <td className="px-6 py-3">{student.registeredBy}</td>
                     <td className="px-6 py-3">{student.status}</td>
-                    <td className="px-6 py-3">
+                    <td className="px-6 py-3 flex flex-row gap-2">
                       <button
                         className="bg-green-600 py-1 px-2 text-white rounded-sm"
                         value={student._id}
@@ -164,6 +164,9 @@ const RecentRegisteredStudent = () => {
                         }}
                       >
                         Contact
+                      </button>
+                      <button className="bg-blue-600 py-1 px-2 text-white rounded-sm">
+                        View
                       </button>
                     </td>
                   </tr>

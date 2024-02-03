@@ -105,7 +105,7 @@ UserRoute.post("/student/update/:id", verifyToken, async (req, res, next) => {
       console.log("debug checks2");
     } else {
       console.log("error in payload", err);
-      res.status(404).send({ error, msg: "not success" });
+      res.status(404).send({ err, msg: "not success" });
     }
   });
 
@@ -186,12 +186,15 @@ UserRoute.post("/profile/", verifyToken, async (req, res, next) => {
     let tmp = await User.findById(userId);
     let email = tmp.email;
     let user = await User.findById(userId);
-    let total = await Student.find({}).countDocuments({
+
+    let total = await Student.countDocuments({
       registeredBy: user.email,
     });
+
     let students = await Student.find({ registeredBy: email })
       .skip(pageSize * (currentPage - 1))
       .limit(pageSize);
+
     res.json({ user, students, total });
   } catch (error) {
     res.status(501).json(error);

@@ -14,6 +14,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import useAuthContext from "./hooks/useAuthContext";
 import LeftSidebar from "./components/Sidebar/LeftSidebar";
+import HomePage from "./Home";
 
 function App() {
   const { token } = useAuthContext();
@@ -25,25 +26,23 @@ function App() {
       <BrowserRouter>
         <div className="m-auto" style={{ maxWidth: "1440px" }}>
           <Header />
-          <div className="grid" style={{ gridTemplateColumns: "2fr 9fr" }}>
-            <LeftSidebar />
-            <div>
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/logout" element={<Logout />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/home" element={<Home />} />
-                {token && (
-                  <>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/profile/:userId" element={<Profile />} />
-                    <Route path="/view-report" element={<ViewReport />} />
-                  </>
-                )}
-                {/* <Route path="/*" element={<Login />} /> */}
-                <Route path="/*" element={<Login />} />
-              </Routes>
-            </div>
+
+          <div>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/home" element={<Home />} />
+              {token && (
+                <>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/profile/:userId" element={<Profile />} />
+                  <Route path="/view-report" element={<ViewReport />} />
+                </>
+              )}
+              {/* <Route path="/*" element={<Login />} /> */}
+              <Route path="/*" element={<Login />} />
+            </Routes>
           </div>
 
           <Footer />

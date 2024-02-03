@@ -3,6 +3,7 @@ import RecentRegisteredStudent from "../../components/students/RecentRegisteredS
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import verifyToken from "../../utils/VerifyToken";
+import LeftSidebar from "../../components/Sidebar/LeftSidebar";
 
 const Home = () => {
   const { token } = useAuthContext();
@@ -15,12 +16,14 @@ const Home = () => {
     // token varification
     verifyToken(token);
   }, [token, navigate]);
-
-  try {
-    return <div>{token && <RecentRegisteredStudent />}</div>;
-  } catch (error) {
-    alert("something went wrong, sorry for inconvenience");
-  }
+  return (
+    <>
+      <div className="grid" style={{ gridTemplateColumns: "2fr 9fr" }}>
+        <LeftSidebar />
+        <div>{token && <RecentRegisteredStudent />}</div>;
+      </div>
+    </>
+  );
 };
 
 export default Home;

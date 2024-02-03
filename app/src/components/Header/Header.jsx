@@ -18,7 +18,7 @@ const Header = () => {
       <h1 className="text-3xl font-semibold">
         <Link to={"/"}>CounselPro Connect</Link>
       </h1>
-      <div className="options flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-4 sm:none">
         {token && (
           <>
             <Link
@@ -62,6 +62,37 @@ const Header = () => {
             </Link>
           </>
         )}
+
+          {!token && (
+              <>
+                <Link
+                    to={"/"}
+                    className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+                >
+                  Home
+                </Link>
+                <Link
+                    to={"#contact"}
+                    className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+                >
+                  About us
+                </Link>
+                <Link
+                    to={"#contact"}
+                    className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+                >
+                  Contact us
+                </Link>
+                <Link
+                    to={"/login"}
+                    className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+                >
+                  Login
+                </Link>
+              </>
+          )}
+
+
         {/* {!token && <Link to={"/login"}>Login</Link>} */}
       </div>
     </header>
