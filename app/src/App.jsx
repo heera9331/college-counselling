@@ -21,12 +21,11 @@ function App() {
 
   useEffect(() => {}, [token]);
 
-  try {
-    return (
-      <BrowserRouter>
-        <div className="m-auto" style={{ maxWidth: "1440px" }}>
-          <Header />
-
+  return (
+    <BrowserRouter>
+      <div className="max-w-[1440px] border-2 m-auto">
+        <Header />
+        <div className="px-4 mt-[80px]">
           <div>
             <Routes>
               <Route path="/login" element={<Login />} />
@@ -44,14 +43,11 @@ function App() {
               <Route path="/*" element={<Login />} />
             </Routes>
           </div>
-
-          <Footer />
         </div>
-      </BrowserRouter>
-    );
-  } catch (error) {
-    alert("something went wrong, sorry for inconvenience");
-  }
+      </div>
+      <Footer />
+    </BrowserRouter>
+  );
 }
 
 export default App;

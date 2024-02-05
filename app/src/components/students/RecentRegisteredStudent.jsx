@@ -65,8 +65,8 @@ const RecentRegisteredStudent = () => {
   }
 
   return (
-    <div className="m-4">
-      <h1 className="text-2xl font-semibold my-2 m-2">
+    <div className="">
+      <h1 className="text-2xl font-semibold mb-6 bg-gray-200 py-2 px-2 border border-b-slate-300">
         Recent Registered Students
       </h1>
 
@@ -113,9 +113,9 @@ const RecentRegisteredStudent = () => {
           className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-x-scroll table-fixed
         "
         >
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="text-sm text-white/80 uppercase bg-stone-800 dark:bg-gray-700 dark:text-white">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="w-[15px] px-6 py-3">
                 S.No
               </th>
               <th scope="col" className="px-6 py-3">
@@ -131,7 +131,7 @@ const RecentRegisteredStudent = () => {
                 Current Status
               </th>
               <th scope="col" className="px-6 py-3">
-                Action
+                Actions
               </th>
             </tr>
           </thead>
@@ -144,11 +144,11 @@ const RecentRegisteredStudent = () => {
                       idx % 2 != 0 ? "bg-gray-200" : "bg-gray-100"
                     } text-black`}
                   >
-                    <td className="px-6 py-3">{idx + 1}</td>
+                    <td className="w-[15px] px-6 py-3">{idx + 1}</td>
                     <td className="px-6 py-3">{student.name}</td>
                     <td className="px-6 py-3">
-                      {new Date(student.createdAt).toDateString() +
-                        " " +
+                      {new Date(student.createdAt).toLocaleDateString() +
+                        "-" +
                         new Date(student.createdAt).toLocaleTimeString()}
                     </td>
                     <td className="px-6 py-3">{student.registeredBy}</td>

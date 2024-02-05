@@ -12,7 +12,7 @@ const Header = () => {
   useEffect(() => {}, [userId, isAdmin, token]);
   return (
     <header
-      className="bg-primary text-white p-4 m-auto flex items-center justify-between border-b"
+      className="bg-primary text-white p-4 m-auto flex items-center justify-between border-b fixed top-0 w-full mb-10"
       style={{ maxWidth: "1440px" }}
     >
       <h1 className="text-3xl font-semibold">
@@ -22,7 +22,7 @@ const Header = () => {
         {token && (
           <>
             <Link
-              to={"/"}
+              to={"/home"}
               className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
             >
               Home
@@ -63,35 +63,34 @@ const Header = () => {
           </>
         )}
 
-          {!token && (
-              <>
-                <Link
-                    to={"/"}
-                    className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
-                >
-                  Home
-                </Link>
-                <Link
-                    to={"#contact"}
-                    className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
-                >
-                  About us
-                </Link>
-                <Link
-                    to={"#contact"}
-                    className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
-                >
-                  Contact us
-                </Link>
-                <Link
-                    to={"/login"}
-                    className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
-                >
-                  Login
-                </Link>
-              </>
-          )}
-
+        {!token && (
+          <>
+            <Link
+              to={"/"}
+              className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+            >
+              Home
+            </Link>
+            <Link
+              to={"#contact"}
+              className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+            >
+              About us
+            </Link>
+            <Link
+              to={"#contact"}
+              className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+            >
+              Contact us
+            </Link>
+            <Link
+              to={"/login"}
+              className="hover:bg-white hover:text-blue-800 font-semibold p-2 rounded-sm transition-all ease-in delay-10"
+            >
+              Login
+            </Link>
+          </>
+        )}
 
         {/* {!token && <Link to={"/login"}>Login</Link>} */}
       </div>

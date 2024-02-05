@@ -31,6 +31,8 @@ const Input = ({
         placeholder={placeholder ? placeholder : ""}
         name={htmlFor}
         onChange={onChange}
+        required={true}
+        {...props}
       />
     </div>
   );

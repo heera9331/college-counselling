@@ -11,7 +11,9 @@ const HomePage = () => {
       <div className="grid grid-cols-2 items-center justify-center gap-4 h-[80vh] px-4 sm:grid-cols">
         <div className="px-10">
           <div className="w-[290px] py-4">
-            <h1 className="text-3xl font-bold text-blue-900">CounselPro Connect</h1>
+            <h1 className="text-3xl font-bold text-blue-900">
+              CounselPro Connect
+            </h1>
             <p className="text-right text-italic">Now counseling is easy</p>
           </div>
           <p>
@@ -25,25 +27,56 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className={"flex flex-col "}>
-        <h2 className={"text-3xl font-bold py-2"}>Features</h2>
-        <div className={"m-auto items-center justify-content-center"}>
-          {/*  features*/}
-          <img className="text-left w-80" src={`${dashboardImg}`} alt="dashboard"/>
-          <h2 className={"text-2xl font-semibold py-2"}>Interactive Dashboard</h2>
+      <div className={""}>
+        <h2 className={"text-3xl font-bold py-2 text-left"}>Features</h2>
+        {/*  features*/}
+        <h2 className={"text-2xl font-semibold py-2 text-left"}>
+          Interactive Dashboard
+        </h2>
+        <div className={"flex flex-cols-2 items-center"}>
+          <p className="px-6">
+            User experience is paramount in a counseling management system, and
+            an interactive dashboard plays a pivotal role. It provides clients
+            and counselors with real-time insights, fostering a dynamic
+            understanding of progress and key metrics. The intuitive interface
+            enhances engagement, making it easier for users to navigate and
+            access relevant information efficiently.
+          </p>
+          <img
+            className="text-left w-[550px] m-auto"
+            src={`${dashboardImg}`}
+            alt="dashboard"
+          />
         </div>
-        <div className={"m-auto items-center justify-content-center"}>
-          <img className="w-80" src={`${reportsImg}`} alt="reports"/>
-          <h2 className={"align-right text-2xl font-semibold py-2"}>Custom Reports</h2>
+        <h2 className={"text-2xl font-semibold py-2 text-left"}>
+          Custom Reports
+        </h2>
+        <div className={"flex flex-cols-2 items-center"}>
+          <img
+            className="w-[550px] m-auto"
+            src={`${reportsImg}`}
+            alt="reports"
+          />
+          <p className="px-6">
+            Customized reports further empower users by offering tailored
+            insights. Administrators and counselors can extract specific data
+            for in-depth analysis, enabling personalized decision-making and a
+            more targeted approach to addressing individual needs. This feature
+            enhances the adaptability and effectiveness of the counseling
+            system, catering to diverse requirements and ensuring a user-centric
+            experience.
+          </p>
         </div>
       </div>
       {/* Contact */}
+
       <div id={"/#contact"} className={"m-auto"}>
-      <h2 className={"text-3xl font-bold py-2"}>Contact</h2>
-        <embed src={"https://heera-singh.netlify.app/"} className={"w-[100%] h-[100vh]"}/>
+        <h2 className={"text-3xl font-bold py-2"}>Contact</h2>
+        <embed
+          src={"https://heera-singh.netlify.app/"}
+          className={"w-[100%] h-[100vh]"}
+        />
       </div>
-
-
     </div>
   );
 };

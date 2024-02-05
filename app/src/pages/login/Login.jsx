@@ -28,7 +28,7 @@ const Login = () => {
         login(data.token, data.isAdmin, data.userId);
         setLoading(false);
 
-        navigate("/");
+        navigate("/home");
       }
     } catch (error) {
       setLoading(false);
@@ -50,12 +50,16 @@ const Login = () => {
 
   try {
     return (
-      <div className="min-h-[80vh] flex flex-col items-center justify-center m-auto">
+      <div className="min-h-[80vh] flex flex-col items-center justify-center m-auto ">
         <div
-          className="bg-primary p-4 m-auto rounded-sm "
+          className=" p-4 m-auto shadow-sm shadow-slate-600"
           style={{ width: "450px" }}
         >
+          <div className="px-2">
+            <h1 className="text-2xl font-semibold">Login</h1>
+          </div>
           <form
+            className="text-black p-4"
             action="#"
             method="post"
             onSubmit={(e) => {
@@ -63,20 +67,20 @@ const Login = () => {
             }}
           >
             <Input
-              labelColor={"text-white"}
               inputColor={"text-black"}
               label={"Email"}
               htmlFor={"email"}
               value={user.email}
               placeholder={"Email"}
-              className={"bg-gray-100 p-1 rounded-sm focus:outline-none"}
+              className={
+                "bg-gray-100 p-1 text-black rounded-sm focus:outline-none"
+              }
               type={"email"}
               onChange={(e) => {
                 setUser({ ...user, email: e.target.value });
               }}
             />
             <Input
-              labelColor={"text-white"}
               inputColor={"text-black"}
               label={"Password"}
               htmlFor={"password"}

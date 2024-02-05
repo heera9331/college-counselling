@@ -18,10 +18,11 @@ const Home = () => {
   }, [token, navigate]);
   return (
     <>
-      <div className="grid" style={{ gridTemplateColumns: "2fr 9fr" }}>
-        <LeftSidebar />
-        <div>{token && <RecentRegisteredStudent />}</div>;
+      <LeftSidebar />
+      <div className="ml-[200px] shadow-sm shadow-slate-600">
+        {token && <RecentRegisteredStudent />}
       </div>
+      ;
     </>
   );
 };

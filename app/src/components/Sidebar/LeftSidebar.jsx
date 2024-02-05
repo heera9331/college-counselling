@@ -59,8 +59,8 @@ const LeftSidebar = () => {
 
   return (
     <aside
-      className="bg-primary flex text-white pl-6 pt-6 pr-2"
-      style={{ minHeight: "100vh", minWidth: "150px" }}
+      className="bg-primary flex text-white pl-6 pt-6 pr-2 fixed left-0 top-[73px]"
+      style={{ minHeight: "100vh", minWidth: "200px" }}
     >
       {isDialogOpen && (
         <Dialog title={mapping[value].title} setDialogOpen={setIsDialogOpen}>
