@@ -1,10 +1,9 @@
-import React from "react";
-import "./globals.css";
-import Image from "next/image";
+"use client";
+import { useEffect } from "react";
 
 const Page = () => {
   return (
-    <div className="max-w-[1440px] border-2 p-2 m-2 mt-[70px] shadow-sm">
+    <>
       <div className={"scroll-smooth"}>
         <div className="grid grid-cols-2 items-center justify-center gap-4 h-[80vh] px-4 sm:grid-cols">
           <div className="px-10">
@@ -21,11 +20,11 @@ const Page = () => {
             </p>
           </div>
           <div className="">
-            <Image
-              src="/images/homepage.jpg"
+            <img
               width={512}
               height={512}
-              alt="homepage"
+              src="/images/homepage.jpg"
+              alt="home"
             />
           </div>
         </div>
@@ -45,22 +44,22 @@ const Page = () => {
               interface enhances engagement, making it easier for users to
               navigate and access relevant information efficiently.
             </p>
-            <Image
-              src="/images/dashboard.jpg"
+            <img
               width={512}
               height={512}
-              alt="homepage"
+              src="/images/dashboard.jpg"
+              alt="dashboard"
             />
           </div>
           <h2 className={"text-2xl font-semibold py-2 text-left"}>
             Custom Reports
           </h2>
           <div className={"flex flex-cols-2 items-center"}>
-            <Image
-              src="/images/reports.jpg"
+            <img
               width={512}
               height={512}
-              alt="homepage"
+              src="/images/homepage.jpg"
+              alt="reports"
             />
             <p className="px-6">
               Customized reports further empower users by offering tailored
@@ -83,7 +82,7 @@ const Page = () => {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

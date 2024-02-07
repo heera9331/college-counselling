@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
 
-const chatSchema = new mongoose.Schema({
-  msg: {
-    type: String,
-    required: true,
+const chatSchema = new mongoose.Schema(
+  {
+    msg: {
+      type: String,
+      required: true,
+    },
+    teacher: {
+      type: String,
+      required: true,
+    },
   },
-  teacher: {
-    type: String,
-  },
-  timestamp: {
-    type: Date,
-    default: Date.now(),
-  },
-});
+  { timestamps: true }
+);
 
 const studentSchema = new mongoose.Schema(
   {
@@ -20,34 +20,48 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    fatherName: {
+      type: String,
+      required: true,
+    },
+
+    mobile: {
+      type: String,
+      required: true,
+    },
+    villege: {
+      type: String,
+      required: true,
+    },
+    block: {
+      type: String,
+      required: true,
+    },
+    district: {
+      type: String,
+      required: true,
+    },
+    marks10: {
+      type: Number,
+      required: true,
+    },
+    marks12: {
+      type: Number,
+      required: true,
+    },
+    caste: {
+      type: String,
+      required: true,
+    },
     registeredBy: {
       type: String,
       required: true,
     },
-    mobile: {
+    schoolName: {
       type: String,
       required: true,
-      unique: true,
     },
-    email: {
-      type: String,
-      default: "student@gmail.com",
-    },
-    city: {
-      type: String,
-    },
-    villege: {
-      type: String,
-    },
-    address: {
-      type: String,
-    },
-    marks: {
-      type: Number,
-    },
-    school: {
-      type: String,
-    },
+
     gender: {
       type: String,
       enum: ["MALE", "FEMALE", "OTHER"],
@@ -57,24 +71,14 @@ const studentSchema = new mongoose.Schema(
       enum: ["PENDING", "INTERESTED", "NOTINTERESTED", "PARTIALINTERESTED"],
       default: "PENDING",
     },
-    route: {
+
+    course: {
       type: String,
-      enum: [
-        "BANDA",
-        "RAHLI",
-        "SAGAR",
-        "BUXWAHA",
-        "GARHAKOTA",
-        "DAMOH",
-        "CHATTARPUR",
-        "OTHER",
-      ],
       required: true,
     },
-    stream: {
+    branch: {
       type: String,
-      enum: ["CSE", "CE", "EC", "ME", "AI/ML", "OTHER"],
-      default: "OTHER",
+      required: true,
     },
     category: {
       type: String,
@@ -86,6 +90,7 @@ const studentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Student = mongoose.model("student", studentSchema);
+const Student =
+  mongoose.models.student || mongoose.model("student", studentSchema);
 
 export default Student;

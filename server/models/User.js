@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     isAdmin: {
       type: Boolean,
@@ -19,12 +19,12 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-    } 
+    },
   },
 
   { timestamps: true }
 );
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.models.user || mongoose.model("user", userSchema);
 
 export default User;

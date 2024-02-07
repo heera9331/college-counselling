@@ -25,29 +25,13 @@ UserRoute.post("/register", verifyToken, (req, res, next) => {
 
 UserRoute.post("/recent-students", verifyToken, async (req, res) => {
   try {
-    let currentPage = req.query.page;
-    let pageSize = req.query.size;
+    let currentPage = req.query.page || 1;
+    let pageSize = req.query.size || 15;
 
     console.log(req.query);
-    let totalStudent = await Student.countDocuments({
-      status: { $in: ["PENDING", "NOTINTERESTED"] },
-    });
-    let students = await Student.find(
-      {
-        // createdAt: {
-        //   $gte: "2023-09-27T00:00:00.000Z",
-        // },
-        status: { $in: ["PENDING", "NOTINTERESTED"] },
-      },
-      {
-        _id: 1,
-        name: 1,
-        email: 1,
-        createdAt: 1,
-        registeredBy: 1,
-        status: 1,
-      }
-    )
+    let totalStudent = await Student.countDocuments({});
+    let students = await Student.find()
+      .select(["-chats"])
       .skip(pageSize * (currentPage - 1))
       .limit(pageSize);
 
@@ -62,6 +46,11 @@ UserRoute.post("/recent-students", verifyToken, async (req, res) => {
       .status(400)
       .send({ reason: "error during finding recent student", err: err });
   }
+});
+
+// user/search?query="heera"&page=1&size=15
+UserRoute.post("/search", verifyToken, async (req, res, next) => {
+  getStudents(req, res, next);
 });
 
 // user/student/email="heera9331"

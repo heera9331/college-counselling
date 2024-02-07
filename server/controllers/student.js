@@ -1,40 +1,45 @@
 import Student from "../models/Student.js";
+import hasStudent from "../utils/hasStudent.js";
 import validateStudent from "../utils/validateStudent.js";
 import jwt from "jsonwebtoken";
 
-export const registerStudent = (req, res, next) => {
-  console.log("/user/register");
-  // let's find teacher name
-  let student = req.body.student;
-  let token = req.body.token;
-  let date = new Date().toTimeString();
+export const registerStudent = async (req, res, next) => {
+  try {
+    console.log("/user/register");
+    // let's find teacher name
+    let student = req.body.student;
+    let token = req.body.token;
 
-  jwt.verify(token, process.env.PRIVATE_KEY, (err, payload) => {
-    if (payload) {
-      student.registeredBy = payload.email;
-      student.date = date;
-    } else {
-      console.log(err);
-      res.status(404).json({ error: err });
+    if (hasStudent(req.body.student) == true) {
+      return res.status(400).send({ msg: "student already exist", error: {} });
     }
-  });
+    if (!validateStudent(student)) {
+      console.log("validation failed");
+      return res.status(400).json({ msg: "validation failed" });
+    }
 
-  console.log(student);
-  if (!validateStudent(student)) {
-    console.log("validation failed");
-    return res.status(400).json({ msg: "validation failed" });
+    let payload = jwt.verify(token, process.env.PRIVATE_KEY);
+    console.log("token");
+
+    if (!payload) {
+      return res.status(400).json({ msg: "unauthorized", error: payload });
+    }
+
+    let chat = { msg: student.comment, teacher: payload.email };
+    student.chats = chat;
+    delete student.comment;
+    student.registeredBy = payload.email;
+
+    let resStudent = await Student.insertMany([student]);
+    console.log("inserted", resStudent);
+    if (resStudent) {
+      return res.status(200).send({ student: resStudent });
+    }
+
+    return res.status(400).send({ msg: "something went wrong" });
+  } catch (error) {
+    res.status(400).send({ msg: "something went wrong", error });
   }
-
-  Student.insertMany(student)
-    .then((value) => {
-      console.log("value", value);
-      res.status(201).send({ student: value });
-    })
-    .catch((err) => {
-      // bad request
-      console.log("student insertmany", err);
-      res.status(400).send({ msg: "user already exist", error: err });
-    });
 };
 
 export const getStudent = (req, res, next) => {
@@ -87,28 +92,38 @@ export const getStudent = (req, res, next) => {
 // admin/dashboard/get-students
 // /admin/view-reports
 
-export const getStudents = (req, res, next) => {
+export const getStudents = async (req, res, next) => {
   try {
-    let searchKeyword = req.query.query;
-    console.log(searchKeyword);
+    let query = req.query;
+    console.log(req.query);
+
+    let searchKeyword = query.query || "";
+    let pageSize = query.size || 15;
+    let currentPage = query.page || 1;
+
     const searchQuery = {
       $or: [
-        { name: { $regex: searchKeyword, $options: "i" } },
-        { email: { $regex: searchKeyword, $options: "i" } },
+        { name: { $regex: new RegExp(`^${searchKeyword}`, "i") } },
+        { fatherName: { $regex: new RegExp(`^${searchKeyword}`, "i") } },
+        { mobile: { $regex: new RegExp(`^${searchKeyword}`, "i") } },
       ],
     };
 
+    let total = await Student.countDocuments(searchQuery);
+
     // Perform the search in the User collection
-    Student.find(searchQuery)
-      .then((users) => {
-        console.log(users);
-        res.send({ query: searchKeyword, result: users });
-        console.log("data sent -> /admin/search");
-      })
-      .catch((err) => {
-        console.log("error while search");
-        res.status(400).json({ msg: "error while search", error: err });
-      });
+    try {
+      let students = await Student.find(searchQuery)
+        .skip(pageSize * (currentPage - 1))
+        .limit(pageSize);
+
+      res.json({ query: searchKeyword, students, total });
+
+      console.log("data sent -> /admin/search");
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ msg: "error while search", error });
+    }
   } catch (err) {
     console.log(err);
     res.status(505).json({ error: err });
