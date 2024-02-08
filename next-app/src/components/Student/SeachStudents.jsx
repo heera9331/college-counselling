@@ -4,6 +4,7 @@ import Button from "../Button";
 import useAuthContext from "@/hooks/useAuthContext";
 import axios from "axios";
 import api from "@/utils/api";
+import { useRouter } from "next/navigation";
 
 export default function SearchStudents() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,12 +14,12 @@ export default function SearchStudents() {
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState([]);
   const { token } = useAuthContext();
-
+  const router = useRouter();
   const getStudents = async () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `${api}/user/search?query=${query}&page=${currentPage}&size=${pageSize}`,
+        `${api}/user/search?studentId=${query}&query=${query}&page=${currentPage}&size=${pageSize}`,
         { token }
       );
 
@@ -51,8 +52,21 @@ export default function SearchStudents() {
     }
   };
 
+  const removeStudent = async (studentId) => {
+    console.log(studentId);
+    let res = await axios.post(
+      `${api}/user/remove-student?studentId=${studentId}`,
+      {
+        token,
+      }
+    );
+
+    if (res.statusText == "OK") {
+      alert("successfully remove");
+    }
+  };
+
   useEffect(() => {
-    // getStudents();
     if (query.length != 0) getStudents();
   }, [currentPage]);
 
@@ -69,7 +83,7 @@ export default function SearchStudents() {
             placeholder="Search here ..."
             value={query}
             onChange={(e) => {
-              setQuery(e.target.value.toUpperCase());
+              setQuery(e.target.value);
             }}
           />
           <div className="my-1">
@@ -119,7 +133,7 @@ export default function SearchStudents() {
               />
             </div>
 
-            <div className="mx-2">
+            <div className="mx-2 overflow-auto">
               <p>Result - {query}</p>Total {total}
               <table
                 className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -178,17 +192,44 @@ export default function SearchStudents() {
                           <td className="px-6 py-2">{student.villege}</td>
                           <td className="px-6 py-2">{student.district}</td>
                           <td className="px-6 py-2">{student.status}</td>
-                          <td className="px-6 py-2 flex items-center">
-                            <Button text={"View"} onClick={() => {}} />
-                            <Button text={"Update"} onClick={() => {}} />
+                          <td className="px-6 py-2 flex items-center gap-1 justify-center">
+                            <Button
+                              text={"View"}
+                              onClick={() => {
+                                router.push(
+                                  `/home/view-student?studentId=${student._id}`
+                                );
+                              }}
+                            />
+                            <Button
+                              text={"Update"}
+                              onClick={() => {
+                                router.push(
+                                  `/home/update-student?studentId=${student._id}`
+                                );
+                              }}
+                            />
+                            <Button
+                              className={"bg-red-600"}
+                              text={"Remove"}
+                              onClick={() => {
+                                let comfirm = window.confirm(
+                                  "Are you sure want to remove this student"
+                                );
+
+                                if (comfirm) {
+                                  removeStudent(student._id);
+                                }
+                              }}
+                            />
                           </td>
                         </tr>
                       );
                     })}
-                  {students.length == 0 && "no student"}
                 </tbody>
+
                 <tfoot>
-                  <tr />
+                  <tr>{students.length == 0 && "no student"}</tr>
                 </tfoot>
               </table>
             </div>

@@ -1,2 +1,13 @@
 - 4-2-2024 :- next app added
 - 7-2-2024 :- register student with new schema
+- 8-2-2024 :- update student with new schema
+- 8-2-2024 :- update chat not working
+- 8-2-2024 :- update chat resolved
+- 8-2-2024 :- view student
+- 8-2-2024 :- viewed student export to json/excel/csv ✅
+- 8-2-2024 :- remove student
+- 8-2-2024 :- student tab options
+
+
+
+

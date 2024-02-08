@@ -5,8 +5,11 @@ import axios from "axios";
 import useAuthContext from "@/hooks/useAuthContext";
 import api from "@/utils/api";
 import Button from "../Button";
+import { useRouter } from "next/navigation";
+import SearchStudents from "./SeachStudents";
 
 const RecentRegisteredStudents = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(15);
   const [total, setTotal] = useState(0);
@@ -16,12 +19,12 @@ const RecentRegisteredStudents = () => {
   const { token } = useAuthContext();
 
   const getRecentStudents = async () => {
-    setTotal(true);
+    setLoading(true);
     const res = await axios.post(
       `${api}/user/recent-students?page=${currentPage}&size=${pageSize}`,
       { token }
     );
-    setTotal(false);
+    setLoading(false);
     if (res.statusText === "OK") {
       let data = await res.data;
       setStudents(data.students);
@@ -34,11 +37,12 @@ const RecentRegisteredStudents = () => {
     getRecentStudents();
   }, [currentPage]);
   return (
-    <div className="min-h-[100vh]">
+    <div className="min-h-[100vh] lg:min-w-[720px]">
       <div className="">
         <h1 className="font-bold text-slate-600 text-xl mb-6 bg-gray-200 py-2 px-2 border border-b-slate-300">
           Recent Registered Students
         </h1>
+        <SearchStudents />
         <div className="flex items-center justify-center my-2 gap-2 m-auto table-fixed">
           <Button
             text={"<<"}
@@ -129,10 +133,21 @@ const RecentRegisteredStudents = () => {
                       <td className="px-6 py-2">{student.district}</td>
                       <td className="px-6 py-2">{student.status}</td>
                       <td className="px-6 py-2 flex items-center gap-1">
-                        <Button text={"View"} onClick={() => {}} />
+                        <Button
+                          text={"View"}
+                          onClick={() => {
+                            router.push(
+                              `/home/view-student?studentId=${student._id}`
+                            );
+                          }}
+                        />
                         <Button
                           text={"Contact"}
-                          onClick={() => {}}
+                          onClick={() => {
+                            router.push(
+                              `/home/update-student?studentId=${student._id}`
+                            );
+                          }}
                           className={"bg-green-700"}
                         />
                       </td>

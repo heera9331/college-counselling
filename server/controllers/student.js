@@ -42,45 +42,24 @@ export const registerStudent = async (req, res, next) => {
   }
 };
 
-export const getStudent = (req, res, next) => {
+export const getStudent = async (req, res, next) => {
   try {
-    let id = req.body.id;
+    let id = req.body.id || req.query.studentId;
     console.log("student controller find through id");
-    // if counsellor is admin then we send all info of student
-    if (req.body.isAdmin) {
-      Student.findOne({ _id: id })
-        .then((value) => {
-          console.log(value);
-          res.status(200).send({ student: value });
-        })
-        .catch((reason) => {
-          res.status(505).send({ error: reason });
-        });
-    } else {
-      Student.findOne(
-        {
-          _id: id,
-          status: { $in: ["PENDING", "NOTINTERESTED", "PARTIALINTERESTED"] },
-        },
-        { mobile: 1, name: 1, email: 1, chats: 1, status: 1 }
-      )
-        .then((value) => {
-          if (value) {
-            console.log(value);
-            res.status(200).send({ student: value });
-          } else {
-            res.status(200).send({
-              id: id,
-              msg: "student already interested or not exists",
-            });
-          }
-        })
-        .catch((err) => {
-          if (err) {
-            res.status(400).send({ msg: "student not found" });
-          }
-        });
+
+    if (!id) {
+      return res.status(404).json({
+        error: "search term not there",
+        msg: "define id or student id",
+      });
     }
+    let student = await Student.findById(id);
+
+    if (!student) {
+      return res.status(404).send({ error: student });
+    }
+
+    return res.status(200).json({ student });
   } catch (err) {
     res.status(505).send({ error: err });
   }
@@ -96,7 +75,7 @@ export const getStudents = async (req, res, next) => {
   try {
     let query = req.query;
     console.log(req.query);
-
+    let _id = query.studentId || "65c3dd2afa31d837c236bf55"; // random id if not defind
     let searchKeyword = query.query || "";
     let pageSize = query.size || 15;
     let currentPage = query.page || 1;
@@ -144,59 +123,49 @@ export const getStudentByCategory = async (req, res, next) => {
     let users = await Student.find({ status })
       .skip(pageSize * (currentPage - 1))
       .limit(pageSize);
-
+    console.log("search data sent /admin/search");
     return res.json({ query: searchKeyword, result: users, total });
-    // old code
-    // Student.find({ status: status })
-    //   .then((users) => {
-    //     console.log(users);
-    //     res.send({ query: searchKeyword, result: users });
-    //     console.log("data sent -> /admin/search");
-    //   })
-    //   .catch((err) => {
-    //     console.log("error while search");
-    //     res.json({ msg: "error while search", error: err });
-    //   });
   } catch (error) {
     console.log(error);
     res.status(505).json({ error });
   }
 };
 
-// only used by admin
-export const updateStudent = (req, res, next) => {
+export const updateStudent = async (req, res, next) => {
   try {
-    let id = req.body.id;
-    let newChat = req.body.chat;
+    let student = req.student;
+    let newChat = student.newChat;
+    let studentId = student._id;
 
-    // normal counsellor
-    if (!req.body.isAdmin) {
-      const result = User.findByIdAndUpdate(
-        { id: id },
-        { $push: { chats: newChat } },
-        { new: true }
-      );
+    const updatedStudent = { ...student };
+    // delete id and chat
+    delete updatedStudent.id; // We don't want to update the _id field
+    delete updatedStudent.newChat;
+    delete updatedStudent.chats;
 
-      result.then((ack, err) => {
-        if (ack) {
-          res.status(200).send({ msg: "updated" });
-        } else {
-          res.send({ msg: "error", reason: err });
-        }
-      });
-    } else {
-      // admin
-    }
-    res.status(200).json(result);
+    console.log("student", student);
+    console.log("to be updated", student);
+
+    const ack = await Student.updateOne(
+      { _id: studentId },
+      {
+        $push: { chats: newChat },
+        $set: updatedStudent,
+      }
+    );
+
+    console.log("updated ack", ack);
+    console.log("chat ", newChat);
+    res.status(200).json({ msg: "successfully updated", student: ack });
   } catch (err) {
-    res.status(505).send({ error: err });
+    console.log("student updating error", err);
+    return res.status(500).send({ error: err });
   }
-  next();
 };
 
 export const deleteStudent = async (req, res, next) => {
   try {
-    let id = req.query.id;
+    let id = req.query.id || req.query.studentId;
     console.log(id);
     const del = await Student.findByIdAndDelete(
       { _id: id },

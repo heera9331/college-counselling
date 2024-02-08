@@ -16,6 +16,8 @@ const courseInfo = {
   BTECH: ["CS", "CE", "ME", "EC", "EE", "AI/ML"],
   ITI: ["WELDER", "FITTER", "DIESEL MACHENIC", "ELECTRICIAN", "PLUMBER"],
   DIPLOMA: ["ME", "CE", "EE"],
+  PHARMACY: ["BPHARMA", "DPHARMA"],
+  NURSING: ["BSC", "BMLT", "DMLT"],
 };
 
 const Page = () => {
@@ -85,7 +87,7 @@ const Page = () => {
           Register New Student
         </h1>
         <div className="m-auto px-6">
-          <div className=" bg-slate-100 p-6 min-h-[420px] min-w-[512px] w-fit m-auto">
+          <div className=" bg-slate-100 p-6 min-w-[512px] m-auto">
             <SearchStudents />
 
             <div className="text-black">
@@ -120,7 +122,9 @@ const Page = () => {
                   label={"Mobile"}
                   type={"text"}
                   htmlFor={"mobile"}
-                  placeholder={"Enter mobile number"}
+                  placeholder={
+                    "Enter mobile number, if you mutliple number, enter ',(comma)' separated"
+                  }
                   value={student.mobile}
                   onChange={(e) => {
                     setStudent({

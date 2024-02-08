@@ -44,7 +44,7 @@ const Header = () => {
                 className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
               >
                 <div
-                  className="flex items-center justify-center"
+                  className="flex items-center justify-center relative"
                   onClick={() => {
                     setStdClick(!stdClick);
                     console.log(stdClick);
@@ -52,6 +52,16 @@ const Header = () => {
                 >
                   Students
                   {stdClick ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
+                  {stdClick && (
+                    <div className="absolute p-2 text-white bg-primary top-[40px] left-[0px] flex flex-col w-[200px] rounded-sm transition-all ease-in delay-100">
+                      <Link
+                        href={"/home/add-student"}
+                        className="hover:bg-blue-800 rounded-sm transition-all ease-in delay-100"
+                      >
+                        Register Student
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </Link>
               {isAdmin && (

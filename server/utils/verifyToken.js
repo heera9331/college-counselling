@@ -2,8 +2,6 @@ import jwt from "jsonwebtoken";
 
 const verifyToken = (req, res, next) => {
   try {
-    console.log(req);
-    console.log(req.body);
     let token = req.body.token || req.params.token;
     console.log(token);
 
@@ -13,10 +11,10 @@ const verifyToken = (req, res, next) => {
 
     console.log("verifying signature");
 
-    jwt.verify(token, process.env.PRIVATE_KEY, (err, payload) => {
-      if (err) {
-        console.log(err);
-        return res.status(404).send({ error: err });
+    jwt.verify(token, process.env.PRIVATE_KEY, (error, payload) => {
+      if (error) {
+        console.log(error);
+        return res.status(404).send({ msg: "token expired", error });
       }
       console.log(payload);
       req.body.isAdmin = payload.isAdmin;
@@ -26,7 +24,7 @@ const verifyToken = (req, res, next) => {
     });
   } catch (error) {
     console.log("verifying signature error", error);
-    res.status(404).send({ error });
+    return res.status(404).send({ error });
   }
 };
 

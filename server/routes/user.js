@@ -5,6 +5,8 @@ import {
   getStudent,
   getStudents,
   registerStudent,
+  updateStudent,
+  deleteStudent,
 } from "../controllers/student.js";
 
 import jwt from "jsonwebtoken";
@@ -53,6 +55,11 @@ UserRoute.post("/search", verifyToken, async (req, res, next) => {
   getStudents(req, res, next);
 });
 
+// user/search?studentId="65c3dd2afa31d837c236bf53"
+UserRoute.post("/searchById", verifyToken, async (req, res, next) => {
+  getStudent(req, res, next);
+});
+
 // user/student/email="heera9331"
 UserRoute.post("/student/:id", verifyToken, (req, res) => {
   try {
@@ -76,8 +83,33 @@ UserRoute.post("/student/:id", verifyToken, (req, res) => {
 // chat = {
 //   msg: "",
 //   teacher: "",
-//   timestamp: "",
+//   timestamp: "",optional
 // }
+UserRoute.post("/update-student", verifyToken, (req, res, next) => {
+  if (!req.body.student) {
+    return res.status(404).json({ error: "student not found" });
+  }
+  let student = req.body.student;
+
+  let chat = {};
+  chat.msg = student.comment || "";
+
+  jwt.verify(req.body.token, process.env.PRIVATE_KEY, (error, payload) => {
+    if (error) {
+      console.log(error);
+      return res.status(404).json({ error: "token verification error" });
+    } else {
+      chat.teacher = payload.email;
+      student.newChat = chat;
+    }
+  });
+  req.student = student;
+
+  console.log("updating");
+
+  updateStudent(req, res, next);
+});
+UserRoute.post("/remove-student", verifyToken, deleteStudent);
 
 UserRoute.post("/student/update/:id", verifyToken, async (req, res, next) => {
   let id = req.body.chatData.id;
