@@ -6,20 +6,40 @@ import axios from "axios";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 
-export default function SearchStudents() {
+// search filters
+
+const districts = [
+  "SAGAR",
+  "DAMOH",
+  "CHHATARPUR",
+  "PANNA",
+  "TIKAMGARH",
+  "LALITPUR",
+];
+
+const studentStatus = ["PENDING", "NOTINTERESTED", "INTERESTED", "ADMITTED"];
+
+const categories = ["OBC", "GEN", "ST", "SC", "OTHER"];
+
+export default function SearchStudents({ emptySearch = false }) {
+  console.log("empty search", emptySearch);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(15);
   const [total, setTotal] = useState(0);
   const [query, setQuery] = useState("");
+  const [district, setDistrict] = useState("");
+  const [status, setStatus] = useState("");
+  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState([]);
   const { token } = useAuthContext();
   const router = useRouter();
+
   const getStudents = async () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `${api}/user/search?studentId=${query}&query=${query}&page=${currentPage}&size=${pageSize}`,
+        `${api}/user/search?studentId=${query}&query=${query}&page=${currentPage}&size=${pageSize}&district=${district}&status=${status}&category=${category}`,
         { token }
       );
 
@@ -45,7 +65,7 @@ export default function SearchStudents() {
   };
 
   const handleSearch = () => {
-    if (query.length != 0) {
+    if (query.length != 0 || emptySearch) {
       getStudents();
     } else {
       setStudents([]);
@@ -67,6 +87,9 @@ export default function SearchStudents() {
   };
 
   useEffect(() => {
+    if (emptySearch) {
+      getStudents();
+    }
     if (query.length != 0) getStudents();
   }, [currentPage]);
 
@@ -86,20 +109,83 @@ export default function SearchStudents() {
               setQuery(e.target.value);
             }}
           />
+          <div className="my-1 flex gap-2">
+            <div className="flex flex-col gap-2 my-1">
+              <label htmlFor="district" className="form-label text-black">
+                District
+              </label>
+              <select
+                className="p-1 border-2 rounded-sm focus: outline-none text-black"
+                onChange={(e) => {
+                  setDistrict(e.target.value);
+                }}
+              >
+                <option value="">SELECT</option>
+                {districts &&
+                  districts.map((district, idx) => {
+                    return (
+                      <option value={`${district}`} key={idx}>
+                        {district}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2 my-1">
+              <label htmlFor="status" className="form-label text-black">
+                Status
+              </label>
+              <select
+                className="p-1 border-2 rounded-sm focus: outline-none text-black"
+                onChange={(e) => {
+                  setStatus(e.target.value);
+                }}
+              >
+                <option value="">SELECT</option>
+                {studentStatus &&
+                  studentStatus.map((status, idx) => {
+                    return (
+                      <option value={`${status}`} key={idx}>
+                        {status}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2 my-1">
+              <label htmlFor="category" className="form-label text-black">
+                Category
+              </label>
+              <select
+                className="p-1 border-2 rounded-sm focus: outline-none text-black"
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                }}
+              >
+                <option value="">SELECT</option>
+                {categories &&
+                  categories.map((category, idx) => {
+                    return (
+                      <option value={`${category}`} key={idx}>
+                        {category}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+          </div>
           <div className="my-1">
-            <button
+            <Button
               className="bg-blue-700 text-white rounded-sm py-1 px-2 hover:bg-blue-900 "
-              type="button"
+              text={"Search"}
               onClick={(e) => {
                 e.preventDefault();
                 handleSearch();
               }}
-            >
-              Search
-            </button>
+            />
           </div>
         </div>
-        {query.length != 0 && (
+        {(query.length != 0 || emptySearch) && (
           <>
             <div className="flex items-center justify-center my-2 gap-2 m-auto table-fixed">
               <Button
@@ -166,6 +252,9 @@ export default function SearchStudents() {
                       District
                     </th>
                     <th scope="col" className="px-6 py-2">
+                      Date
+                    </th>
+                    <th scope="col" className="px-6 py-2">
                       Status
                     </th>
                     <th scope="col" className="px-6 py-2">
@@ -191,8 +280,13 @@ export default function SearchStudents() {
                           <td className="px-6 py-2">{student.category}</td>
                           <td className="px-6 py-2">{student.villege}</td>
                           <td className="px-6 py-2">{student.district}</td>
+                          <td className="px-6 py-2">
+                            {new Date(student.createdAt).toLocaleDateString() +
+                              "-" +
+                              new Date(student.createdAt).toLocaleTimeString()}
+                          </td>
                           <td className="px-6 py-2">{student.status}</td>
-                          <td className="px-6 py-2 flex items-center gap-1 justify-center">
+                          <td className="px-6 py-2 flex items-center gap-1 ">
                             <Button
                               text={"View"}
                               onClick={() => {
@@ -209,7 +303,7 @@ export default function SearchStudents() {
                                 );
                               }}
                             />
-                            <Button
+                            {/* <Button
                               className={"bg-red-600"}
                               text={"Remove"}
                               onClick={() => {
@@ -221,7 +315,7 @@ export default function SearchStudents() {
                                   removeStudent(student._id);
                                 }
                               }}
-                            />
+                            /> */}
                           </td>
                         </tr>
                       );
@@ -229,7 +323,7 @@ export default function SearchStudents() {
                 </tbody>
 
                 <tfoot>
-                  <tr>{students.length == 0 && "no student"}</tr>
+                  <tr>{students.length === 0 && "no student"}</tr>
                 </tfoot>
               </table>
             </div>

@@ -6,7 +6,11 @@
 - 8-2-2024 :- view student
 - 8-2-2024 :- viewed student export to json/excel/csv ✅
 - 8-2-2024 :- remove student
-- 8-2-2024 :- student tab options
+- 8-2-2024 :- student tab options -> add new student
+- 9-2-2024 :- home page
+- 10-2-2024 :- student search filter
+- 11-2-2024 :- dashboard, view reports page will be done
+
 
 
 

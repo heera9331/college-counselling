@@ -44,9 +44,9 @@ UserRoute.post("/recent-students", verifyToken, async (req, res) => {
       res.status(200).send({ msg: "students not found" });
     }
   } catch (error) {
-    res
+    return res
       .status(400)
-      .send({ reason: "error during finding recent student", err: err });
+      .send({ reason: "error during finding recent student", err: error });
   }
 });
 
@@ -194,15 +194,14 @@ UserRoute.post("/student/update/:id", verifyToken, async (req, res, next) => {
   }
 });
 
-// /user/profile/:userId
-
-UserRoute.post("/profile/", verifyToken, async (req, res, next) => {
+// /user/profile?profileId=656c2da21dec2fdbb0b2310c
+UserRoute.post("/profile", verifyToken, async (req, res, next) => {
   try {
-    let currentPage = req.query.page;
-    let pageSize = req.query.size;
+    let currentPage = req.query.page || 1;
+    let pageSize = req.query.size || 15;
 
     console.log(pageSize);
-    let userId = req.body.userId;
+    let userId = req.query.profileId;
     console.log(userId);
     let tmp = await User.findById(userId);
     let email = tmp.email;

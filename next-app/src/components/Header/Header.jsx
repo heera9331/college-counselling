@@ -15,7 +15,12 @@ const Header = () => {
   const router = useRouter();
   const [stdClick, setStdClick] = useState(false);
   const { isAdmin, userId, token, logout } = useAuthContext();
-  useEffect(() => {}, [userId, isAdmin, token]);
+
+  useEffect(() => {
+    if (!token) {
+      router.push("/login");
+    }
+  }, [userId, isAdmin, token]);
 
   return (
     <>
@@ -32,19 +37,12 @@ const Header = () => {
               >
                 Home
               </Link>
-
-              <Link
-                href={`/profile/${userId}`}
-                className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
-              >
-                Profile
-              </Link>
               <Link
                 href={`#`}
                 className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
               >
                 <div
-                  className="flex items-center justify-center relative"
+                  className="flex items-center justify-center relative "
                   onClick={() => {
                     setStdClick(!stdClick);
                     console.log(stdClick);
@@ -53,7 +51,7 @@ const Header = () => {
                   Students
                   {stdClick ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
                   {stdClick && (
-                    <div className="absolute p-2 text-white bg-primary top-[40px] left-[0px] flex flex-col w-[200px] rounded-sm transition-all ease-in delay-100">
+                    <div className="absolute p-2 text-white bg-primary top-[40px] left-[0px] flex flex-col w-[200px] rounded-sm transition-all ease-in delay-100 border-2 shadow-sm shadow-slate-700">
                       <Link
                         href={"/home/add-student"}
                         className="hover:bg-blue-800 rounded-sm transition-all ease-in delay-100"
@@ -64,16 +62,23 @@ const Header = () => {
                   )}
                 </div>
               </Link>
+              <Link
+                href={`/profile?profileId=${userId}`}
+                className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
+              >
+                Profile
+              </Link>
+
               {isAdmin && (
                 <>
                   <Link
-                    href={"/dashboard"}
+                    href={"/admin/dashboard"}
                     className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
                   >
                     Dashboard
                   </Link>
                   <Link
-                    href={"/view-report"}
+                    href={"/admin/view-reports"}
                     className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
                   >
                     View Reports
@@ -102,16 +107,16 @@ const Header = () => {
                 Home
               </Link>
               <Link
-                href={"#contact"}
-                className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
-              >
-                About us
-              </Link>
-              <Link
-                href={"#contact"}
+                href={"/contact"}
                 className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
               >
                 Contact us
+              </Link>
+              <Link
+                href={"/about"}
+                className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
+              >
+                About us
               </Link>
               <Link
                 href={"/login"}

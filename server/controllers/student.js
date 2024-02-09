@@ -75,11 +75,14 @@ export const getStudents = async (req, res, next) => {
   try {
     let query = req.query;
     console.log(req.query);
-    let _id = query.studentId || "65c3dd2afa31d837c236bf55"; // random id if not defind
     let searchKeyword = query.query || "";
     let pageSize = query.size || 15;
     let currentPage = query.page || 1;
 
+    // filters
+    let district = query.district;
+    let status = query.status;
+    let category = query.category;
     const searchQuery = {
       $or: [
         { name: { $regex: new RegExp(`^${searchKeyword}`, "i") } },
@@ -87,6 +90,26 @@ export const getStudents = async (req, res, next) => {
         { mobile: { $regex: new RegExp(`^${searchKeyword}`, "i") } },
       ],
     };
+
+    // Check if filters are specified
+    if (district || status || category) {
+      // Initialize the additional conditions for the AND search
+      const additionalConditions = {};
+
+      // Add conditions for each specified filter
+      if (district) {
+        additionalConditions.district = district;
+      }
+      if (status) {
+        additionalConditions.status = status;
+      }
+      if (category) {
+        additionalConditions.category = category;
+      }
+
+      // Add the additional conditions to the search query
+      Object.assign(searchQuery, additionalConditions);
+    }
 
     let total = await Student.countDocuments(searchQuery);
 

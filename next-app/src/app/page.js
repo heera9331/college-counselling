@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Page = () => {
   return (
-    <div className="max-w-[1440px] border-2 p-2 m-2 mt-[70px] shadow-sm">
+    <div className="max-w-[1440px] border-2 p-2 m-2 mt-[70px] shadow-sm min-h-[100vh]">
       <div className={"scroll-smooth"}>
         <div className="grid grid-cols-2 items-center justify-center gap-4 h-[80vh] px-4 sm:grid-cols">
           <div className="px-10">

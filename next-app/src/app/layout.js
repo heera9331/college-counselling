@@ -10,6 +10,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="author" content="Heera Singh Lodhi" />
+        <meta
+          title="Home"
+          description="A software that help you to handle your counseling in your organization, it provide many features of counseling like tracking status, interested, courses and enrolled students"
+        />
+      </head>
       <body className="max-w-[1440px] m-auto">
         <AuthContextProvider>
           <Header />

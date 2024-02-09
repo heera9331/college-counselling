@@ -76,7 +76,8 @@ const Page = () => {
         alert(data?.error);
       }
     } catch (error) {
-      console.error(error);
+      console.error("error", error);
+      alert("something went wrong");
     }
   };
 

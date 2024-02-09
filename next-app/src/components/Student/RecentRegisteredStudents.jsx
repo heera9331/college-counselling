@@ -13,7 +13,6 @@ const RecentRegisteredStudents = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(15);
   const [total, setTotal] = useState(0);
-  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState([]);
   const { token } = useAuthContext();
@@ -42,7 +41,7 @@ const RecentRegisteredStudents = () => {
         <h1 className="font-bold text-slate-600 text-xl mb-6 bg-gray-200 py-2 px-2 border border-b-slate-300">
           Recent Registered Students
         </h1>
-        <SearchStudents />
+        <SearchStudents emptySearch={false} />
         <div className="flex items-center justify-center my-2 gap-2 m-auto table-fixed">
           <Button
             text={"<<"}
@@ -74,6 +73,7 @@ const RecentRegisteredStudents = () => {
             }}
           />
         </div>
+
         <div className="mx-2 shadow-md overflow-auto">
           <table
             className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -109,6 +109,9 @@ const RecentRegisteredStudents = () => {
                   Status
                 </th>
                 <th scope="col" className="px-6 py-2">
+                  Date
+                </th>
+                <th scope="col" className="px-6 py-2">
                   Action
                 </th>
               </tr>
@@ -132,6 +135,11 @@ const RecentRegisteredStudents = () => {
                       <td className="px-6 py-2">{student.villege}</td>
                       <td className="px-6 py-2">{student.district}</td>
                       <td className="px-6 py-2">{student.status}</td>
+                      <td className="px-6 py-2">{`${new Date(
+                        student.updatedAt
+                      ).toLocaleDateString()} - ${new Date(
+                        student.updatedAt
+                      ).toLocaleTimeString()}`}</td>
                       <td className="px-6 py-2 flex items-center gap-1">
                         <Button
                           text={"View"}
@@ -161,7 +169,6 @@ const RecentRegisteredStudents = () => {
             </tfoot>
           </table>
         </div>
-        No Students
       </div>
     </div>
   );
