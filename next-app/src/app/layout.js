@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
       <body className="max-w-[1440px] m-auto">
         <AuthContextProvider>
           <Header />
-          <div className="mt-2">{children}</div>
+          <div className="pb-4 mt-2">{children}</div>
           <Footer />
         </AuthContextProvider>
       </body>

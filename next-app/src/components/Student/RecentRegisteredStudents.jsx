@@ -39,9 +39,10 @@ const RecentRegisteredStudents = () => {
     <div className="min-h-[100vh] lg:min-w-[720px]">
       <div className="">
         <h1 className="font-bold text-slate-600 text-xl mb-6 bg-gray-200 py-2 px-2 border border-b-slate-300">
-          Recent Registered Students
+          {/* Recent Registered Students */}
+          Registered Students
         </h1>
-        <SearchStudents emptySearch={false} />
+        <SearchStudents emptySearch={false} autoSearch={false} />
         <div className="flex items-center justify-center my-2 gap-2 m-auto table-fixed">
           <Button
             text={"<<"}
@@ -94,7 +95,7 @@ const RecentRegisteredStudents = () => {
                   Mobile
                 </th>
                 <th scope="col" className="px-6 py-2">
-                  Caste
+                  Registered By
                 </th>
                 <th scope="col" className="px-6 py-2">
                   Category
@@ -130,7 +131,7 @@ const RecentRegisteredStudents = () => {
                       <td className="px-6 py-2">{student.name}</td>
                       <td className="px-6 py-2">{student.fatherName}</td>
                       <td className="px-6 py-2">{student.mobile}</td>
-                      <td className="px-6 py-2">{student.caste}</td>
+                      <td className="px-6 py-2">{student.registeredBy}</td>
                       <td className="px-6 py-2">{student.category}</td>
                       <td className="px-6 py-2">{student.villege}</td>
                       <td className="px-6 py-2">{student.district}</td>

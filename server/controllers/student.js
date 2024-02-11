@@ -80,11 +80,17 @@ export const getStudents = async (req, res, next) => {
     let currentPage = query.page || 1;
 
     // filters
-    let district = query.district;
-    let status = query.status;
-    let category = query.category;
+    let district = query.district || "";
+    let status = query.status || "";
+    let category = query.category || "";
+
+    let registeredBy = query.registeredBy || "";
+    let sortBy = query.sortBy != "" ? query.sortBy : "name" || "name";
+    let order = Number(query.order) || 1; // 1  -> asc, -1 -> desc
+
     const searchQuery = {
       $or: [
+        { name: searchKeyword },
         { name: { $regex: new RegExp(`^${searchKeyword}`, "i") } },
         { fatherName: { $regex: new RegExp(`^${searchKeyword}`, "i") } },
         { mobile: { $regex: new RegExp(`^${searchKeyword}`, "i") } },
@@ -92,7 +98,7 @@ export const getStudents = async (req, res, next) => {
     };
 
     // Check if filters are specified
-    if (district || status || category) {
+    if (district || status || category || registeredBy) {
       // Initialize the additional conditions for the AND search
       const additionalConditions = {};
 
@@ -107,6 +113,10 @@ export const getStudents = async (req, res, next) => {
         additionalConditions.category = category;
       }
 
+      if (registeredBy) {
+        additionalConditions.registeredBy = registeredBy;
+      }
+
       // Add the additional conditions to the search query
       Object.assign(searchQuery, additionalConditions);
     }
@@ -117,7 +127,8 @@ export const getStudents = async (req, res, next) => {
     try {
       let students = await Student.find(searchQuery)
         .skip(pageSize * (currentPage - 1))
-        .limit(pageSize);
+        .limit(pageSize)
+        .sort({ [sortBy]: order });
 
       res.json({ query: searchKeyword, students, total });
 

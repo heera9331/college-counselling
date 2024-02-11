@@ -164,7 +164,7 @@ export default function Page() {
 
         <div className="py-2 flex gap-2">
           <Button
-            text={"Export"}
+            text={"Print"}
             onClick={() => {
               window.print();
             }}

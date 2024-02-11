@@ -6,6 +6,7 @@ import axios from "axios";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 import Input from "../Input";
+import JsonToCsvExporter from "../JsonToCsvExporter";
 // search filters
 
 const districts = [
@@ -18,10 +19,25 @@ const districts = [
 ];
 
 const studentStatus = ["PENDING", "NOTINTERESTED", "INTERESTED", "ADMITTED"];
-
 const categories = ["OBC", "GEN", "ST", "SC", "OTHER"];
+const counsellors = ["admin@gmail.com", "user@gmail.com"];
+const orders = [
+  "name",
+  "fatherName",
+  "mobile",
+  "registeredBy",
+  "category",
+  "villege",
+  "district",
+  "status",
+  "date",
+];
 
-export default function SearchStudents({ emptySearch = false }) {
+export default function SearchStudents({
+  emptySearch = false,
+  autoSearch = false,
+  isExportOpen = false,
+}) {
   console.log("empty search", emptySearch);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
@@ -31,17 +47,23 @@ export default function SearchStudents({ emptySearch = false }) {
   const [status, setStatus] = useState("");
   const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
-  const [students, setStudents] = useState([]);
+  const [students, setStudents] = useState(null);
+  const [registeredBy, setRegisteredBy] = useState([]);
+  const [sortBy, setSortBy] = useState("");
+  const [order, setOrder] = useState("1"); // 1-> asc, -1 -> desc
+
   const { token } = useAuthContext();
   const router = useRouter();
 
   const getStudents = async () => {
     try {
       setLoading(true);
+      setStudents(null);
       const res = await axios.post(
-        `${api}/user/search?studentId=${query}&query=${query}&page=${currentPage}&size=${pageSize}&district=${district}&status=${status}&category=${category}`,
+        `${api}/user/search?studentId=${query}&query=${query}&page=${currentPage}&size=${pageSize}&district=${district}&status=${status}&category=${category}&registeredBy=${registeredBy}&sortBy=${sortBy}&order=${order}`,
         { token }
       );
+      setLoading(false);
 
       console.log(res);
       if (res.status === 200) {
@@ -68,7 +90,7 @@ export default function SearchStudents({ emptySearch = false }) {
     if (query.length != 0 || emptySearch) {
       getStudents();
     } else {
-      setStudents([]);
+      setStudents(null);
     }
   };
 
@@ -87,7 +109,7 @@ export default function SearchStudents({ emptySearch = false }) {
   };
 
   useEffect(() => {
-    if (emptySearch) {
+    if (emptySearch || autoSearch) {
       getStudents();
     }
     if (query.length != 0) getStudents();
@@ -95,10 +117,10 @@ export default function SearchStudents({ emptySearch = false }) {
 
   return (
     <div className="text-black">
-      <div className="my-4 text-black">
-        <div className="flex flex-col gap-2 m-2">
+      <div className="my-4 text-black mx-2">
+        <div className="flex flex-col gap-2">
           <Input
-            label={"Number of Entries"}
+            label={"Search text"}
             placeholder={"Search here..."}
             htmlFor={"search"}
             value={query}
@@ -178,6 +200,62 @@ export default function SearchStudents({ emptySearch = false }) {
                   })}
               </select>
             </div>
+            <div className="flex flex-col gap-2 my-1">
+              <label htmlFor="registeredBy" className="form-label text-black">
+                Registered By
+              </label>
+              <select
+                name="registeredBy"
+                className="p-1 border-2 rounded-sm focus: outline-none text-black"
+                onChange={(e) => {
+                  setRegisteredBy(e.target.value);
+                }}
+              >
+                <option value="">SELECT</option>
+                {counsellors &&
+                  counsellors.map((counsellor, idx) => {
+                    return (
+                      <option value={`${counsellor}`} key={idx}>
+                        {counsellor}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2 my-1">
+              <label htmlFor="sortBy" className="form-label text-black">
+                Sort By
+              </label>
+              <select
+                name="sortBy"
+                className="p-1 border-2 rounded-sm focus: outline-none text-black"
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value);
+                }}
+              >
+                <option value="">SELECT</option>
+                {orders.map((order, idx) => {
+                  return <option key={idx}>{order}</option>;
+                })}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2 my-1">
+              <label htmlFor="order" className="form-label text-black">
+                Order
+              </label>
+              <select
+                name="order"
+                className="p-1 border-2 rounded-sm focus: outline-none text-black"
+                value={order}
+                onChange={(e) => {
+                  setOrder(e.target.value);
+                }}
+              >
+                <option value="1">ASC</option>
+                <option value="-1">DESC</option>
+              </select>
+            </div>
           </div>
           <div className="my-1">
             <Button
@@ -190,7 +268,7 @@ export default function SearchStudents({ emptySearch = false }) {
             />
           </div>
         </div>
-        {(query.length != 0 || emptySearch) && (
+        {students && (
           <>
             <div className="mx-2 overflow-auto">
               <p>Result - {query}</p>Total {total}
@@ -250,7 +328,7 @@ export default function SearchStudents({ emptySearch = false }) {
                       Mobile
                     </th>
                     <th scope="col" className="px-6 py-2">
-                      Caste
+                      Registered By
                     </th>
                     <th scope="col" className="px-6 py-2">
                       Category
@@ -273,7 +351,7 @@ export default function SearchStudents({ emptySearch = false }) {
                   </tr>
                 </thead>
                 <tbody className="odd:bg-white border-b dark:border-gray-700">
-                  {students.length != 0 &&
+                  {students &&
                     students.map((student, idx) => {
                       return (
                         <tr
@@ -286,7 +364,7 @@ export default function SearchStudents({ emptySearch = false }) {
                           <td className="px-6 py-2">{student.name}</td>
                           <td className="px-6 py-2">{student.fatherName}</td>
                           <td className="px-6 py-2">{student.mobile}</td>
-                          <td className="px-6 py-2">{student.caste}</td>
+                          <td className="px-6 py-2">{student.registeredBy}</td>
                           <td className="px-6 py-2">{student.category}</td>
                           <td className="px-6 py-2">{student.villege}</td>
                           <td className="px-6 py-2">{student.district}</td>
@@ -333,13 +411,21 @@ export default function SearchStudents({ emptySearch = false }) {
                 </tbody>
 
                 <tfoot>
-                  <tr>{students.length === 0 && "no student"}</tr>
+                  <tr></tr>
                 </tfoot>
               </table>
             </div>
           </>
         )}
+        {!students && query.length != 0 && (
+          <p className="text-xl">No Students</p>
+        )}
       </div>
+      {students && (
+        <div className="mx-2">
+          <JsonToCsvExporter jsonData={students} filename={"report.csv"} />
+        </div>
+      )}
     </div>
   );
 }
