@@ -24,7 +24,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-primary text-white flex items-center justify-between border-b-1 border-white fixed top-0 p-2 max-w-[1440px] m-auto w-full h-[60px]">
+      <header className="z-[100] bg-primary text-white flex items-center justify-between border-b-1 border-white fixed top-0 p-2 max-w-[1440px] m-auto w-full h-[60px]">
         <h1 className="text-3xl font-semibold">
           <Link href="/">CounselPro Connect</Link>
         </h1>

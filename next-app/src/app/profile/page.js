@@ -1,4 +1,5 @@
 "use client";
+
 import useAuthContext from "@/hooks/useAuthContext";
 import api from "@/utils/api";
 import { useSearchParams } from "next/navigation";
@@ -6,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
 import axios from "axios";
+import Input from "@/components/Input";
 
 export default function Page() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +18,7 @@ export default function Page() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [students, setStudents] = useState([]);
+  const [tmpPageSize, setTmpPageSize] = useState(pageSize);
 
   const getUser = async (profileId) => {
     let res = await axios.post(
@@ -24,6 +27,7 @@ export default function Page() {
         token,
       }
     );
+    console.log(res);
     if (res.statusText === "OK") {
       let data = await res.data;
       setUser(data.user);
@@ -62,39 +66,7 @@ export default function Page() {
           </div>
         )}
       </div>
-      <div className="controls">
-        <div className="flex items-center justify-center my-2 gap-2 m-auto table-fixed">
-          <Button
-            text={"<<"}
-            onClick={() => {
-              setCurrentPage(1);
-            }}
-          />
-          <Button
-            text={"<"}
-            onClick={() => {
-              if (currentPage > 1) {
-                setCurrentPage(currentPage - 1);
-              }
-            }}
-          />
-          <div>Total {`${currentPage}/${Math.ceil(total / pageSize)}`}</div>
-          <Button
-            text={">"}
-            onClick={() => {
-              if (Math.ceil(total / pageSize) > currentPage) {
-                setCurrentPage(currentPage + 1);
-              }
-            }}
-          />
-          <Button
-            text={">>"}
-            onClick={() => {
-              setCurrentPage(Math.ceil(total / pageSize));
-            }}
-          />
-        </div>
-      </div>
+
       <div className="mx-2 overflow-auto">
         <table
           className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"

@@ -5,7 +5,7 @@ import useAuthContext from "@/hooks/useAuthContext";
 import axios from "axios";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
-
+import Input from "../Input";
 // search filters
 
 const districts = [
@@ -24,7 +24,7 @@ const categories = ["OBC", "GEN", "ST", "SC", "OTHER"];
 export default function SearchStudents({ emptySearch = false }) {
   console.log("empty search", emptySearch);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(15);
+  const [pageSize, setPageSize] = useState(15);
   const [total, setTotal] = useState(0);
   const [query, setQuery] = useState("");
   const [district, setDistrict] = useState("");
@@ -97,19 +97,24 @@ export default function SearchStudents({ emptySearch = false }) {
     <div className="text-black">
       <div className="my-4 text-black">
         <div className="flex flex-col gap-2 m-2">
-          <label htmlFor="search">Search here...</label>
-          <input
-            type="search"
-            className="p-1 border-2 rounded-sm focus: outline-none"
-            name="search"
-            id="search"
-            placeholder="Search here ..."
+          <Input
+            label={"Number of Entries"}
+            placeholder={"Search here..."}
+            htmlFor={"search"}
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
             }}
           />
-          <div className="my-1 flex gap-2">
+          <Input
+            label={"Number of Entries"}
+            htmlFor={"pageSize"}
+            value={pageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+            }}
+          />
+          <div className="my-1 flex gap-2 mx-2">
             <div className="flex flex-col gap-2 my-1">
               <label htmlFor="district" className="form-label text-black">
                 District
@@ -176,7 +181,7 @@ export default function SearchStudents({ emptySearch = false }) {
           </div>
           <div className="my-1">
             <Button
-              className="bg-blue-700 text-white rounded-sm py-1 px-2 hover:bg-blue-900 "
+              className="mx-2 bg-blue-700 text-white rounded-sm py-1 px-2 hover:bg-blue-900 "
               text={"Search"}
               onClick={(e) => {
                 e.preventDefault();
@@ -187,40 +192,45 @@ export default function SearchStudents({ emptySearch = false }) {
         </div>
         {(query.length != 0 || emptySearch) && (
           <>
-            <div className="flex items-center justify-center my-2 gap-2 m-auto table-fixed">
-              <Button
-                text={"<<"}
-                onClick={() => {
-                  setCurrentPage(1);
-                }}
-              />
-              <Button
-                text={"<"}
-                onClick={() => {
-                  if (currentPage > 1) {
-                    setCurrentPage(currentPage - 1);
-                  }
-                }}
-              />
-              <div>Total {`${currentPage}/${Math.ceil(total / pageSize)}`}</div>
-              <Button
-                text={">"}
-                onClick={() => {
-                  if (Math.ceil(total / pageSize) > currentPage) {
-                    setCurrentPage(currentPage + 1);
-                  }
-                }}
-              />
-              <Button
-                text={">>"}
-                onClick={() => {
-                  setCurrentPage(Math.ceil(total / pageSize));
-                }}
-              />
-            </div>
-
             <div className="mx-2 overflow-auto">
               <p>Result - {query}</p>Total {total}
+              <div className="m-auto">
+                <div className="flex flex-col my-2 gap-3 m-auto table-fixed">
+                  <div className="flex gap-2 items-center justify-center">
+                    <Button
+                      text={"<<"}
+                      onClick={() => {
+                        setCurrentPage(1);
+                      }}
+                    />
+                    <Button
+                      text={"<"}
+                      onClick={() => {
+                        if (currentPage > 1) {
+                          setCurrentPage(currentPage - 1);
+                        }
+                      }}
+                    />
+                    <div>
+                      Total {`${currentPage}/${Math.ceil(total / pageSize)}`}
+                    </div>
+                    <Button
+                      text={">"}
+                      onClick={() => {
+                        if (Math.ceil(total / pageSize) > currentPage) {
+                          setCurrentPage(currentPage + 1);
+                        }
+                      }}
+                    />
+                    <Button
+                      text={">>"}
+                      onClick={() => {
+                        setCurrentPage(Math.ceil(total / pageSize));
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
               <table
                 className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 border={1}
