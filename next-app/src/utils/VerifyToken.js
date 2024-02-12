@@ -18,7 +18,7 @@ const verifyToken = (token) => {
         }
 
         response.json().then((res) => {
-          localStorage.clear();
+          sessionStorage.clear();
           alert(res.error.message);
           window.location.href = "/login";
           return false;

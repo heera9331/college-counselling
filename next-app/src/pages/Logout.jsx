@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const Logout = () => {
-  let navigate = useNavigate();
+  let router = useRouter();
   useEffect(() => {
-    localStorage.clear();
-    navigate("/login");
+    sessionStorage.clear();
+    router.push("/login");
   }, [navigate]);
   return <div>logout</div>;
 };

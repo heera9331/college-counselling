@@ -28,6 +28,9 @@ const RecentRegisteredStudents = () => {
       let data = await res.data;
       setStudents(data.students);
       setTotal(data.total);
+    } else {
+      setTotal(false);
+      router.push("/login");
     }
     setTotal(false);
   };

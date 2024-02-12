@@ -64,7 +64,7 @@ export default function Page() {
       </div>
 
       <div className="mx-2">
-        <div className="cards gap-3 flex py-2">
+        <div className="cards gap-4 flex py-2">
           <div className="card  shadow-md ">
             <h3 className="px-2 py-1 card-heading font-semibold text-xl border bg-slate-100">
               Status wise
@@ -82,18 +82,30 @@ export default function Page() {
               Category wise
             </h2>
             <div className="shadow-sm p-4">
-              <p>Total Registered Students - {status.total}</p>
-              <p>Total pending student - {status.pending}</p>
-              <p>Total interested student - {status.interested}</p>
-              <p>Total notinterested student - {status.notinterested}</p>
-              <p>Total admitted student - {status.admitted}</p>
+              <p>Total Students OBC - {status.total}</p>
+              <p>Total Students GEN - {status.pending}</p>
+              <p>Total Students ST - {status.interested}</p>
+              <p>Total Students SC - {status.notinterested}</p>
+              <p>Total Students OTHER - {status.admitted}</p>
+            </div>
+          </div>
+          <div className="card shadow-md">
+            <h2 className="border px-2 py-1 card-heading font-semibold text-xl bg-slate-100">
+              District wise
+            </h2>
+            <div className="shadow-sm p-4">
+              <p>Total Students SAGAR - {status.total}</p>
+              <p>Total Students DAMOH - {status.pending}</p>
+              <p>Total Students CHATTARPUR - {status.interested}</p>
+              <p>Total Students TIKAMGARH - {status.notinterested}</p>
+              <p>Total Students OTHER - {status.admitted}</p>
             </div>
           </div>
         </div>
         <div className="cards gap-3 flex py-2 overflow-auto">
           <div className="card shadow-md">
             <h3 className="px-2 py-1 card-heading font-semibold text-xl border bg-slate-100">
-              District wise
+              Cournsellor wise
             </h3>
             <div className="p-4">
               <Chart

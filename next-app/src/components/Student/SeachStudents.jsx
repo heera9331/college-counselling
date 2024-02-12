@@ -136,7 +136,8 @@ export default function SearchStudents({
               setPageSize(Number(e.target.value));
             }}
           />
-          <div className="my-1 flex gap-2 mx-2">
+          {/* filters */}
+          <div className="my-1 gap-2 mx-2 lg:flex">
             <div className="flex flex-col gap-2 my-1">
               <label htmlFor="district" className="form-label text-black">
                 District
@@ -422,7 +423,7 @@ export default function SearchStudents({
         )}
       </div>
       {students && (
-        <div className="mx-2">
+        <div className="">
           <JsonToCsvExporter jsonData={students} filename={"report.csv"} />
         </div>
       )}

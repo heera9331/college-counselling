@@ -6,18 +6,20 @@ import { useEffect } from "react";
 
 const AuthContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [token, setToken] = useState(sessionStorage.getItem("token") || null);
   const [isAdmin, setIsAdmin] = useState(
-    JSON.parse(localStorage.getItem("isAdmin")) || false
+    JSON.parse(sessionStorage.getItem("isAdmin")) || false
   );
 
-  const [userId, setUserID] = useState(localStorage.getItem("userId") || null);
+  const [userId, setUserID] = useState(
+    sessionStorage.getItem("userId") || null
+  );
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
 
   const login = (token, isAdmin, userId) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("isAdmin", isAdmin);
-    localStorage.setItem("userId", userId);
+    sessionStorage.setItem("token", token);
+    sessionStorage.setItem("isAdmin", isAdmin);
+    sessionStorage.setItem("userId", userId);
     setToken(token);
     setIsAdmin(isAdmin);
     setUserID(userId);
@@ -37,7 +39,7 @@ const AuthContextProvider = ({ children }) => {
     setIsAdmin(false);
     setUserID(null);
     setError(null);
-    localStorage.clear();
+    sessionStorage.clear();
     closeLeftSidebar();
   };
 
