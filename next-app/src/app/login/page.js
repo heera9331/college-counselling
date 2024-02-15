@@ -56,7 +56,7 @@ const Page = () => {
   return (
     <>
       <div className="min-h-[100vh] mt-[65px] flex flex-col items-center justify-center m-1">
-        <div className="p-4 m-auto shadow-sm shadow-slate-600 w-[450px]">
+        <div className="p-4 m-auto shadow-sm shadow-slate-600 sm:w-[450px]">
           {!loading ? (
             <>
               <div className="px-2">

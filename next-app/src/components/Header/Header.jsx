@@ -29,19 +29,24 @@ const Header = () => {
   return (
     <>
       <header className="z-[100] bg-primary text-white border-b-1 border-white fixed top-0 p-2 w-100 m-auto w-full h-[60px]">
-        <div className="relative flex items-center justify-between">
+        <div className="relative flex items-center justify-between max-md:items-start">
           <h1 className="text-3xl font-semibold">
             <Link href="/">CounselPro Connect</Link>
           </h1>
 
-          {click && (
-            <div>
-              <div
-                className={`transition-all ease-in delay-100 flex items-center justify-center gap-4 bg-primary max-md:p-4 max-md:absolute max-md:right-[-8px] max-md:top-[50px] max-md:h-[100vh] max-md:justify-start max-md:flex-col max-md:items-start
+          <div>
+            <div
+              className={`transition-all ease-in delay-100 flex items-center justify-center gap-4 bg-primary 
                 `}
-              >
-                {token && (
-                  <>
+            >
+              {token && (
+                <>
+                  {/*  */}
+                  <div
+                    className={`bg-primary flex items-start justify-start flex-wrap gap-2 shadow-md max-md:flex-col max-md:absolute max-md:top-12 max-md:right-0 max-md:p-4 max-md:h-[100vh] ${
+                      click ? "max-sm:hidden" : ""
+                    }`}
+                  >
                     <Link
                       href="/home"
                       className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
@@ -107,10 +112,17 @@ const Header = () => {
                     >
                       Logout
                     </Link>
-                  </>
-                )}
-                {!token && (
-                  <>
+                  </div>
+                </>
+              )}
+
+              {!token && (
+                <>
+                  <div
+                    className={`bg-primary flex items-start justify-start flex-wrap gap-2 shadow-md max-md:flex-col max-md:absolute max-md:top-12 max-md:right-0 max-md:p-4 max-md:h-[100vh] ${
+                      click ? "max-sm:hidden" : ""
+                    }`}
+                  >
                     <Link
                       href={"/contact"}
                       className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
@@ -129,28 +141,30 @@ const Header = () => {
                     >
                       Login
                     </Link>
-                  </>
-                )}
-              </div>
+                  </div>
+                </>
+              )}
             </div>
-          )}
+          </div>
+
           <div class="md:hidden">
             <button
-              class="text-white focus:outline-none mt-3"
+              class="ml-1 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none rounded-md text-sm p-2.5 inline-flex items-center justify-center w-10 h-10"
               onClick={handleBtnClick}
             >
               <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                class="w-5 h-5"
+                aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 17 14"
               >
                 <path
+                  stroke="currentColor"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
+                  d="M1 1h15M1 7h15M1 13h15"
                 ></path>
               </svg>
             </button>
