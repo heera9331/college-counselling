@@ -43,7 +43,7 @@ const Header = () => {
                 <>
                   {/*  */}
                   <div
-                    className={`bg-primary flex items-start justify-start flex-wrap gap-2 shadow-md max-md:flex-col max-md:absolute max-md:top-12 max-md:right-0 max-md:p-4 max-md:h-[100vh] ${
+                    className={`bg-primary flex items-start justify-start flex-wrap gap-2 max-md:flex-col max-md:absolute max-md:top-12 max-md:right-0 max-md:p-4 max-md:h-[100vh] ${
                       click ? "max-sm:hidden" : ""
                     }`}
                   >
@@ -119,7 +119,7 @@ const Header = () => {
               {!token && (
                 <>
                   <div
-                    className={`bg-primary flex items-start justify-start flex-wrap gap-2 shadow-md max-md:flex-col max-md:absolute max-md:top-12 max-md:right-0 max-md:p-4 max-md:h-[100vh] ${
+                    className={`bg-primary flex items-start justify-start flex-wrap gap-2 max-md:flex-col max-md:absolute max-md:top-12 max-md:right-0 max-md:p-4 max-md:h-[100vh] ${
                       click ? "max-sm:hidden" : ""
                     }`}
                   >
