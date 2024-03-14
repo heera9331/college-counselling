@@ -4,15 +4,14 @@ import "../globals.css";
 import Input from "@/components/Input";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import api from "../../utils/api";
 import useAuthContext from "../../hooks/useAuthContext";
 import Loading from "@/components/Loading";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [user, setUser] = useState({
-    email: "",
-    password: "",
+    email: "admin@gmail.com",
+    password: "admin",
   });
 
   const { login } = useAuthContext();
@@ -25,7 +24,7 @@ const Page = () => {
       console.log(user);
       setLoading(true);
       timeout = setTimeout(() => {}, 2000);
-      let res = await axios.post(`${api}/auth/login`, user);
+      let res = await axios.post(`/api/auth`, user);
       console.log(res);
       let data = res.data;
       setLoading(false);

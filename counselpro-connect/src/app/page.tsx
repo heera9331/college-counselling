@@ -1,11 +1,12 @@
-"use client";
-import { useEffect } from "react";
+import React from "react";
+import "./globals.css";
+import Image from "next/image";
 
 const Page = () => {
   return (
-    <>
+    <div className="max-w-[1440px] border-2 p-2 m-2 mt-[70px] shadow-sm min-h-[100vh]">
       <div className={"scroll-smooth"}>
-        <div className="grid grid-cols-2 items-center justify-center gap-4 h-[80vh] px-4 sm:grid-cols">
+        <div className="md:grid md:grid-cols-2 items-center justify-center gap-4 h-[80vh] px-4 sm:grid-cols">
           <div className="px-10">
             <div className="w-[290px] py-4">
               <h1 className="text-3xl font-bold text-blue-900">
@@ -20,11 +21,11 @@ const Page = () => {
             </p>
           </div>
           <div className="">
-            <img
+            <Image
+              src="/images/homepage.jpg"
               width={512}
               height={512}
-              src="/images/homepage.jpg"
-              alt="home"
+              alt="homepage"
             />
           </div>
         </div>
@@ -44,22 +45,22 @@ const Page = () => {
               interface enhances engagement, making it easier for users to
               navigate and access relevant information efficiently.
             </p>
-            <img
+            <Image
+              src="/images/dashboard.jpg"
               width={512}
               height={512}
-              src="/images/dashboard.jpg"
-              alt="dashboard"
+              alt="homepage"
             />
           </div>
           <h2 className={"text-2xl font-semibold py-2 text-left"}>
             Custom Reports
           </h2>
           <div className={"flex flex-cols-2 items-center"}>
-            <img
+            <Image
+              src="/images/reports.jpg"
               width={512}
               height={512}
-              src="/images/homepage.jpg"
-              alt="reports"
+              alt="homepage"
             />
             <p className="px-6">
               Customized reports further empower users by offering tailored
@@ -82,7 +83,7 @@ const Page = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

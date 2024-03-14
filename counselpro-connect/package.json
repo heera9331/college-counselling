@@ -2,7 +2,6 @@
   "name": "next-app",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,7 +14,6 @@
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.2",
     "json-to-pdf": "^0.1.2",
-    "mongoose": "^8.2.1",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",

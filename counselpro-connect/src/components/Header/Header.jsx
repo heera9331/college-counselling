@@ -30,12 +30,7 @@ const Header = () => {
     <>
       <header className="z-[100] bg-primary text-white border-b-1 border-white fixed top-0 p-2 w-100 m-auto w-full h-[60px]">
         <div className="relative flex items-center justify-between max-md:items-start">
-          <h1
-            className="text-3xl font-semibold"
-            onClick={() => {
-              setClick(true);
-            }}
-          >
+          <h1 className="text-3xl font-semibold">
             <Link href="/">CounselPro Connect</Link>
           </h1>
 
@@ -55,9 +50,6 @@ const Header = () => {
                     <Link
                       href="/home"
                       className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
-                      onClick={() => {
-                        setClick(true);
-                      }}
                     >
                       Home
                     </Link>
@@ -134,27 +126,18 @@ const Header = () => {
                     <Link
                       href={"/contact"}
                       className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
-                      onClick={() => {
-                        setClick(true);
-                      }}
                     >
                       Contact us
                     </Link>
                     <Link
                       href={"/about"}
                       className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
-                      onClick={() => {
-                        setClick(true);
-                      }}
                     >
                       About us
                     </Link>
                     <Link
                       href={"/login"}
                       className="hover:bg-white hover:text-blue-800 font-semibold p-1 rounded-sm transition-all ease-in delay-10"
-                      onClick={() => {
-                        setClick(true);
-                      }}
                     >
                       Login
                     </Link>
@@ -164,13 +147,13 @@ const Header = () => {
             </div>
           </div>
 
-          <div className="md:hidden">
+          <div class="md:hidden">
             <button
-              className="ml-1 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none rounded-md text-sm p-2.5 inline-flex items-center justify-center w-10 h-10"
+              class="ml-1 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none rounded-md text-sm p-2.5 inline-flex items-center justify-center w-10 h-10"
               onClick={handleBtnClick}
             >
               <svg
-                className="w-5 h-5"
+                class="w-5 h-5"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -178,9 +161,9 @@ const Header = () => {
               >
                 <path
                   stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   d="M1 1h15M1 7h15M1 13h15"
                 ></path>
               </svg>

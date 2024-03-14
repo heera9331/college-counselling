@@ -20,15 +20,13 @@ export default function RootLayout({ children }) {
       <body className="m-auto">
         <AuthContextProvider>
           <Header />
-
-          <div className="pb-4 mt-2 max-w-[1440px] m-auto min-h-[75vh]">
+          <div className="pb-4 mt-2 max-w-[1440px] m-auto min-h-[80vh]">
             <Breadcrumbs path={path} />
             {children}
           </div>
           {/* <div className="min-h-[80vh]"></div> */}
           <Footer />
         </AuthContextProvider>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
       </body>
     </html>
   );
