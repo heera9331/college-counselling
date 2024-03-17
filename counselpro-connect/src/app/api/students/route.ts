@@ -10,8 +10,8 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     
     const currentPage : number =Number(req.nextUrl.searchParams.get('currentPage')) || 1;
     const pageSize: number =Number(req.nextUrl.searchParams.get('pageSize')) || 15;
-    const students: any[] = await Student.find({}).skip((currentPage-1)*pageSize).limit(pageSize);
-    return NextResponse.json({students});
+    const students: any[] = await Student.find({}).select(["-chats"]).skip((currentPage-1)*pageSize).limit(pageSize);
+    return NextResponse.json(students);
 };
 
 
@@ -22,6 +22,8 @@ export const POST = async (req: NextRequest) => {
     
     console.log('post - /api/students/');
     console.log('student ', student);
+    student.chats = [student.comment];
+    delete student.comment;
     
     try {
         const ack = await Student.insertMany([student]);  

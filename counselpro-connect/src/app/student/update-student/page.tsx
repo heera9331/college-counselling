@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Input } from "@/components";
@@ -19,7 +20,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const getStudent = async (studentId) => {
+  const getStudent = async (studentId:any) => {
     try {
       let res = await axios.get(
         `/api/students/${studentId}`,
@@ -39,7 +40,7 @@ export default function Page() {
     }
   };
 
-  const updateNow = async (e) => {
+  const updateNow = async (e:any) => {
     e.preventDefault();
     console.log(student);
     let comfirm = confirm("Are you sure want to update details");
@@ -80,6 +81,7 @@ export default function Page() {
     console.log(studentId);
     getStudent(studentId);
   }, []);
+  
   return (
     <div className="mx-2 shadow-sm shadow-slate-600">
       <div className="">

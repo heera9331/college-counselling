@@ -1,7 +1,11 @@
-import {User} from "@/models";
-import { NextRequest } from "next/server";
+import { User } from "@/models";
+import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/utils";
 
-export const GET = async (req: NextRequest, props) => {
-    console.log(props)
+export const GET = async (req: NextRequest, { params }: any) => {
+    await connectDB();
+    console.log('get -> /api/users/387e6e7aw8f');
+    let email: string = params.id[0];
+    const user: any[] = await User.find({ email: email }).select(["-password"]);
+    return NextResponse.json(user)
 }

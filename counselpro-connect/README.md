@@ -15,3 +15,18 @@ bun dev
 
 npm run dev -- -H  192.168.109.152
 ```
+
+- Search ✔
+- models ✔
+- add student ✔
+- view student ✔
+- remove student
+- update student
+- sitemap ✔
+- login ✔
+- authenticatation ✔
+- api ✔
+
+- view report -> report generation and exportation
+- dashboard summery or graphs
+- students ✔

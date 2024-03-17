@@ -37,7 +37,6 @@ export default function SearchStudents({
   autoSearch = false,
   isExportOpen = false,
 }) {
-  
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
   const [total, setTotal] = useState(0);
@@ -57,16 +56,17 @@ export default function SearchStudents({
     try {
       setLoading(true);
       setStudents(null);
-      const res = await axios.post(
-        `/api/students?query=${query}&currentPage=${currentPage}&pageSize=${pageSize}&district=${district}&status=${status}&category=${category}&registeredBy=${registeredBy}&sortBy=${sortBy}&order=${order}`
+      const res = await axios.get(
+        `/api/students/search?query=${query}&currentPage=${currentPage}&pageSize=${pageSize}&district=${district}&status=${status}&category=${category}&registeredBy=${registeredBy}&sortBy=${sortBy}&order=${order}`
       );
       setLoading(false);
 
       console.log(res);
       if (res.status === 200) {
         console.log(res.data);
-        setStudents(res.data.students);
-        setTotal(res.data.total);
+        let students = await res.data;
+        setStudents(students);
+        setTotal(students.length);
       } else {
         console.error(
           "Failed to fetch recent students:",
@@ -104,6 +104,7 @@ export default function SearchStudents({
     if (emptySearch || autoSearch) {
       getStudents();
     }
+
     if (query.length != 0) getStudents();
   }, [currentPage]);
 

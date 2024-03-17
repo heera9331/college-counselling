@@ -1,12 +1,10 @@
-
-
 import { Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-
+import { IoMdArrowDropdownCircle } from "react-icons/io";
 const user = {
   name: "Tom Cook",
   email: "tom@example.com",
@@ -17,8 +15,9 @@ const user = {
 const navigation = [
   { name: "Home", href: "/home", current: true },
   { name: "Dashboard", href: "/dashboard", current: false },
-  { name: "Contact us", href: "/contact", current: false },
-  { name: "About us", href: "/about", current: false },
+  { name: "Students", href: "/student", current: false },
+  { name: "Counselor", href: "/counselor", current: false },
+  { name: "View Report", href: "/view-report", current: false },
   { name: "SiteMap", href: "/sitemap", current: false },
 ];
 
@@ -89,6 +88,7 @@ export default function Header() {
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
+
 
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
@@ -231,3 +231,40 @@ export default function Header() {
     </>
   );
 }
+
+
+
+{/* student dropdown */ }
+{/* <Menu as="div" className="relative ml-3">
+                        <div>
+                          <Menu.Button className="relative flex max-w-xs items-center bg-gray-800 text-sm focus:outline-none rounded-md px-3 py-2 font-medium">
+                            <span className="absolute -inset-1.5" />
+                            <span className="sr-only">Open user menu</span>
+                            <Link href={`#`} className="py-2 px-1 font-bold text-gray-300 focus:bg-gray-300 hover:text-white flex justify-center items-center">
+                              Students
+                            </Link>
+                          </Menu.Button>
+                        </div>
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <>
+                              <Menu.Item>
+                                <Link href={`/students/add-student`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-800 hover:text-white">Add Student</Link>
+                              </Menu.Item>
+                              <Menu.Item>
+                                <Link href={`/students/contact-student`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-800 hover:text-white">Add Student</Link>
+                              </Menu.Item>
+
+                            </>
+                          </Menu.Items>
+
+                        </Transition>
+                      </Menu> */}

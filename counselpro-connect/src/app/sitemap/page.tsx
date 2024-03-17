@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function Page(props) {
-    const {data, status} = useSession();
+    const { data, status } = useSession();
 
     const links = [
         { path: "/", title: "Main Page" },
@@ -12,8 +12,8 @@ export default function Page(props) {
         { path: "/about", title: "About us" },
         { path: "/sitemap", title: "SiteMap" },
         { path: "/logout", title: "Logout" }
-    ] 
-    
+    ]
+
     return (
         <div className="px-2 ">
             <h1 className="font-semibold text-2xl ">SiteMap</h1>
@@ -69,6 +69,18 @@ export default function Page(props) {
                         className="text-blue-800 underline font-semibold"
                     >
                         Profile - /profile
+                    </Link>
+                    <Link
+                        href={`/counselor`}
+                        className="text-blue-800 underline font-semibold"
+                    >
+                        Counselor - /counselor
+                    </Link>
+                    <Link
+                        href={`/student`}
+                        className="text-blue-800 underline font-semibold"
+                    >
+                        Students /student
                     </Link>
                 </div>
             </div>
