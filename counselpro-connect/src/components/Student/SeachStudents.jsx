@@ -1,12 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
-import Button from "../Button";
-import useAuthContext from "@/hooks/useAuthContext";
+import { Button, Input, JsonToCsvExporter } from "@/components";
+
 import axios from "axios";
-import api from "@/utils/api";
 import { useRouter } from "next/navigation";
-import Input from "../Input";
-import JsonToCsvExporter from "../JsonToCsvExporter";
+
 // search filters
 
 const districts = [
@@ -38,7 +37,7 @@ export default function SearchStudents({
   autoSearch = false,
   isExportOpen = false,
 }) {
-  console.log("empty search", emptySearch);
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
   const [total, setTotal] = useState(0);
@@ -52,7 +51,6 @@ export default function SearchStudents({
   const [sortBy, setSortBy] = useState("");
   const [order, setOrder] = useState("1"); // 1-> asc, -1 -> desc
 
-  const { token } = useAuthContext();
   const router = useRouter();
 
   const getStudents = async () => {
@@ -60,8 +58,7 @@ export default function SearchStudents({
       setLoading(true);
       setStudents(null);
       const res = await axios.post(
-        `${api}/user/search?studentId=${query}&query=${query}&page=${currentPage}&size=${pageSize}&district=${district}&status=${status}&category=${category}&registeredBy=${registeredBy}&sortBy=${sortBy}&order=${order}`,
-        { token }
+        `/api/students?query=${query}&currentPage=${currentPage}&pageSize=${pageSize}&district=${district}&status=${status}&category=${category}&registeredBy=${registeredBy}&sortBy=${sortBy}&order=${order}`
       );
       setLoading(false);
 
@@ -96,12 +93,7 @@ export default function SearchStudents({
 
   const removeStudent = async (studentId) => {
     console.log(studentId);
-    let res = await axios.post(
-      `${api}/user/remove-student?studentId=${studentId}`,
-      {
-        token,
-      }
-    );
+    let res = await axios.post(`/api/students/${studentId}`);
 
     if (res.statusText == "OK") {
       alert("successfully remove");
@@ -118,6 +110,7 @@ export default function SearchStudents({
   return (
     <div className="text-black">
       <div className="my-4 text-black mx-2">
+        {/* search form */}
         <div className="flex flex-col gap-2">
           <Input
             label={"Search text"}
@@ -269,6 +262,8 @@ export default function SearchStudents({
             />
           </div>
         </div>
+
+        {/* search result */}
         {students && (
           <>
             <div className="mx-2 overflow-auto">
@@ -410,10 +405,6 @@ export default function SearchStudents({
                       );
                     })}
                 </tbody>
-
-                <tfoot>
-                  <tr></tr>
-                </tfoot>
               </table>
             </div>
           </>
@@ -422,11 +413,14 @@ export default function SearchStudents({
           <p className="text-xl">No Students</p>
         )}
       </div>
-      {students && (
-        <div className="">
-          <JsonToCsvExporter jsonData={students} filename={"report.csv"} />
-        </div>
-      )}
+      {/* export button  */}
+      <div>
+        {students && (
+          <div className="">
+            <JsonToCsvExporter jsonData={students} filename={"report.csv"} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,32 +1,28 @@
 "use client";
-import AuthContextProvider from "@/contexts/auth/AuthContextProvider";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
+
+import { Header, Footer } from "@/components";
+
 import Breadcrumbs from "@/components/Breadcrumb";
 import { usePathname } from "next/navigation";
+import { SessionProvider } from "next-auth/react";
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, params }) {
   const path = usePathname();
-  console.log("current path -", path);
+  console.log(params);
   return (
     <html lang="en">
       <head>
         <meta name="author" content="Heera Singh Lodhi" />
-        <meta
-          title="Home"
-          description="A software that help you to handle your counseling in your organization, it provide many features of counseling like tracking status, interested, courses and enrolled students"
-        />
       </head>
       <body className="m-auto">
-        <AuthContextProvider>
+        <SessionProvider>
           <Header />
-          <div className="pb-4 mt-2 max-w-[1440px] m-auto min-h-[80vh]">
+          <div className="pb-4 max-w-[1440px] mx-auto min-h-[75vh]">
             <Breadcrumbs path={path} />
             {children}
           </div>
-          {/* <div className="min-h-[80vh]"></div> */}
           <Footer />
-        </AuthContextProvider>
+        </SessionProvider>
       </body>
     </html>
   );

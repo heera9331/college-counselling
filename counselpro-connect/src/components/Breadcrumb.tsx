@@ -2,11 +2,7 @@
 import Link from "next/link";
 import React from "react";
 
-interface pathProps {
-  path: string;
-}
-
-export default function Breadcrumbs({ path }: pathProps) {
+export default function Breadcrumbs({ path }: { path: string }) {
   // Split the path into segments
   const segments = path.split("/").filter((segment) => segment);
 

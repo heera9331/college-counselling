@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 
-const { default: useAuthContext } = require("@/hooks/useAuthContext");
-
+ 
 const LeftSidebar = () => {
   const { openLeftSidebar, token, isAdmin, isLeftSidebarOpen } =
-    useAuthContext();
+ 
 
   useEffect(() => {}, [isLeftSidebarOpen]);
 

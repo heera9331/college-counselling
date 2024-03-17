@@ -4,9 +4,10 @@ import Image from "next/image";
 
 const Page = () => {
   return (
-    <div className="max-w-[1440px] border-2 p-2 m-2 mt-[70px] shadow-sm min-h-[100vh]">
+    <div className="max-w-[1440px] border-2 p-2 m-2 shadow-sm ">
       <div className={"scroll-smooth"}>
-        <div className="md:grid md:grid-cols-2 items-center justify-center gap-4 h-[80vh] px-4 sm:grid-cols">
+        <div className="lg:grid lg:grid-cols-2 items-center justify-center gap-4 h-[80vh] px-4 sm:grid-cols">
+          
           <div className="px-10">
             <div className="w-[290px] py-4">
               <h1 className="text-3xl font-bold text-blue-900">
@@ -36,7 +37,7 @@ const Page = () => {
           <h2 className={"text-2xl font-semibold py-2 text-left"}>
             Interactive Dashboard
           </h2>
-          <div className={"flex flex-cols-2 items-center"}>
+          <div className={"lg:flex lg:flex-cols-2 items-center"}>
             <p className="px-6">
               User experience is paramount in a counseling management system,
               and an interactive dashboard plays a pivotal role. It provides
@@ -55,7 +56,7 @@ const Page = () => {
           <h2 className={"text-2xl font-semibold py-2 text-left"}>
             Custom Reports
           </h2>
-          <div className={"flex flex-cols-2 items-center"}>
+          <div className={"lg:flex lg:flex-cols-2 items-center"}>
             <Image
               src="/images/reports.jpg"
               width={512}

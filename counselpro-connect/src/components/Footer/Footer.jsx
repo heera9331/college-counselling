@@ -2,7 +2,7 @@
 
 const Footer = () => {
   return (
-    <footer className="mt-8 text-light text-center text-white py-10 mb-[-20px] relative bg-primary flex items-center justify-center w-full">
+    <footer className="mt-8 text-light text-center text-white py-4 mb-[-20px] relative bg-gray-800 flex items-center justify-center w-full">
       <div className="w-100 position-absolute bottom-0 pt-3 w-100">
         <div className="d-flex align-items-center justify-content-center flex-column">
           <p>

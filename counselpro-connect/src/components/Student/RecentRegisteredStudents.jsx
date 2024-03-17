@@ -1,12 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import "@/app/globals.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import useAuthContext from "@/hooks/useAuthContext";
-import api from "@/utils/api";
-import Button from "../Button";
 import { useRouter } from "next/navigation";
-import SearchStudents from "./SeachStudents";
+import { SearchStudents, Button } from "@/components";
+import { IoSearch } from "react-icons/io5";
 
 const RecentRegisteredStudents = () => {
   const router = useRouter();
@@ -15,22 +14,23 @@ const RecentRegisteredStudents = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState([]);
-  const { token } = useAuthContext();
+
+  // toggle for search
+  const [click, setClick] = useState(false);
 
   const getRecentStudents = async () => {
     setLoading(true);
-    const res = await axios.post(
-      `${api}/user/recent-students?page=${currentPage}&size=${pageSize}`,
-      { token }
+    let res = await axios.get(
+      `/api/students?currentPage=${currentPage}&pageSize=${pageSize}`
     );
     setLoading(false);
-    if (res.statusText === "OK") {
+    if (res && res.statusText === "OK") {
       let data = await res.data;
       setStudents(data.students);
       setTotal(data.total);
     } else {
-      setTotal(false);
-      router.push("/login");
+      setLoading(false);
+      // router.push("/login");
     }
     setTotal(false);
   };
@@ -38,6 +38,7 @@ const RecentRegisteredStudents = () => {
   useEffect(() => {
     getRecentStudents();
   }, [currentPage]);
+
   return (
     <div className="min-h-[100vh] lg:min-w-[720px]">
       <div className="">
@@ -45,6 +46,9 @@ const RecentRegisteredStudents = () => {
           {/* Recent Registered Students */}
           Registered Students
         </h1>
+        {/* <div className="mx-2 bg-gray-300 py-2 rounded-sm text-center px-2 cursor-pointer ">
+          <IoSearch />
+        </div> */}
         <SearchStudents emptySearch={false} autoSearch={false} />
         <div className="flex items-center justify-center my-2 gap-2 m-auto table-fixed">
           <Button
