@@ -5,7 +5,7 @@ import { Button } from "@/components";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const Students = (students: any[]) => {
+const Students = ({students}: {students: any[]}) => {
     const router = useRouter();
 
     
