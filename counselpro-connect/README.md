@@ -32,3 +32,4 @@ npm run dev -- -H  192.168.109.152
 - view report -> report generation and exportation
 - dashboard summery or graphs
 - students ✔
+- loading ✔

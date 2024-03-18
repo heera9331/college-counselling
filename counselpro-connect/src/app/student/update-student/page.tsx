@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button, Input } from "@/components";
+import { Button, Input, Loading } from "@/components";
 import { useEffect, useState } from "react";
 
 import axios from "axios";
@@ -19,12 +19,12 @@ export default function Page() {
 
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  const getStudent = async (studentId:any) => {
+  let studentId = params.get("studentId");
+  const getStudent = async (studentId: any) => {
     try {
-      let res = await axios.get(
-        `/api/students/${studentId}`,
-      );
+      setLoading(true);
+      let res = await axios.get(`/api/students/${studentId}`);
+      setLoading(false);
       if (res.statusText === "OK") {
         let data = await res.data;
         if (data?.error) {
@@ -40,22 +40,16 @@ export default function Page() {
     }
   };
 
-  const updateNow = async (e:any) => {
+  const updateNow = async (e: any) => {
     e.preventDefault();
     console.log(student);
     let comfirm = confirm("Are you sure want to update details");
 
     if (comfirm) {
       try {
-        let res = await axios.put(`/api/students`, {
-          student,
-
-        });
-        console.log(res);
-        // let res = await axios.post(`${api}/admin/update-student`, {
-        //   token,
-        //   student: tmp,
-        // });
+        let res = await axios.put(`/api/students/${studentId}`,student);
+        console.log('update res', res);
+        
         if (res.statusText === "OK") {
           alert("updated");
           // router.push("/home");
@@ -81,11 +75,11 @@ export default function Page() {
     console.log(studentId);
     getStudent(studentId);
   }, []);
-  
+
   return (
-    <div className="mx-2 shadow-sm shadow-slate-600">
+    <div className="">
       <div className="">
-        <h1 className="font-bold text-slate-600 text-xl mb-6 bg-gray-200 py-2 px-2 border border-b-slate-300">
+        <h1 className="font-bold text-gray-600 bg-gray-300 text-xl mb-6  py-2 px-2 border border-b-slate-300">
           Update Student Details
         </h1>
         {student && (
@@ -320,11 +314,10 @@ export default function Page() {
                         });
                       }}
                     />
-                    <div className="mx-2 mt-3 flex gap-2">
+                    <div className="my-y flex gap-2">
                       <Button
                         text={"Clear"}
                         className=" text-white rounded-sm py-1 px-2 hover:bg-red-800 bg-red-600"
-                        type="button"
                         onClick={() => {
                           setStudent(initial);
                         }}
@@ -332,7 +325,6 @@ export default function Page() {
                       <Button
                         text={"Update"}
                         className=" text-white rounded-sm py-1 px-2  bg-green-600 focus:bg-green-800"
-                        type="button"
                         onClick={(e) => {
                           updateNow(e);
                         }}
@@ -341,7 +333,7 @@ export default function Page() {
                   </div>
                 </div>
 
-                <div className="m-2">
+                <div className="m-2 border p-2 rounded-sm">
                   <h2>Previous comments</h2>
                   {student.chats.map((chat, idx) => {
                     return (
@@ -353,8 +345,17 @@ export default function Page() {
                             chat.updatedAt
                           ).toLocaleTimeString()}`}
                         </p>
-                        <p className="text-left">{chat.teacher}</p>
-                        <p className="text-right">{chat.msg}</p>
+                        <p className="text-white">
+                          <span
+                            className="bg-gray-800 px-2 text-white rounded-tr-lg rounded-br-lg rounded-bl-lg">
+                            {chat.teacher}
+                          </span>
+                        </p>
+                        <p className="text-right text-white">
+                          <span className="bg-gray-800 px-2 text-white rounded-tl-lg rounded-br-lg rounded-bl-lg">
+                            {chat.msg}
+                          </span>
+                        </p>
                       </div>
                     );
                   })}
@@ -363,6 +364,8 @@ export default function Page() {
             </div>
           </>
         )}
+
+        {loading && <Loading />}
       </div>
     </div>
   );
