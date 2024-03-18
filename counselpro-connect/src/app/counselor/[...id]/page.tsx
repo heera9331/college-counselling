@@ -15,6 +15,10 @@ const getUser = async (id: string) => {
     return null;
 }
 
+const removeCounselor = async (id:string) => {
+    let res = await axios.delete(`/api/users/${id}`);
+    console.log('delete res', res);
+}
 
 const handleRemove = () => {
     let userInput = confirm('are you sure want to remove this counselor?');
@@ -75,7 +79,7 @@ const Page = ({ params }: { params: object }) => {
                 </button>
                 <button className="shadow-sm bg-red-600 hover:bg-red-700 rounded-sm text-white font-semibold px-2 py-1"
                     onClick={() => {
-                        handleRemove();
+                        handleRemove(id);
                     }}
                 >
                     Remove Counselor

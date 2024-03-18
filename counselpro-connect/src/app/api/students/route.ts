@@ -22,8 +22,9 @@ export const POST = async (req: NextRequest) => {
     
     console.log('post - /api/students/');
     console.log('student ', student);
-    student.chats = [student.comment];
+    student.chats = [{msg:student.comment, teacher: student.registeredBy}];
     delete student.comment;
+    console.log('student ', student);
     
     try {
         const ack = await Student.insertMany([student]);  

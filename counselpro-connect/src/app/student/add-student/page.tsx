@@ -44,24 +44,25 @@ const Page = () => {
     name: "",
     fatherName: "",
     mobile: "",
-    schoolName: "",
-    marks10: 0,
-    marks12: 0,
-    caste: "",
-    category: "",
     villege: "",
     block: "",
     district: "",
+    schoolName: "",
+    marks10: "",
+    marks12: "",
+    caste: "",
+    category: "",
     status: "",
     course: "",
     branch: "",
     comment: "",
+    registeredBy: "",
   });
 
   const router = useRouter();
   const registerStudent = async () => {
     try {
-      student.registeredBy = data?.user.email || "";
+      student.registeredBy = data?.user?.email || "";
       console.log('student to be registered', student);
       let res = await axios.post(`/api/students`, student);
 
@@ -72,7 +73,7 @@ const Page = () => {
           alert(data.error);
         } else {
           alert("successfull registered");
-          router.push('/home');
+          router.push('/student');
         }
       } else {
         let data = await res.data;
@@ -317,19 +318,17 @@ const Page = () => {
                     });
                   }}
                 />
-                <div className="mx-2 mt-3 flex gap-2">
+                <div className="mt-3 flex gap-2">
                   <Button
                     text={"Clear"}
-                    className=" text-white rounded-sm py-1 px-2 hover:bg-red-800 bg-red-600"
-                    type="button"
+                    className=" text-white rounded-sm py-1 hover:bg-red-800 bg-red-600"
                     onClick={() => {
                       setStudent(initial);
                     }}
                   />
                   <Button
-                    text={"Save"}
-                    className=" text-white rounded-sm py-1 px-2  bg-green-600 focus:bg-green-800"
-                    type="button"
+                    text={"Register"}
+                    className=" text-white rounded-sm py-1 bg-green-600 focus:bg-green-800"
                     onClick={(e) => {
                       e.preventDefault();
                       registerStudent();
