@@ -3,8 +3,10 @@
 import { Input, Button } from "@/components"
 import { useState } from "react"
 import axios from "axios"
+import { useRouter } from "next/navigation"
 
 const Page = (props: any) => {
+    const router = useRouter();
 
     const [user, setUser] = useState({
         name: "",
@@ -13,16 +15,22 @@ const Page = (props: any) => {
     })
 
     const registerNow = async () => {
-        // let res = await axios.post('/api/users', user);
-        console.log('counselor to be registered', user);
+        let res = await axios.post('/api/users', user);
+        console.log('counselor to be registered', res);
+        if (res.statusText === "OK") {
+            let data = await res.data;
+            if (data?.error) {
+                alert("something went wrong");
+            } else {
+                alert('success');
+                router.push('/counselor');
+            }
+        }
     }
 
     return (
-        <div className="flex flex-col max-w-[720px] m-auto border border-gray-200  rounded-sm p-2">
-            <form action={'#'} className="" onSubmit={(e) => {
-                e.preventDefault();
-                registerNow();
-            }}>
+        <div className="flex flex-col mt-[40px] max-w-[720px] m-auto border border-gray-200  rounded-sm p-2">
+            <form action={'#'} className="">
                 <Input
                     label={"Name"}
                     htmlFor={"cname"}
@@ -56,9 +64,13 @@ const Page = (props: any) => {
                 />
 
                 <Button
-                    text={"Submit"}
+                    text={"Register"}
                     className={"bg-green-600 ml-2"}
-                    onClick={(event: any) => { }}
+                    onClick={(event: any) => {
+                        event.preventDefault();
+                        console.log('register');
+                        registerNow();
+                    }}
                 />
             </form>
 
