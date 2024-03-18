@@ -4,7 +4,7 @@ import "@/app/globals.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { SearchStudents, Button, Students } from "@/components";
+import { SearchStudents, Button, Students, Loading } from "@/components";
 import { IoSearch } from "react-icons/io5";
 
 const RecentRegisteredStudents = () => {
@@ -42,7 +42,7 @@ const RecentRegisteredStudents = () => {
   }, [currentPage]);
 
   return (
-    <div className="min-h-[100vh] lg:min-w-[720px]">
+    <div className="">
       <div className="">
         <h1 className="font-bold text-slate-600 text-xl bg-gray-200 py-2 px-2 border border-b-slate-300">
           {/* Recent Registered Students */}
@@ -86,7 +86,13 @@ const RecentRegisteredStudents = () => {
             />
           </div>
         )}
-        <Students students={students} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className="mx-2">
+            <Students students={students} />
+          </div>
+        )}
       </div>
     </div>
   );

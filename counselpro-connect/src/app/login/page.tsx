@@ -50,7 +50,7 @@ const Page = () => {
     }, [params, timeout]);
 
     if (session.status === "loading") {
-        return <p>Loading...</p>;
+        return <Loading />;
     }
 
     if (session.status === "authenticated") {
@@ -72,33 +72,34 @@ const Page = () => {
                             handleLogin();
                         }}
                     >
-                        <Input
-                            inputColor={"text-black"}
-                            label={"Email"}
-                            htmlFor={"email"}
-                            value={user.email}
-                            placeholder={"email"}
-                            className={
-                                "bg-gray-100 p-1 text-black rounded-sm focus:outline-none"
-                            }
-                            type={"text"}
-                            onChange={(e: any) => {
-                                setUser({ ...user, email: e.target.value });
-                            }}
-                        />
-                        <Input
-                            inputColor={"text-black"}
-                            label={"Password"}
-                            htmlFor={"password"}
-                            value={user.password}
-                            placeholder={"Password"}
-                            className={"bg-gray-100 p-1 rounded-sm focus:outline-none"}
-                            type={"password"}
-                            onChange={(e) => {
-                                setUser({ ...user, password: e.target.value });
-                            }}
-                        />
-
+                        {loading ? <Loading /> : <>
+                            <Input
+                                inputColor={"text-black"}
+                                label={"Email"}
+                                htmlFor={"email"}
+                                value={user.email}
+                                placeholder={"email"}
+                                className={
+                                    "bg-gray-100 p-1 text-black rounded-sm focus:outline-none"
+                                }
+                                type={"text"}
+                                onChange={(e: any) => {
+                                    setUser({ ...user, email: e.target.value });
+                                }}
+                            />
+                            <Input
+                                inputColor={"text-black"}
+                                label={"Password"}
+                                htmlFor={"password"}
+                                value={user.password}
+                                placeholder={"Password"}
+                                className={"bg-gray-100 p-1 rounded-sm focus:outline-none"}
+                                type={"password"}
+                                onChange={(e) => {
+                                    setUser({ ...user, password: e.target.value });
+                                }}
+                            />
+                        </>}
                         <div className="flex justify-center pt-2 flex-col items-center">
                             <button className="bg-white border border-black border-opacity-25 rounded-sm px-2 py-1 font-semibold hover:bg-gray-100">
                                 Login

@@ -1,7 +1,7 @@
 "use client"
 import axios from 'axios';
 import { apiBaseUrl } from "@/utils";
-import { Students } from "@/components"
+import { Students, Loading } from "@/components"
 import { useEffect, useState } from 'react';
 
 const getUser = async (id: string) => {
@@ -15,6 +15,14 @@ const getUser = async (id: string) => {
     return null;
 }
 
+
+const handleRemove = () => {
+    let userInput = confirm('are you sure want to remove this counselor?');
+    if (userInput) {
+
+    }
+}
+
 const getStudents = async (registeredBy: string) => {
     let res = await axios.get(`${apiBaseUrl}/api/students/search?registeredBy=${registeredBy}`);
 
@@ -26,22 +34,27 @@ const getStudents = async (registeredBy: string) => {
 }
 
 const Page = ({ params }: { params: object }) => {
+    const [loading, setLoading] = useState(false);
+
     const [students, setStudents] = useState([])
     const [user, setUser] = useState<{ name: string, email: string, isAdmin: boolean } | null>(null);
     const id = params.id[0];
 
     useEffect(() => {
         ; (async () => {
+            setLoading(true);
             const user = await getUser(id);
             const students = await getStudents(id);
-
             setUser(user[0]);
             setStudents(students);
+            setLoading(false);
         })()
     }, [id])
 
     return (
         <div>
+
+            {loading && <Loading />}
             {user && <>
                 <div>
                     <p>Name - {user.name}</p>
@@ -51,16 +64,23 @@ const Page = ({ params }: { params: object }) => {
                 </div>
             </>}
 
-            <Students students={students} />
-            <div>
-                <button className="shadow-sm bg-gray-800 rounded-sm text-white font-semibold px-2 py-1"
+            {loading ? <Loading /> : <Students students={students} />}
+            {students && <div className='py-2 flex gap-2'>
+                <button className="shadow-sm bg-green-600 hover:bg-gray-700 rounded-sm text-white font-semibold px-2 py-1"
                     onClick={() => {
                         window.print();
                     }}
                 >
-                    Export
+                    Print
                 </button>
-            </div>
+                <button className="shadow-sm bg-red-600 hover:bg-red-700 rounded-sm text-white font-semibold px-2 py-1"
+                    onClick={() => {
+                        handleRemove();
+                    }}
+                >
+                    Remove Counselor
+                </button>
+            </div>}
         </div>
     )
 }

@@ -1,7 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
-import { Button, Input, JsonToCsvExporter } from "@/components";
+import {
+  Button,
+  Input,
+  JsonToCsvExporter,
+  Loading,
+  Students,
+} from "@/components";
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -306,107 +312,7 @@ export default function SearchStudents({
                   </div>
                 </div>
               </div>
-              <table
-                className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                border={1}
-              >
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="px-1 py-2">
-                      S.No.
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Name
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Father Name
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Mobile
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Registered By
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Category
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Villege
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      District
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Date
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Status
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="odd:bg-white border-b dark:border-gray-700">
-                  {students &&
-                    students.map((student, idx) => {
-                      return (
-                        <tr
-                          key={idx}
-                          className={`${
-                            idx % 2 ? "bg-gray-200" : "bg-gray-100"
-                          } text-gray-900`}
-                        >
-                          <td className="px-1 py-2">{idx + 1}</td>
-                          <td className="px-6 py-2">{student.name}</td>
-                          <td className="px-6 py-2">{student.fatherName}</td>
-                          <td className="px-6 py-2">{student.mobile}</td>
-                          <td className="px-6 py-2">{student.registeredBy}</td>
-                          <td className="px-6 py-2">{student.category}</td>
-                          <td className="px-6 py-2">{student.villege}</td>
-                          <td className="px-6 py-2">{student.district}</td>
-                          <td className="px-6 py-2">
-                            {new Date(student.createdAt).toLocaleDateString() +
-                              "-" +
-                              new Date(student.createdAt).toLocaleTimeString()}
-                          </td>
-                          <td className="px-6 py-2">{student.status}</td>
-                          <td className="px-6 py-2 flex items-center gap-1 ">
-                            <Button
-                              text={"View"}
-                              onClick={() => {
-                                router.push(
-                                  `/student/${student._id}`
-                                );
-                              }}
-                            />
-                            <Button
-                              text={"Update"}
-                              onClick={() => {
-                                router.push(
-                                  `/student/update-student?studentId=${student._id}`
-                                );
-                              }}
-                            />
-                            {/* <Button
-                              className={"bg-red-600"}
-                              text={"Remove"}
-                              onClick={() => {
-                                let comfirm = window.confirm(
-                                  "Are you sure want to remove this student"
-                                );
-
-                                if (comfirm) {
-                                  removeStudent(student._id);
-                                }
-                              }}
-                            /> */}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
+              {loading ? <Loading /> : <Students students={students} />}
             </div>
           </>
         )}
