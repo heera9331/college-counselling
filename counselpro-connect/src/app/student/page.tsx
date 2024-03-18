@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { SearchStudents } from "@/components"
 
-const Page = () => {
+const Page = (props: any) => {
     return (
         <div className="">
             <Link

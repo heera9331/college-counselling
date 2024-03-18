@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import Button from "./Button";
 
@@ -56,7 +57,11 @@ class JsonToCsvExporter extends React.Component {
   };
 
   render() {
-    return <Button text={"Export"} onClick={this.downloadCsv} />;
+    return <button
+      onClick={this.downloadCsv}
+    >
+      Export
+    </button>;
   }
 }
 

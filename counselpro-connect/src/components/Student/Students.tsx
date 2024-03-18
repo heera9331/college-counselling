@@ -87,7 +87,7 @@ const Students = ({students}: {students: any[]}) => {
                                             text={"View"}
                                             onClick={() => {
                                                 router.push(
-                                                    `/student/view-student?studentId=${student._id}`
+                                                    `/student/${student._id}`
                                                 );
                                             }}
                                         />

@@ -13,23 +13,23 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
     console.log('/api/students/3eriojfdsiof');
     console.log('params -', params);
 
-    const { id } = params;
+    const id = params.id;
 
     console.log('student id - ', id);
 
     try {
-        const student = await Student.findById("656c4874ee4ca4b11794bf64");  
+        const student = await Student.findById(id).limit(1);
 
         console.log('student is - ', student);
 
         if (!student) {
-            return NextResponse.json({error: "student not found"})
+            return NextResponse.json({ error: "student not found" })
         }
-        
+
         return NextResponse.json({ student });
     } catch (error) {
         console.error("Error fetching student:", error);
-        return NextResponse.json({error: "internal server error"})
+        return NextResponse.json({ error: "internal server error" })
     }
 };
 
@@ -42,18 +42,18 @@ export const DELETE = async (req: NextRequest, { params }: { params: { id: strin
     console.log('student id - ', id);
 
     try {
-        const student = await Student.deleteOne({ _id: id });  
+        const student = await Student.deleteOne({ _id: id });
 
         console.log('student is - ', student);
 
         if (!student) {
-            return NextResponse.json({error: "student not found"})
+            return NextResponse.json({ error: "student not found" })
         }
-        
+
         return NextResponse.json({ student });
     } catch (error) {
         console.error("Error fetching student:", error);
-        return NextResponse.json({error: "internal server error"})
+        return NextResponse.json({ error: "internal server error" })
     }
 };
 

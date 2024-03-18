@@ -376,7 +376,7 @@ export default function SearchStudents({
                               text={"View"}
                               onClick={() => {
                                 router.push(
-                                  `/home/view-student?studentId=${student._id}`
+                                  `/student/${student._id}`
                                 );
                               }}
                             />
@@ -384,7 +384,7 @@ export default function SearchStudents({
                               text={"Update"}
                               onClick={() => {
                                 router.push(
-                                  `/home/update-student?studentId=${student._id}`
+                                  `/student/update-student?studentId=${student._id}`
                                 );
                               }}
                             />

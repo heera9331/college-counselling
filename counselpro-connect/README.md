@@ -26,6 +26,8 @@ npm run dev -- -H  192.168.109.152
 - login ✔
 - authenticatation ✔
 - api ✔
+- student report card ✔
+- student report download ✔
 
 - view report -> report generation and exportation
 - dashboard summery or graphs
