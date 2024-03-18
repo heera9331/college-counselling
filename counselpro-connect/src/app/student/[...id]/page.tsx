@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { apiBaseUrl } from "@/utils"
 import axios from "axios";
+import { Loading } from '@/components'
 import { useEffect, useState } from "react";
 
 interface student {
@@ -35,17 +36,18 @@ const getStudent = async (id: string) => {
     return null;
 }
 
-
 const Page = ({ params }: { params: any }) => {
-
+    const [loading, setLoading] = useState(false);
     const [student, setStudent] = useState<student | null>(null);
     let id = params.id[0];
 
     useEffect(() => {
 
         ; ((async () => {
+            setLoading(true);
             let student: student | null = await getStudent(id);
             setStudent(student);
+            setLoading(false);
         })())
 
     }, [id])
@@ -61,8 +63,8 @@ const Page = ({ params }: { params: any }) => {
                 </Link>
             </div>
             <div className="flex items-center justify-center min-h-[80vh] ">
-                {student &&
-                    <div className="shadow border rounded-sm p-4 flex flex-col gap-2 min-w-[580px]">
+                {loading ? <Loading /> : (
+                    student && <div className="shadow border rounded-sm p-4 flex flex-col gap-2 min-w-[580px]">
                         <div>
                             <h2 className="text-2xl font-semibold ">Student Report</h2>
                         </div>
@@ -136,8 +138,6 @@ const Page = ({ params }: { params: any }) => {
                             </tbody>
                         </table>
 
-
-
                         <div className="flex gap-2">
                             <button className="shadow-sm bg-gray-800 rounded-sm text-white font-semibold px-2 py-1"
                                 onClick={() => {
@@ -154,7 +154,8 @@ const Page = ({ params }: { params: any }) => {
                             </Link>
                         </div>
                     </div>
-                }
+                )}
+
             </div>
         </>
     )
