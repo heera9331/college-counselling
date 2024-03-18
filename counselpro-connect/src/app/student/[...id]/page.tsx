@@ -144,7 +144,7 @@ const Page = ({ params }: { params: any }) => {
                                     window.print();
                                 }}
                             >
-                                Export
+                                Print
                             </button>
 
                             <Link
