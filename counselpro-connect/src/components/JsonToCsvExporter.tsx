@@ -59,6 +59,7 @@ class JsonToCsvExporter extends React.Component {
   render() {
     return <button
       onClick={this.downloadCsv}
+      className="bg-gray-800 text-white font-semibold rounded-sm py-1 px-2"
     >
       Export
     </button>;

@@ -115,7 +115,7 @@ export default function SearchStudents({
   }, [currentPage]);
 
   return (
-    <div className="text-black">
+    <div className="text-black py-4">
       <div className="my-4 text-black mx-2">
         {/* search form */}
         <div className="flex flex-col gap-2">
@@ -323,7 +323,7 @@ export default function SearchStudents({
       {/* export button  */}
       <div>
         {students && (
-          <div className="">
+          <div className="px-4">
             <JsonToCsvExporter jsonData={students} filename={"report.csv"} />
           </div>
         )}

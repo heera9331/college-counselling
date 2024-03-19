@@ -1,10 +1,12 @@
+"use client"
 
-
-const Page = async (props: any) => {
+import { SearchStudents } from "@/components"
+const Page = (props: any) => {
 
     return (
         <div>
-            <h1>view report page</h1>
+            <h1 className="font-semibold text-2xl">View Report</h1>
+            <SearchStudents isExportOpen={true} autoSearch={true} />
         </div>
     )
 }
