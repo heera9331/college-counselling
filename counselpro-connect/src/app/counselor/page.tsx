@@ -20,7 +20,7 @@ const CounsellorRow = ({ idx, user }: { idx: number, user: any }) => {
                     <button className="bg-gray-300 rounded-sm hover:bg-white border border-gray-500 px-2 py-1 font-semibold">View-Profile</button>
                 </Link>
                 <Link href={`/counselor/${user.email}`}>
-                    <button className="bg-red-600 hover:bg-white border border-gray-500 px-2 py-1 font-semibold">Remove</button>
+                    <button className="bg-red-600 text-white hover:bg-red-700 border border-gray-500 px-2 py-1 font-semibold rounded-sm">Remove</button>
                 </Link>
             </td>
         </tr>
