@@ -3,13 +3,13 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
-import { IoMdArrowDropdownCircle } from "react-icons/io";
+import Image from "next/image";
+import { IoIosLogOut } from "react-icons/io";
 const user = {
   name: "Tom Cook",
   email: "tom@example.com",
   imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    "/images/user2.png",
 };
 
 const navigation = [
@@ -21,11 +21,9 @@ const navigation = [
   { name: "SiteMap", href: "/sitemap", current: false },
 ];
 
-const userNavigation = [
+const userNavigation: any[] = [];
 
-];
-
-function classNames(...classes) {
+function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -96,11 +94,14 @@ export default function Header() {
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="absolute -inset-1.5" />
                             <span className="sr-only">Open user menu</span>
-                            <img
-                              className="h-8 w-8 rounded-full"
+                            <Image
                               src={user.imageUrl}
                               alt=""
+                              width={400}
+                              height={400}
+                              className="h-8 w-8 rounded-full"
                             />
+
                           </Menu.Button>
                         </div>
                         <Transition
@@ -119,7 +120,11 @@ export default function Header() {
                               </Menu.Item>
                               <Menu.Item>
                                 <Link href="#" >
-                                  <button onClick={() => signOut()} className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-700 hover:text-white">Logout</button>
+                                  <button onClick={() => signOut()} className="px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-700 hover:text-white">
+                                    <div className="flex gap-2 items-center">
+                                      <IoIosLogOut className="text-xl" /><span>Logout</span>
+                                    </div>
+                                  </button>
                                 </Link>
                               </Menu.Item>
                             </>
@@ -175,11 +180,14 @@ export default function Header() {
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
-                      <img
-                        className="h-10 w-10 rounded-full"
+                      <Image
                         src={user.imageUrl}
+                        height={400}
+                        width={400}
                         alt="user profile image"
+                        className="h-8 w-8 rounded-full"
                       />
+
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">
