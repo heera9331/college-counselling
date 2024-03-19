@@ -44,26 +44,16 @@ export default function Page(props) {
                         href={'/dashboard'}
                         className="text-blue-800 underline font-semibold"
                     >
-                        Dashboard
+                        Dashboard - /dashboard
                     </Link>
-                    <Link
-                        href={'/home/add-student'}
-                        className="text-blue-800 underline font-semibold"
-                    >
-                        Add Student - /home/add-student
-                    </Link>
+                     
                     {/* <Link
                         href={'/home/view-student'}
                         className="text-blue-800 underline font-semibold"
                     >
                         View Student - /home/view-student
                     </Link> */}
-                    <Link
-                        href={'/home/update-student'}
-                        className="text-blue-800 underline font-semibold"
-                    >
-                        Update Student - /home/update-student
-                    </Link>
+                     
                     <Link
                         href={`/profile?email=${data?.user?.email}`}
                         className="text-blue-800 underline font-semibold"
@@ -80,7 +70,13 @@ export default function Page(props) {
                         href={`/student`}
                         className="text-blue-800 underline font-semibold"
                     >
-                        Students /student
+                        Students - /student
+                    </Link>
+                    <Link
+                        href={`/view-report`}
+                        className="text-blue-800 underline font-semibold"
+                    >
+                        View Report - /student
                     </Link>
                 </div>
             </div>
