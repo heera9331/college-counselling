@@ -17,7 +17,7 @@ export default function RootLayout({ children, params }) {
       <body className="m-auto">
         <SessionProvider>
           <Header />
-          <div className="max-w-[1440px] mx-auto min-h-[80vh] border border-black px-2">
+          <div className="scroll-smooth max-w-[1440px] mx-auto min-h-[80vh] border border-black px-2">
             <Breadcrumbs path={path} />
             {children}
 
