@@ -6,11 +6,11 @@ import { NextResponse , NextRequest} from "next/server";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
     await connectDB();
-    console.log('/api/students'); 
+    console.log('get -> /api/students'); 
     
     const currentPage : number =Number(req.nextUrl.searchParams.get('currentPage')) || 1;
     const pageSize: number =Number(req.nextUrl.searchParams.get('pageSize')) || 15;
-    const students: any[] = await Student.find({}).select(["-chats"]).skip((currentPage-1)*pageSize).limit(pageSize);
+    const students: any[] = await Student.find({}).select(["-chats", "-__V"]).skip((currentPage-1)*pageSize).limit(pageSize);
     return NextResponse.json(students);
 };
 

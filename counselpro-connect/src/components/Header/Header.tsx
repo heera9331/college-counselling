@@ -119,6 +119,9 @@ export default function Header() {
                                 <Link href={`/profile?email=${data?.user?.email}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white">Your Profile</Link>
                               </Menu.Item>
                               <Menu.Item>
+                                <Link href={`/backup`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white">Backup</Link>
+                              </Menu.Item>
+                              <Menu.Item>
                                 <Link href="#" >
                                   <button onClick={() => signOut()} className="px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-700 hover:text-white">
                                     <div className="flex gap-2 items-center">

@@ -3,7 +3,7 @@ import React from "react";
 import Button from "./Button";
 
 class JsonToCsvExporter extends React.Component {
-  constructor(props) {
+  constructor(props:any) {
     super(props);
     console.log("export", props);
     this.state = {
