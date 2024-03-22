@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 
 export default function RootLayout({ children, params }) {
   const path = usePathname();
-  
+
   return (
     <html lang="en">
       <head>
@@ -21,7 +21,7 @@ export default function RootLayout({ children, params }) {
         <SessionProvider>
           <Provider store={store}>
             <Header />
-            <div className="scroll-smooth max-w-[1440px] mx-auto min-h-[80vh] border border-black px-2">
+            <div className="scroll-smooth max-w-[1440px] mx-auto min-h-[80vh] border border-black px-2 pb-10">
               <Breadcrumbs path={path} />
               {children}
             </div>

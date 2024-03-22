@@ -48,7 +48,9 @@ export default function Header() {
                       />
                     </div> */}
                     <div className="">
-                      <h1 className="text-2xl font-bold text-gray-100">CounselPro Connect</h1>
+                      <Link href={'/'}>
+                        <h1 className="text-2xl font-bold text-gray-100">CounselPro Connect</h1>
+                      </Link>
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
