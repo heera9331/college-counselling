@@ -2,7 +2,8 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Input, Loading } from "@/components";
-import { useEffect, useState } from "react";
+import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
+import { useSearchContext } from "@/hooks";
 
 import axios from "axios";
 
@@ -12,19 +13,52 @@ const courseInfo = {
   DIPLOMA: ["ME", "CE", "EE"],
 };
 
+interface student {
+  comment: string;
+  _id: string,
+  name: string,
+  fatherName: string,
+  mobile: string,
+  villege: string,
+  block: string,
+  district: string,
+  marks10: string,
+  marks12: string,
+  caste: string,
+  registeredBy: string,
+  schoolName: string,
+  status: string,
+  course: string,
+  branch: string,
+  category: string,
+  chats: string,
+  __v: string,
+  createdAt: string,
+  updatedAt: string,
+}
+
 export default function Page() {
   const params = useSearchParams();
-  const [student, setStudent] = useState(null);
+  const [student, setStudent] = useState<student | null | void>(null);
   const [initial, setInitial] = useState(null);
-
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  let studentId = params.get("studentId");
+  const {
+    students,
+    status,
+    query,
+    error,
+    setLoading,
+    setSuccess,
+    setError,
+  } = useSearchContext();
+
+  // student id
+  let id = params.get("studentId");
+
   const getStudent = async (studentId: any) => {
     try {
-      setLoading(true);
-      let res = await axios.get(`/api/students/${studentId}`);
-      setLoading(false);
+      setLoading();
+      let res = await axios.get(`/api/students/${studentId}`); 
       if (res.statusText === "OK") {
         let data = await res.data;
         if (data?.error) {
@@ -47,9 +81,9 @@ export default function Page() {
 
     if (comfirm) {
       try {
-        let res = await axios.put(`/api/students/${studentId}`,student);
+        let res = await axios.put(`/api/students/${studentId}`, student);
         console.log('update res', res);
-        
+
         if (res.statusText === "OK") {
           alert("updated");
           // router.push("/home");
@@ -71,10 +105,26 @@ export default function Page() {
   };
 
   useEffect(() => {
-    let studentId = params.get("studentId");
-    console.log(studentId);
-    getStudent(studentId);
-  }, []);
+    ; ((async () => {
+      setLoading();
+      let student = null;
+      let flag = true;
+      for (let i = 0; i < students.length; i++) {
+        if (students[i]._id == id) {
+          student = students[i];
+          flag = false;
+          break;
+        }
+      }
+      if (flag) {
+        student = await getStudent(id);
+      }
+      setSuccess(students);
+      setStudent(student);
+
+    })());
+
+  }, [id]);
 
   return (
     <div className="">
@@ -292,7 +342,7 @@ export default function Page() {
                       >
                         <option value="OTHER">OTHER</option>
                         {student.course.length != 0 &&
-                          courseInfo[`${student.course}`].map((branch, idx) => {
+                          courseInfo[`${student.course}`].map((branch: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, idx: Key | null | undefined) => {
                             return (
                               <option value={`${branch}`} key={idx}>
                                 {branch}
@@ -335,7 +385,7 @@ export default function Page() {
 
                 <div className="m-2 border p-2 rounded-sm">
                   <h2>Previous comments</h2>
-                  {student.chats.map((chat, idx) => {
+                  {student.chats && student.chats.map((chat, idx) => {
                     return (
                       <div key={idx} className="my-2">
                         <p className="text-center">
@@ -365,7 +415,7 @@ export default function Page() {
           </>
         )}
 
-        {loading && <Loading />}
+        {status==="loading" && <Loading />}
       </div>
     </div>
   );

@@ -6,39 +6,49 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { SearchStudents, Button, Students, Loading } from "@/components";
 import { IoSearch } from "react-icons/io5";
+import { useSearchContext } from "@/hooks";
 
 const RecentRegisteredStudents = () => {
+  const {
+    students,
+    status,
+    query,
+    error,
+    updateSearchContext,
+    setLoading,
+    setSuccess,
+    setError,
+  } = useSearchContext();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(15);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [students, setStudents] = useState([]);
-
   // toggle for search
   const [click, setClick] = useState(false);
 
   const getRecentStudents = async () => {
-    setLoading(true);
+    setLoading();
     let res = await axios.get(
       `/api/students?currentPage=${currentPage}&pageSize=${pageSize}`
     );
 
-    setLoading(false);
+    setLoading();
     if (res && res.statusText === "OK") {
       let data = await res.data;
       console.log("data", data);
-      setStudents(data);
+      setSuccess(data);
       setTotal(data.length);
     } else {
       setLoading(false);
       // router.push("/login");
     }
-    setTotal(false);
+    setTotal(0);
   };
 
   useEffect(() => {
-    getRecentStudents();
+    if (!students.length) {
+      getRecentStudents();
+    }
   }, [currentPage]);
 
   return (
@@ -86,7 +96,7 @@ const RecentRegisteredStudents = () => {
             />
           </div>
         )}
-        {loading ? (
+        {status === "loading" ? (
           <Loading />
         ) : (
           <div className="mx-2">

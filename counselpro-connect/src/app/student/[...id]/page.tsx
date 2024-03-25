@@ -4,6 +4,7 @@ import { apiBaseUrl } from "@/utils"
 import axios from "axios";
 import { Loading } from '@/components'
 import { useEffect, useState } from "react";
+import { useSearchContext } from "@/hooks";
 
 interface student {
     _id: string,
@@ -37,17 +38,37 @@ const getStudent = async (id: string) => {
 }
 
 const Page = ({ params }: { params: any }) => {
-    const [loading, setLoading] = useState(false);
+
     const [student, setStudent] = useState<student | null>(null);
+    const {
+        students,
+        status, 
+        error, 
+        setLoading,
+        setSuccess,
+        setError,
+    } = useSearchContext();
     let id = params.id[0];
 
     useEffect(() => {
 
         ; ((async () => {
-            setLoading(true);
-            let student: student | null = await getStudent(id);
+            setLoading();
+            let student: student | null = null;
+            let flag = true;
+            for (let i = 0; i < students.length; i++) {
+                if (students[i]._id == id) {
+                    student = students[i];
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                student = await getStudent(id);
+            }
+            setSuccess(students);
             setStudent(student);
-            setLoading(false);
+
         })())
 
     }, [id])
@@ -63,7 +84,7 @@ const Page = ({ params }: { params: any }) => {
                 </Link>
             </div>
             <div className="flex items-center justify-center min-h-[80vh] ">
-                {loading ? <Loading /> : (
+                {status === "loading" ? <Loading /> : (
                     student && <div className="shadow border rounded-sm p-4 flex flex-col gap-2 min-w-[580px]">
                         <div>
                             <h2 className="text-2xl font-semibold ">Student Report</h2>
