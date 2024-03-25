@@ -1,3 +1,6 @@
+// context
+import useSearchContext from './useSearch'
+
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import type { TypedUseSelectorHook } from 'react-redux'
 import type { RootState, AppDispatch, AppStore } from '@/lib/store'
@@ -7,4 +10,4 @@ const useAppDispatch: () => AppDispatch = useDispatch
 const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 const useAppStore: () => AppStore = useStore
 
-export { useAppSelector, useAppDispatch, useAppStore }
+export { useAppSelector, useAppDispatch, useAppStore, useSearchContext }
