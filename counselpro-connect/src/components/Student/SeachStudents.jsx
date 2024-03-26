@@ -260,7 +260,7 @@ export default function SearchStudents({
           </div>
           <div className="my-1">
             <Button
-              className="mx-2 bg-blue-700 text-white rounded-sm py-1 px-2 hover:bg-blue-900 "
+              className=""
               text={"Search"}
               onClick={(e) => {
                 e.preventDefault();

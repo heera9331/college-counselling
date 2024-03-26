@@ -1,5 +1,9 @@
+"use client"
+
 import Link from "next/link"
 import axios from 'axios';
+import { Button } from "@/components"
+import { useState, useEffect } from "react";
 
 /**
  * users => counselors
@@ -17,10 +21,19 @@ const CounsellorRow = ({ idx, user }: { idx: number, user: any }) => {
             <td className="p-2">{user.createdAt}</td>
             <td className="p-2 flex gap-2">
                 <Link href={`/counselor/${user.email}`}>
-                    <button className="bg-gray-300 rounded-sm hover:bg-white border border-gray-500 px-2 py-1 font-semibold">View-Profile</button>
+                    <Button
+                        text="View-Profile"
+                        onClick={(e: any) => { }}
+                        className="bg-blue-700 hover:bg-blue-800 text-white"
+                    />
+
                 </Link>
                 <Link href={`/counselor/${user.email}`}>
-                    <button className="bg-red-600 text-white hover:bg-red-700 border border-gray-500 px-2 py-1 font-semibold rounded-sm">Remove</button>
+                    <Button
+                        text="Remove"
+                        onClick={(e: any) => { }}
+                        className="bg-red-700 hover:text-red-800 text-white"
+                    />
                 </Link>
             </td>
         </tr>
@@ -28,7 +41,7 @@ const CounsellorRow = ({ idx, user }: { idx: number, user: any }) => {
 };
 
 const getCounselors = async () => {
-    let res = await axios.get('http://localhost:3000/api/users');
+    let res = await axios.get('/api/users');
 
     if (res.statusText === "OK") {
         let users = await res.data;
@@ -39,11 +52,15 @@ const getCounselors = async () => {
 }
 
 
-const Page = async (props: any) => {
+const Page = (props: any) => {
+    const [users, setUsers] = useState([]);
 
-    let users = await getCounselors();
-
-    console.log('user', users);
+    useEffect(() => {
+        ; (async () => {
+            let users = await getCounselors();
+            setUsers(users);
+        })()
+    }, [])
 
     return (
         <div>

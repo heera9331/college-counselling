@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 interface InputProps {
   text: string,
-  onClick: (e:any) => void,
+  onClick: (e: any) => void,
   className?: string,
 }
 const Button = ({ text, onClick, className, ...props }: InputProps) => {
   return (
     <button
-      className={`m-2 bg-secondary text-white rounded-sm py-1 px-2 hover:bg-blue-900 ${className}`}
+      className={`bg-gray-700  hover:bg-gray-800 text-white font-semibold rounded-sm py-1 px-2 ${className} titlecase`}
       type="button"
       {...props}
       onClick={onClick}

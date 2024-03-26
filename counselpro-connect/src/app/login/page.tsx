@@ -7,6 +7,7 @@ import { Loading, Input, Button } from "@/components";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getProviders, signIn, useSession } from "next-auth/react";
 
+
 const Page = () => {
     const [user, setUser] = useState({
         email: "admin@gmail.com",
@@ -67,10 +68,6 @@ const Page = () => {
                         className="text-black p-4"
                         action="#"
                         method="post"
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            handleLogin();
-                        }}
                     >
                         {loading ? <Loading /> : <>
                             <Input
@@ -101,9 +98,11 @@ const Page = () => {
                             />
                         </>}
                         <div className="flex justify-center pt-2 flex-col items-center">
-                            <button className="bg-white border border-black border-opacity-25 rounded-sm px-2 py-1 font-semibold hover:bg-gray-100">
-                                Login
-                            </button>
+
+                            <Button text={'Login'} onClick={(e) => {
+                                e.preventDefault();
+                                handleLogin();
+                            }} />
                             {error && error}
                         </div>
                     </form>

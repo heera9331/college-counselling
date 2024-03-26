@@ -15,7 +15,7 @@ const getUser = async (id: string) => {
     return null;
 }
 
-const removeCounselor = async (id:string) => {
+const removeCounselor = async (id: string) => {
     let res = await axios.delete(`/api/users/${id}`);
     console.log('delete res', res);
 }
@@ -68,7 +68,9 @@ const Page = ({ params }: { params: object }) => {
                 </div>
             </>}
 
-            {loading ? <Loading /> : <Students students={students} />}
+            <div className='my-2'>
+                {loading ? <Loading /> : <Students students={students} />}
+            </div>
             {students && <div className='py-2 flex gap-2'>
                 <button className="shadow-sm bg-green-600 hover:bg-gray-700 rounded-sm text-white font-semibold px-2 py-1"
                     onClick={() => {
