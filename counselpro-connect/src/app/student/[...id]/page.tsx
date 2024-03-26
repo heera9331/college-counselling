@@ -6,6 +6,8 @@ import { Loading } from '@/components'
 import { useEffect, useState } from "react";
 import { useSearchContext } from "@/hooks";
 
+import { useStudentContext } from "@/hooks";
+
 interface student {
     _id: string,
     name: string,
@@ -38,24 +40,23 @@ const getStudent = async (id: string) => {
 }
 
 const Page = ({ params }: { params: any }) => {
+    const [student, setStudent] = useState<null | object>(null);
 
-    const [student, setStudent] = useState<student | null>(null);
-    const {
-        students,
-        status, 
-        error, 
-        setLoading,
-        setSuccess,
-        setError,
-    } = useSearchContext();
+    const { students, status, error, setStatus, setError, setStudents } =
+        useStudentContext();
     let id = params.id[0];
 
     useEffect(() => {
 
         ; ((async () => {
-            setLoading();
+            setStatus("loading");
             let student: student | null = null;
             let flag = true;
+
+            if (status == "initial") {
+                flag = false;
+                student = await getStudent(id);
+            }
             for (let i = 0; i < students.length; i++) {
                 if (students[i]._id == id) {
                     student = students[i];
@@ -66,7 +67,7 @@ const Page = ({ params }: { params: any }) => {
             if (flag) {
                 student = await getStudent(id);
             }
-            setSuccess(students);
+            setStatus("success");
             setStudent(student);
 
         })())

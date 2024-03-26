@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Input, Loading } from "@/components";
 import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
-import { useSearchContext } from "@/hooks";
+import { useStudentContext } from "@/hooks";
 
 import axios from "axios";
 
@@ -39,26 +39,19 @@ interface student {
 
 export default function Page() {
   const params = useSearchParams();
-  const [student, setStudent] = useState<student | null | void>(null);
+  const [student, setStudent] = useState<student | null>(null);
   const [initial, setInitial] = useState(null);
   const router = useRouter();
-  const {
-    students,
-    status,
-    query,
-    error,
-    setLoading,
-    setSuccess,
-    setError,
-  } = useSearchContext();
+  const { students, status, error, setStatus, setError, setStudents, initializeState } =
+    useStudentContext();
+
 
   // student id
   let id = params.get("studentId");
 
   const getStudent = async (studentId: any) => {
     try {
-      setLoading();
-      let res = await axios.get(`/api/students/${studentId}`); 
+      let res = await axios.get(`/api/students/${studentId}`);
       if (res.statusText === "OK") {
         let data = await res.data;
         if (data?.error) {
@@ -106,9 +99,13 @@ export default function Page() {
 
   useEffect(() => {
     ; ((async () => {
-      setLoading();
+      setStatus("loading");
       let student = null;
       let flag = true;
+      if (status === "initial") {
+        // await initializeState();
+      }
+
       for (let i = 0; i < students.length; i++) {
         if (students[i]._id == id) {
           student = students[i];
@@ -119,8 +116,9 @@ export default function Page() {
       if (flag) {
         student = await getStudent(id);
       }
-      setSuccess(students);
+      setStatus("success");
       setStudent(student);
+
 
     })());
 
@@ -415,7 +413,7 @@ export default function Page() {
           </>
         )}
 
-        {status==="loading" && <Loading />}
+        {status === "loading" && <Loading />}
       </div>
     </div>
   );

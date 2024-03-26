@@ -1,7 +1,5 @@
 
-import { createContext, useReducer, useState } from "react";
-
-
+import { createContext, useState } from "react";
 
 const StudentContext = createContext({});
 
@@ -30,8 +28,12 @@ const StudentContextProvider = ({ children }: { children: any }) => {
         setState({ ...state, status: status })
     }
 
+    const initializeState = (state: { students: any[], status: string, error: string }) => {
+        setState(state);
+    }
+
     return (
-        <StudentContext.Provider value={{ students: state.students, status: state.status, error: state.error, setStudents, setStatus, setError, resetState }}>
+        <StudentContext.Provider value={{ initializeState, students: state.students, status: state.status, error: state.error, setStudents, setStatus, setError, resetState }}>
             {children}
         </StudentContext.Provider>
     )

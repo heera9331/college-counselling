@@ -6,19 +6,12 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { SearchStudents, Button, Students, Loading } from "@/components";
 import { IoSearch } from "react-icons/io5";
-import { useSearchContext } from "@/hooks";
+import { useSearchContext, useStudentContext } from "@/hooks";
 
 const RecentRegisteredStudents = () => {
-  const {
-    students,
-    status,
-    query,
-    error,
-    updateSearchContext,
-    setLoading,
-    setSuccess,
-    setError,
-  } = useSearchContext();
+  const { students, status, error, setStatus, setError, setStudents } =
+    useStudentContext();
+
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(15);
@@ -27,19 +20,20 @@ const RecentRegisteredStudents = () => {
   const [click, setClick] = useState(false);
 
   const getRecentStudents = async () => {
-    setLoading();
+    setStatus("loading");
     let res = await axios.get(
       `/api/students?currentPage=${currentPage}&pageSize=${pageSize}`
     );
 
-    setLoading();
+    setStatus("success");
+
     if (res && res.statusText === "OK") {
       let data = await res.data;
       console.log("data", data);
-      setSuccess(data);
+      setStudents(data);
       setTotal(data.length);
     } else {
-      setLoading(false);
+      setStatus("success");
       // router.push("/login");
     }
     setTotal(0);
