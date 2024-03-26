@@ -10,4 +10,6 @@ const useAppDispatch: () => AppDispatch = useDispatch
 const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 const useAppStore: () => AppStore = useStore
 
-export { useAppSelector, useAppDispatch, useAppStore, useSearchContext }
+import useStudentContext from './useStudentContext'
+
+export { useAppSelector, useAppDispatch, useAppStore, useSearchContext, useStudentContext }
