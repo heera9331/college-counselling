@@ -5,6 +5,7 @@ import { Header, Footer } from "@/components";
 import Breadcrumbs from "@/components/Breadcrumb";
 import { usePathname } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
+import { StudentContextProvider } from "@/contexts/StudentContext";
 
 // import { AppStore, makeStore } from '@/lib/store'
 // import { Provider } from 'react-redux'
@@ -19,7 +20,6 @@ export default function RootLayout({ children, params }: { children: string, par
   //   storeRef.current = makeStore();
   // }
 
-  
 
   return (
     <html lang="en">
@@ -28,16 +28,19 @@ export default function RootLayout({ children, params }: { children: string, par
       </head>
       <body className="m-auto">
         <SessionProvider>
-          {/* <Provider store={storeRef.current}> */}
-          <SearchProvider>
-            <Header />
-            <div className="scroll-smooth max-w-[1440px] mx-auto min-h-[80vh] border border-black px-2 pb-10">
-              <Breadcrumbs path={path} />
-              {children}
-            </div>
-            <Footer />
-          </SearchProvider>
-          {/* </Provider> */}
+          <StudentContextProvider>
+
+            {/* <Provider store={storeRef.current}> */}
+            <SearchProvider>
+              <Header />
+              <div className="scroll-smooth max-w-[1440px] mx-auto min-h-[80vh] border border-black px-2 pb-10">
+                <Breadcrumbs path={path} />
+                {children}
+              </div>
+              <Footer />
+            </SearchProvider>
+            {/* </Provider> */}
+          </StudentContextProvider>
         </SessionProvider>
       </body>
     </html>
