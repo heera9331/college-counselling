@@ -1,6 +1,6 @@
 
 
-const Page = (pross) => {
+const Page = (props: any) => {
 
 
     return (

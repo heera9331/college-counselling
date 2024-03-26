@@ -41,15 +41,15 @@ const cityData = [
 ]
 
 
-export const data = [
+const data = [
     ["Districts", "GEN", "OBC", "ST", "SC"],
     ["Sagar", 100, 200, 20, 33],
     ["Damoh", 45, 160, 150, 33],
     ["Chhatarpur", 60, 11, 30, 33],
-    ["Raisen", 30, 140, 50, 2], 
+    ["Raisen", 30, 140, 50, 2],
 ];
 
-export const options = {
+const options = {
     chart: {
         title: "Counselling Performance",
         subtitle: "Category and district wise data: 2023",

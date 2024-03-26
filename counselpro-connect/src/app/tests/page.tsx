@@ -33,7 +33,7 @@ const Page = () => {
         ; (async () => {
             await makeSearch("heera");
         })()
-    }, [students])
+    })
 
     return (
         <div>

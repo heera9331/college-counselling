@@ -72,7 +72,7 @@ const Page = ({ params }: { params: any }) => {
 
         })())
 
-    }, [id])
+    })
 
     return (
         <>
