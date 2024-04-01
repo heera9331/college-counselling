@@ -71,9 +71,19 @@ const Page = () => {
           </div>
         </div>
       </div>
+
+      <div id={"/#contact"} className={"m-auto "}>
+        <h2 className={"text-3xl text-gray-600 pl-2 font-semibold my-4"}>Portfolio</h2>
+        <embed
+          src={"https://heera-singh.netlify.app/"}
+          className={"w-[100%] h-[100vh]"}
+        />
+      </div>
+
+
       {/* Contact */}
 
-      <h2 className="text-3xl text-gray-600 font-semibold pl-2">Contact</h2>
+      <h2 className="text-3xl text-gray-600 font-semibold pl-2 mt-10">Contact</h2>
       <div className="my-4 flex gap-2">
         {/* contact form */}
         <div className="min-w-[50%] border-2 p-4 m-2 rounded-md">
@@ -82,7 +92,7 @@ const Page = () => {
             <input
               type="text"
               placeholder="Enter name"
-              className="bg-gray-100 shadow-sm border-2 border-gray-300 focus:border-blue-800 py-1 px-2 rounded-md outline-none"
+              className="bg-gray-100 shadow-sm border-2 border-gray-300 focus:border-blue-800 my-1 py-1 px-2 rounded-md outline-none"
               name="name"
             />
           </div>
@@ -91,7 +101,7 @@ const Page = () => {
             <input
               type="text"
               placeholder="Enter mobile number"
-              className="bg-gray-100 shadow-sm border-2 border-gray-300 focus:border-blue-800 py-1 px-2 rounded-md outline-none"
+              className="bg-gray-100 shadow-sm border-2 border-gray-300 focus:border-blue-800 my-1 py-1 px-2 rounded-md outline-none"
               name="mobile"
             />
           </div>
@@ -99,7 +109,7 @@ const Page = () => {
             <label htmlFor="msg">Message</label>
             <textarea
               placeholder="Type message or query something"
-              className="bg-gray-100 shadow-sm border-2 border-gray-300 focus:border-blue-800 py-1 px-2 rounded-md outline-none"
+              className="bg-gray-100 shadow-sm border-2 border-gray-300 focus:border-blue-800 my-1 py-1 px-2 rounded-md outline-none"
               name="msg"
             />
           </div>
@@ -113,13 +123,6 @@ const Page = () => {
         <div className="border-2 p-4 m-2 rounded-md">
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.0769755691917!2d78.75518557516622!3d23.831355078615204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3978d1574891fdc7%3A0x679f6d33e76242d1!2sGopal%20Ganj%2C%20Sagar%2C%20Madhya%20Pradesh%20470001!5e1!3m2!1sen!2sin!4v1711823717864!5m2!1sen!2sin" width="600" height="450" allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
         </div>
-      </div>
-      <div id={"/#contact"} className={"m-auto "}>
-        <h2 className={"text-3xl text-gray-600 pl-2 font-semibold my-4"}>Portfolio</h2>
-        <embed
-          src={"https://heera-singh.netlify.app/"}
-          className={"w-[100%] h-[100vh]"}
-        />
       </div>
     </div>
   );
