@@ -5,6 +5,7 @@ import { Button, Input, Loading } from "@/components";
 import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
 import { useStudentContext } from "@/hooks";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 // constants
 const courseInfo = {
@@ -42,6 +43,9 @@ export default function Page({ params, searchParams }) {
   const [initial, setInitial] = useState(null);
   const { getStudent, status }: object = useStudentContext();
   const [chats, setChats] = useState([]);
+  const [chat, setChat] = useState("");
+  const [loading, setLoading] = useState(false);
+  const session = useSession();
 
   let id = searchParams.studentId;
 
@@ -52,20 +56,27 @@ export default function Page({ params, searchParams }) {
 
     if (comfirm) {
       try {
-        let res = await axios.put(`/api/students/${studentId}`, student);
+        if (student)
+          student.comment = chat;
+
+        setLoading(true);
+        let res = await axios.put(`/api/students/${id}`, { student, updatedBy: session?.data?.user?.email });
         console.log('update res', res);
 
         if (res.statusText === "OK") {
+          setLoading(false);
           alert("updated");
           // router.push("/home");
         } else {
           setLoading(false);
+          console.log('error ', error)
           alert("there is some problem can't update, try again later");
         }
         setLoading(false);
       } catch (error) {
         // console.log("error", error);
         setLoading(false);
+        console.log('error ', error)
         alert("there is some problem can't update, try again later");
 
         // router.push("/login");
@@ -92,7 +103,7 @@ export default function Page({ params, searchParams }) {
       await getChat();
     })();
 
-  }, [student])
+  }, [])
 
   return (
     <div className="">
@@ -324,12 +335,9 @@ export default function Page({ params, searchParams }) {
                       type={"text"}
                       htmlFor={"comment"}
                       placeholder={"Enter comment"}
-                      value={student.comment || ""}
+                      value={chat}
                       onChange={(e) => {
-                        setStudent({
-                          ...student,
-                          comment: e.target.value.toUpperCase(),
-                        });
+                        setChat(e.target.value);
                       }}
                     />
 
