@@ -4,9 +4,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Input, Loading } from "@/components";
 import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
 import { useStudentContext } from "@/hooks";
-
 import axios from "axios";
 
+// constants
 const courseInfo = {
   BTECH: ["CS", "CE", "ME", "EC", "EE", "AI/ML"],
   ITI: ["WELDER", "FITTER", "DIESEL MACHENIC", "ELECTRICIAN", "PLUMBER"],
@@ -37,35 +37,11 @@ interface student {
   updatedAt: string,
 }
 
-export default function Page() {
-  const params = useSearchParams();
+export default function Page({ params, searchParams }) {
   const [student, setStudent] = useState<student | null>(null);
   const [initial, setInitial] = useState(null);
-  const router = useRouter();
-  const { students, status, error, setStatus, setError, setStudents, initializeState } =
-    useStudentContext();
+  const { getStudent, status }: object = useStudentContext();
 
-
-  // student id
-  let id = params.get("studentId");
-
-  const getStudent = async (studentId: any) => {
-    try {
-      let res = await axios.get(`/api/students/${studentId}`);
-      if (res.statusText === "OK") {
-        let data = await res.data;
-        if (data?.error) {
-          alert(data.error)
-        } else {
-          setStudent(data.student);
-          setInitial(data.student);
-        }
-      }
-    } catch (error) {
-      alert("can't get student, try again later");
-      router.push("/home");
-    }
-  };
 
   const updateNow = async (e: any) => {
     e.preventDefault();
@@ -98,31 +74,11 @@ export default function Page() {
   };
 
   useEffect(() => {
-    ; ((async () => {
-      setStatus("loading");
-      let student = null;
-      let flag = true;
-      if (status === "initial") {
-        // await initializeState();
-      }
-
-      for (let i = 0; i < students.length; i++) {
-        if (students[i]._id == id) {
-          student = students[i];
-          flag = false;
-          break;
-        }
-      }
-      if (flag) {
-        student = await getStudent(id);
-      }
-      setStatus("success");
-      setStudent(student);
-
-
-    })());
-
-  }, [id]);
+    let student = getStudent(searchParams.studentId);
+    console.log('student', student);
+    setStudent(student);
+    setInitial(student);
+  }, [])
 
   return (
     <div className="">
@@ -133,9 +89,9 @@ export default function Page() {
         {student && (
           <>
             <div className="m-auto px-6">
-              <div className="bg-slate-100 p-6 min-h-[420px] min-w-[512px] w-fit m-auto">
+              <div className="bg-slate-100 p-6 min-w-[420px] w-fit m-auto">
                 <div className="text-black">
-                  <div>
+                  <div className="md:grid md:grid-cols-4 md:gap-3">
                     <Input
                       label={"Name"}
                       type={"text"}
@@ -362,22 +318,25 @@ export default function Page() {
                         });
                       }}
                     />
-                    <div className="my-y flex gap-2">
-                      <Button
-                        text={"Clear"}
-                        className=" text-white rounded-sm py-1 px-2 hover:bg-red-800 bg-red-600"
-                        onClick={() => {
-                          setStudent(initial);
-                        }}
-                      />
-                      <Button
-                        text={"Update"}
-                        className=" text-white rounded-sm py-1 px-2  bg-green-600 focus:bg-green-800"
-                        onClick={(e) => {
-                          updateNow(e);
-                        }}
-                      />
-                    </div>
+
+                  </div>
+
+                  {/* button controls */}
+                  <div className="px-2 flex gap-2">
+                    <Button
+                      text={"Reset"}
+                      className=" text-white rounded-sm py-1 px-2 hover:bg-red-800 bg-red-600"
+                      onClick={() => {
+                        setStudent(initial);
+                      }}
+                    />
+                    <Button
+                      text={"Update"}
+                      className=" text-white rounded-sm py-1 px-2  bg-green-600 focus:bg-green-800"
+                      onClick={(e) => {
+                        updateNow(e);
+                      }}
+                    />
                   </div>
                 </div>
 
