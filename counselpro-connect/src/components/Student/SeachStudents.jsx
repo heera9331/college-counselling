@@ -119,25 +119,38 @@ export default function SearchStudents({
       <div className="my-4 text-black mx-2">
         {/* search form */}
         <div className="flex flex-col gap-2">
-          <Input
-            label={"Search text"}
-            placeholder={"Search here..."}
-            htmlFor={"search"}
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-            }}
-          />
-          <Input
-            label={"Number of Entries"}
-            htmlFor={"pageSize"}
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value));
-            }}
-          />
+          <div className="md:flex w-[100%]">
+            <Input
+              className=""
+              label={"Search text"}
+              placeholder={"Search here..."}
+              htmlFor={"search"}
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+              }}
+            />
+            <Input
+              label={"Number of Entries"}
+              htmlFor={"pageSize"}
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+              }}
+            />
+            <div className="sm:pl-[7px] md:mt-10">
+              <Button
+                className=""
+                text={"Search"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSearch();
+                }}
+              />
+            </div>
+          </div>
           {/* filters */}
-          <div className="my-1 gap-2 mx-2 lg:flex">
+          <div className="my-1 gap-2 mx-2 flex overflow-x-auto">
             <div className="flex flex-col gap-2 my-1">
               <label htmlFor="district" className="form-label text-black">
                 District
@@ -257,16 +270,6 @@ export default function SearchStudents({
                 <option value="-1">DESC</option>
               </select>
             </div>
-          </div>
-          <div className="my-1">
-            <Button
-              className=""
-              text={"Search"}
-              onClick={(e) => {
-                e.preventDefault();
-                handleSearch();
-              }}
-            />
           </div>
         </div>
 
