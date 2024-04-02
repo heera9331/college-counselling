@@ -1,7 +1,7 @@
 import { connectDB } from "@/utils";
 import { Student } from "@/models";
 import { NextResponse, NextRequest } from "next/server";
- 
+
 import { getSession, getCsrfToken } from "next-auth/react";
 // Ensure database connection before handling requests
 (async () => {
@@ -15,11 +15,12 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
     console.log('params -', params);
 
     const id = params.id;
-
-    console.log('student id - ', id);
+    const field = req.nextUrl.searchParams.get('field') || "";
+ 
 
     try {
-        const student = await Student.findById(id).limit(1);
+
+        const student = await Student.findById(id).select(`${field}`).limit(1);
 
         console.log('student is - ', student);
 

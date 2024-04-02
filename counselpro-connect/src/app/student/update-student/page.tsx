@@ -41,7 +41,9 @@ export default function Page({ params, searchParams }) {
   const [student, setStudent] = useState<student | null>(null);
   const [initial, setInitial] = useState(null);
   const { getStudent, status }: object = useStudentContext();
+  const [chats, setChats] = useState([]);
 
+  let id = searchParams.studentId;
 
   const updateNow = async (e: any) => {
     e.preventDefault();
@@ -73,12 +75,24 @@ export default function Page({ params, searchParams }) {
     }
   };
 
+  const getChat = async () => {
+    let res = await axios.get(`/api/students/${id}?field=chats`);
+    let student = await res.data.student;
+    console.log('student chat', student.chats);
+    setChats(student.chats);
+  }
+
   useEffect(() => {
-    let student = getStudent(searchParams.studentId);
+    let student = getStudent(id);
     console.log('student', student);
     setStudent(student);
     setInitial(student);
-  }, [])
+
+    ; (async () => {
+      await getChat();
+    })();
+
+  }, [student])
 
   return (
     <div className="">
@@ -267,7 +281,7 @@ export default function Page({ params, searchParams }) {
                       </label>
                       <select
                         className="p-1 border-2 rounded-sm focus: outline-none text-black"
-                        value={student.course}
+                        value={student?.course}
                         onChange={(e) => {
                           setStudent({ ...student, course: e.target.value });
                         }}
@@ -295,8 +309,8 @@ export default function Page({ params, searchParams }) {
                         }}
                       >
                         <option value="OTHER">OTHER</option>
-                        {student.course.length != 0 &&
-                          courseInfo[`${student.course}`].map((branch: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, idx: Key | null | undefined) => {
+                        {student?.course?.length != 0 &&
+                          courseInfo[`${student?.course}`].map((branch: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, idx: Key | null | undefined) => {
                             return (
                               <option value={`${branch}`} key={idx}>
                                 {branch}
@@ -342,7 +356,7 @@ export default function Page({ params, searchParams }) {
 
                 <div className="m-2 border p-2 rounded-sm">
                   <h2>Previous comments</h2>
-                  {student.chats && student.chats.map((chat, idx) => {
+                  {chats && chats.map((chat: object, idx) => {
                     return (
                       <div key={idx} className="my-2">
                         <p className="text-center">
