@@ -3,6 +3,9 @@ https://github.com/balazsorban44/auth-poc-next/blob/main/lib.ts
 
 **Use Context Switch API**
 
--> 1. issue:- chat saving is not working
+-> 1. issue:- chat saving is not working 
 -> 2. redesign of home ✔
 -> 3. nextjs auth
+
+[01-01-2024] chat display done ✔
+[01-01-2024] chat updating not working
