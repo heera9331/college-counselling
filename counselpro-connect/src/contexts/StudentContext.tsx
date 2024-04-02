@@ -32,8 +32,17 @@ const StudentContextProvider = ({ children }: { children: any }) => {
         setState(state);
     }
 
+    const getStudent = (id: string) => {
+        for (let i = 0; i < state.students.length; i++) {
+            if (state.students[i]._id === id) {
+                return state.students[i];
+            }
+        }
+        return null;
+    }
+
     return (
-        <StudentContext.Provider value={{ initializeState, students: state.students, status: state.status, error: state.error, setStudents, setStatus, setError, resetState }}>
+        <StudentContext.Provider value={{ getStudent, initializeState, students: state.students, status: state.status, error: state.error, setStudents, setStatus, setError, resetState }}>
             {children}
         </StudentContext.Provider>
     )
