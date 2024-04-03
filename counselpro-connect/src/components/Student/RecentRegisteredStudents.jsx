@@ -25,7 +25,7 @@ const RecentRegisteredStudents = () => {
       `/api/students?currentPage=${currentPage}&pageSize=${pageSize}`
     );
 
-    setStatus("success");
+    setStatus("loading");
 
     if (res && res.statusText === "OK") {
       let data = await res.data;
