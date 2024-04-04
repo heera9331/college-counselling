@@ -1,10 +1,10 @@
 "use client"
 import { Header } from "@/components"
-const RootLayout = ({ children, params }: { children: any, params: any }) => {
+const RootLayout = (props: any) => {
 
     return (
         <>
-            {children}
+            {props.children}
         </>
     )
 }

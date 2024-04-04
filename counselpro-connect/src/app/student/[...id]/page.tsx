@@ -1,88 +1,56 @@
 "use client"
 import Link from "next/link";
-import { apiBaseUrl } from "@/utils"
-import axios from "axios";
 import { Loading } from '@/components'
 import { useEffect, useState } from "react";
 import { useSearchContext } from "@/hooks";
-
 import { useStudentContext } from "@/hooks";
 
-interface student {
-    _id: string,
-    name: string,
-    fatherName: string,
-    mobile: string,
-    villege: string,
-    block: string,
-    district: string,
-    marks10: string,
-    marks12: string,
-    caste: string,
-    registeredBy: string,
-    schoolName: string,
-    status: string,
-    course: string,
-    branch: string,
-    category: string,
-    chats: string,
-    __v: string,
-    createdAt: string,
-    updatedAt: string,
-}
+// interface student {
+//     _id: string,
+//     name: string,
+//     fatherName: string,
+//     mobile: string,
+//     villege: string,
+//     block: string,
+//     district: string,
+//     marks10: string,
+//     marks12: string,
+//     caste: string,
+//     registeredBy: string,
+//     schoolName: string,
+//     status: string,
+//     course: string,
+//     branch: string,
+//     category: string,
+//     chats: string,
+//     __v: string,
+//     createdAt: string,
+//     updatedAt: string,
+// }
 
-const getStudent = async (id: string) => {
-    let res = await axios.get(`${apiBaseUrl}/api/students/${id}`);
-    if (res.statusText === "OK") {
-        return await res.data.student;
-    }
-    return null;
-}
 
-const Page = ({ params }: { params: any }) => {
+const Page = ({ params, searchParams }: object) => {
     const [student, setStudent] = useState<null | object>(null);
 
-    const { students, status, error, setStatus, setError, setStudents } =
+    const { students, status, error, getStudent } =
         useStudentContext();
+
     let id = params.id[0];
 
     useEffect(() => {
-
-        ; ((async () => {
-            setStatus("loading");
-            let student: student | null = null;
-            let flag = true;
-
-            if (status == "initial") {
-                flag = false;
-                student = await getStudent(id);
-            }
-            for (let i = 0; i < students.length; i++) {
-                if (students[i]._id == id) {
-                    student = students[i];
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag) {
-                student = await getStudent(id);
-            }
-            setStatus("success");
-            setStudent(student);
-
-        })())
-
-    })
+        let student = getStudent(id);
+        setStudent(student);
+    }, [])
 
     return (
         <>
             <div>
-                <Link
+                {id !== "undefined" && <Link
                     href={`/student/update-student?studentId=${id}`}
                     className="text-blue-800 underline"
                 >
                     Do you want to update this student
-                </Link>
+                </Link>}
             </div>
             <div className="flex items-center justify-center min-h-[80vh] ">
                 {status === "loading" ? <Loading /> : (
