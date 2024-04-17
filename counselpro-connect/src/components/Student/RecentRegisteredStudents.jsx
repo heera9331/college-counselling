@@ -4,7 +4,7 @@ import "@/app/globals.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { SearchStudents, Button, Students, Loading } from "@/components";
+import {AwsCard, Button, Students, Loading } from "@/components";
 import { IoSearch } from "react-icons/io5";
 import { useSearchContext, useStudentContext } from "@/hooks";
 
@@ -47,58 +47,58 @@ const RecentRegisteredStudents = () => {
 
   return (
     <div className="">
+      <AwsCard title="Registered Students" titleProps="font-semibold text-gray-600 text-2xl">
       <div className="">
-        <h1 className="font-bold text-slate-600 text-xl bg-gray-200 py-2 px-2 border border-b-slate-300">
-          {/* Recent Registered Students */}
-          Registered Students
-        </h1>
-        {/* <div className="mx-2 bg-gray-300 py-2 rounded-sm text-center px-2 cursor-pointer ">
-          <IoSearch />
-        </div> */}
-        <SearchStudents emptySearch={false} autoSearch={false} />
-
-        
-        {status === "loading" ? (
-          <Loading />
-        ) : (
-          <div className="mx-2">
-            <Students students={students} />
-          </div> 
-        )}
-        {students && (
-          <div className="px-2 flex items-center justify-end my-2 gap-2 m-auto table-fixed">
-            <Button
-              text={"<<"}
-              onClick={() => {
-                setCurrentPage(1);
-              }}
-            />
-            <Button
-              text={"<"}
-              onClick={() => {
-                if (currentPage > 1) {
-                  setCurrentPage(currentPage - 1);
-                }
-              }}
-            />
-            <div>Total {`${currentPage}/${Math.ceil(total / pageSize)}`}</div>
-            <Button
-              text={">"}
-              onClick={() => {
-                if (Math.ceil(total / pageSize) > currentPage) {
-                  setCurrentPage(currentPage + 1);
-                }
-              }}
-            />
-            <Button
-              text={">>"}
-              onClick={() => {
-                setCurrentPage(Math.ceil(total / pageSize));
-              }}
-            />
-          </div>
-        )}
-      </div>
+         
+         {/* <div className="mx-2 bg-gray-300 py-2 rounded-sm text-center px-2 cursor-pointer ">
+           <IoSearch />
+         </div> */}
+         
+ 
+         
+         {status === "loading" ? (
+           <Loading />
+         ) : (
+           <div className="mx-2">
+             <Students students={students} />
+           </div> 
+         )}
+         {students && (
+           <div className="px-2 flex items-center justify-end my-2 gap-2 m-auto table-fixed">
+             <Button
+               text={"<<"}
+               onClick={() => {
+                 setCurrentPage(1);
+               }}
+             />
+             <Button
+               text={"<"}
+               onClick={() => {
+                 if (currentPage > 1) {
+                   setCurrentPage(currentPage - 1);
+                 }
+               }}
+             />
+             <div>Total {`${currentPage}/${Math.ceil(total / pageSize)}`}</div>
+             <Button
+               text={">"}
+               onClick={() => {
+                 if (Math.ceil(total / pageSize) > currentPage) {
+                   setCurrentPage(currentPage + 1);
+                 }
+               }}
+             />
+             <Button
+               text={">>"}
+               onClick={() => {
+                 setCurrentPage(Math.ceil(total / pageSize));
+               }}
+             />
+           </div>
+         )}
+       </div>
+      </AwsCard>
+      
     </div>
   );
 };

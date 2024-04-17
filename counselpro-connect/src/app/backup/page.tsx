@@ -43,8 +43,8 @@ const Page = (props: any) => {
 
   return (
     <div className="flex">
-      <AwsCard title="Import Data" cardProps="w-[100%]">
-        <p className="bg-red-300">Note - Make sure, your data is formatted correct as neede</p>
+      <AwsCard title="Import Data" cardProps="w-[90%]">
+        <p className="bg-red-300">Note - Make sure, your data is formatted correct as needed</p>
       </AwsCard>
       <AwsCard title="Backup Data" cardProps="max-w-[400px]">
         <div className="flex flex-col gap-2">
