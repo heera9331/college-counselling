@@ -280,7 +280,23 @@ export default function SearchStudents({
               <p>Result - {query}</p>Total {total}
               <div className="m-auto">
                 <div className="flex flex-col my-2 gap-3 m-auto table-fixed">
-                  <div className="flex gap-2 items-center justify-center">
+                  
+                </div>
+              </div>
+              {loading ? <Loading /> : <Students students={students} />}
+            </div>
+          </>
+        )}
+        {query.length != 0 && students==0 && (
+          <p className="text-xl">No Students</p>
+        )}
+      </div>
+      {/* export button  */}
+      <div>
+        {students && (
+          <div className="px-4 flex justify-between">
+            <JsonToCsvExporter jsonData={students} filename={"report.csv"} />
+            <div className="flex gap-2 items-center justify-center">
                     <Button
                       text={"<<"}
                       onClick={() => {
@@ -312,22 +328,7 @@ export default function SearchStudents({
                         setCurrentPage(Math.ceil(total / pageSize));
                       }}
                     />
-                  </div>
-                </div>
-              </div>
-              {loading ? <Loading /> : <Students students={students} />}
             </div>
-          </>
-        )}
-        {!students && query.length != 0 && (
-          <p className="text-xl">No Students</p>
-        )}
-      </div>
-      {/* export button  */}
-      <div>
-        {students && (
-          <div className="px-4">
-            <JsonToCsvExporter jsonData={students} filename={"report.csv"} />
           </div>
         )}
       </div>
