@@ -42,9 +42,13 @@ const Page = (props: any) => {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="md:flex">
       <AwsCard title="Import Data" cardProps="w-[90%]">
         <p className="bg-red-300">Note - Make sure, your data is formatted correct as needed</p>
+        <div className="py-2">
+          <label htmlFor="data">Csv [.csv] or excel [.xlsx] accepted <br/></label>
+          <input type="file" name="data" id="data" className="pt-2"/>
+        </div>
       </AwsCard>
       <AwsCard title="Backup Data" cardProps="max-w-[400px]">
         <div className="flex flex-col gap-2">
