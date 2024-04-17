@@ -9,5 +9,6 @@ import SearchStudents from "./Student/SeachStudents";
 import JsonToCsvExporter from "./JsonToCsvExporter";
 import SearchCounselor from "./SearchCounselor";
 import Students from "./Student/Students";
+import AwsCard from "./AwsCard";
 
-export { Header, Footer, Button, Input, Loading, TextArea, RecentRegisteredStudents, SearchStudents, JsonToCsvExporter, SearchCounselor, Students };
+export { Header, Footer, Button, Input, Loading, TextArea, RecentRegisteredStudents, SearchStudents, JsonToCsvExporter, SearchCounselor, Students , AwsCard};
