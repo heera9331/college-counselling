@@ -6,7 +6,7 @@ import {
   Input,
   JsonToCsvExporter,
   Loading,
-  Students,
+  Students,AwsCard, 
 } from "@/components";
 
 import axios from "axios";
@@ -115,7 +115,7 @@ export default function SearchStudents({
   }, [currentPage]);
 
   return (
-    <div className="text-black py-4">
+    <AwsCard title="Search students" className="text-black py-4">
       <div className="my-4 text-black mx-2">
         {/* search form */}
         <div className="flex flex-col gap-2">
@@ -331,6 +331,6 @@ export default function SearchStudents({
           </div>
         )}
       </div>
-    </div>
+    </AwsCard>
   );
 }

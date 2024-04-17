@@ -11,7 +11,7 @@ const AwsCard = ({
 }) => {
   return (
     <div
-      className={`m-3 h-[300px] w-[300px] bg-white-100 shadow-sm shadow-gray-600 ${cardProps}`}
+      className={`m-3 bg-white-100 shadow-sm shadow-gray-600 ${cardProps}`}
     >
       {title && (
         <div className="bg-white-200 border-b p-3">
