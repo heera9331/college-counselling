@@ -26,7 +26,7 @@ export default function RootLayout({ children, params }: { children: string, par
       <head>
         <meta name="author" content="Heera Singh Lodhi" />
       </head>
-      <body className="m-auto">
+      <body className="m-auto bg-bgWhite-100">
         <SessionProvider>
           <StudentContextProvider>
 
