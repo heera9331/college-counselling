@@ -20,7 +20,7 @@ const AwsCard = ({
 
   return (
     <div
-      className={`m-3 bg-white-100 shadow-sm shadow-gray-600 ${cardProps} ${props}`}
+      className={`m-3 bg-white-100 shadow-sm shadow-gray-600 overflow-x-auto ${cardProps} ${props}`}
     >
       {title && (
         <div className="bg-white-200 border-b p-3 flex justify-between items-center">

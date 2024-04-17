@@ -90,9 +90,9 @@ const Page = () => {
     <div className="">
       <SearchStudents />
       <AwsCard title="Register New Student">
-        <div className=" bg-slate-100 p-6 min-w-[512px] m-auto">
+        <div className=" bg-slate-100">
           <div className="text-black">
-            <div className="md:grid md:grid-cols-2 lg:grid-cols-3">
+            <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2 md:p-3">
               <Input
                 label={"Name"}
                 type={"text"}
