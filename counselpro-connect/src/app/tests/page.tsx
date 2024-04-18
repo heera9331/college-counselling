@@ -1,48 +1,57 @@
-"use client"
-import React, { useEffect, } from 'react'
-// import type { RootState } from '@/lib/store';
-// import { useAppDispatch, useAppSelector, useAppStore } from "@/hooks"
-// import { fetchStudents } from "@/lib/features/search/searchSlice";
-
-import { useSearchContext } from "@/hooks";
+"use client";
+import { AwsCard, Input, Button } from "@/components";
+import { useState } from "react";
 import axios from "axios";
 
-const Page = () => {
-    // const store = useAppStore();
-    // const { error, status, students, query } = store.getState().search;
-    // const dispatch = useAppDispatch();
+export default function Page(props: any) {
+  const [user, setUser] = useState({
+    email: "admin@gmail.com",
+    password: "123456",
+  });
 
-    // Using the custom hook to access search context
-    const { students, status, query, error, updateSearchContext, setLoading, setSuccess, setError } = useSearchContext();
+  const loginNow = async () => {
+    console.log("user", user);
+    let res = await axios.post("/api/auth/signin/", user);
+    console.log("response", res);
+  };
 
-    const makeSearch = async (query: string) => {
-        try {
-            // Simulated fetch request (replace with actual API call)
-            const response = await fetch(`/api/students/search?query=${query}`);
-            const students = await response.json();
-            // Update context with fetched data on success
-            setSuccess(students);
-        } catch (error) {
-            // Update context with error message on failure
-            setError('Failed to fetch data.');
-        }
-    }
-
-    useEffect(() => {
-        setLoading();
-        ; (async () => {
-            await makeSearch("heera");
-        })()
-    })
-
-    return (
-        <div>
-            <h1 className='font-semibold text-2xl'>Tests</h1>
-            <div>
-                <p>students - {students.length}</p>
-            </div>
-        </div>
-    )
+  return (
+    <div>
+      <AwsCard
+        title="Login"
+        cardProps="max-w-[400px] mx-auto"
+        showCardControls={false}
+      >
+        <form method="post" action={"#"} className="flex flex-col gap-2">
+          <Input
+            label="Email"
+            htmlFor="email"
+            value={user.email}
+            onChange={(e) => {
+              setUser({ ...user, email: e.target.value });
+            }}
+            type="email"
+            placeholder="Enter email"
+          />
+          <Input
+            label="password"
+            htmlFor="password"
+            value={user.password}
+            onChange={(e) => {
+              setUser({ ...user, password: e.target.value });
+            }}
+            type="password"
+            placeholder="Enter password"
+          />
+          <Button
+            text="Login"
+            onClick={(e) => {
+              e.preventDefault();
+              loginNow();
+            }}
+          />
+        </form>
+      </AwsCard>
+    </div>
+  );
 }
-
-export default Page;
