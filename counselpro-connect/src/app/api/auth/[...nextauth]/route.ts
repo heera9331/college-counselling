@@ -1,17 +1,20 @@
-import NextAuth from "next-auth";
+import NextAuth from "next-auth"; 
 import CredentialsProvider from "next-auth/providers/credentials";
 import { User } from "@/models";
 import { connectDB } from "@/utils";
-import GithubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
 
 const handler = NextAuth({
     providers: [
-        CredentialsProvider({
+        CredentialsProvider<any>({
             id: "credentials",
             name: "Credentials",
+            credentials: {
+                // Define your credential input type here
+                email: { label: "Email", type: "text" },
+                password: { label: "Password", type: "password" },
+            },
             async authorize(credentials) {
-                //Check if the user exists.
+                // Check if the user exists.
                 await connectDB();
 
                 try {
@@ -20,7 +23,6 @@ const handler = NextAuth({
                     });
 
                     if (user) {
-
                         const isPasswordCorrect = credentials?.password === user?.password;
 
                         if (isPasswordCorrect) {
@@ -33,24 +35,14 @@ const handler = NextAuth({
                         throw new Error("User not found!");
                     }
                 } catch (err: any) {
-                    throw new Error("database error");
+                    throw new Error("Database error");
                 }
             },
-            credentials: undefined
         }),
-        // GithubProvider({
-        //   clientId: process.env.GITHUB_ID,
-        //   clientSecret: process.env.GITHUB_SECRET,
-        // }),
-        // GoogleProvider({
-        //   clientId: process.env.GOOGLE_CLIENT_ID,
-        //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        // }),
     ],
     pages: {
         error: "/login",
     },
-
 });
 
 export { handler as GET, handler as POST };
