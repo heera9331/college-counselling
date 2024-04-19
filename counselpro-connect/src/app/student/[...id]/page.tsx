@@ -37,7 +37,7 @@ const Page = ({ params, searchParams }: object) => {
   useEffect(() => {
     let student = getStudent(id);
     setStudent(student);
-  }, []);
+  }, [id]);
 
   return (
     <>
