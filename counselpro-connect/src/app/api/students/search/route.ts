@@ -27,35 +27,42 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
             { mobile: { $regex: new RegExp(`^${query}`, "i") } },
         ],
     };
-    // Check if filters are specified
-    if (district || status || category || registeredBy) {
-        // Initialize the additional conditions for the AND search
-        const additionalConditions = {};
 
-        // Add conditions for each specified filter
-        if (district) {
-            additionalConditions.district = district;
-        }
-        if (status) {
-            additionalConditions.status = status;
-        }
-        if (category) {
-            additionalConditions.category = category;
-        }
-
-        if (registeredBy) {
-            additionalConditions.registeredBy = registeredBy;
-        }
-
-        // Add the additional conditions to the search query
-        Object.assign(searchQuery, additionalConditions);
+    // Define type for additionalConditions
+    interface AdditionalConditions {
+        district?: string;
+        status?: string;
+        category?: string;
+        registeredBy?: string;
     }
 
+    // Initialize additionalConditions
+    const additionalConditions: AdditionalConditions = {};
+
+    // Add conditions for each specified filter
+    if (district) {
+        additionalConditions.district = district;
+    }
+    if (status) {
+        additionalConditions.status = status;
+    }
+    if (category) {
+        additionalConditions.category = category;
+    }
+    if (registeredBy) {
+        additionalConditions.registeredBy = registeredBy;
+    }
+
+    // Add the additional conditions to the search query
+    Object.assign(searchQuery, additionalConditions);
+
+    // let students = await Student.find(searchQuery)
+    //     .skip(pageSize * (currentPage - 1))
+    //     .limit(pageSize)
+    //     .sort({ [sortBy]: order });
     let students = await Student.find(searchQuery)
         .skip(pageSize * (currentPage - 1))
-        .limit(pageSize)
-        .sort({ [sortBy]: order });
+        .limit(pageSize) 
 
     return NextResponse.json(students);
 };
-
