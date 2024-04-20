@@ -232,7 +232,7 @@ const Page = () => {
                 </label>
                 <select
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
-                  onClick={(e) => {
+                  onClick={(e: any) => {
                     setStudent({ ...student, category: e.target.value });
                   }}
                 >
@@ -249,7 +249,7 @@ const Page = () => {
                 </label>
                 <select
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
-                  onClick={(e) => {
+                  onClick={(e: any) => {
                     setStudent({ ...student, status: e.target.value });
                   }}
                 >
@@ -265,7 +265,7 @@ const Page = () => {
                 </label>
                 <select
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
-                  onChange={(e) => {
+                  onChange={(e: any) => {
                     setStudent({ ...student, course: e.target.value });
                   }}
                 >
@@ -286,19 +286,23 @@ const Page = () => {
                 </label>
                 <select
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
-                  onChange={(e) => {
+                  onChange={(e: any) => {
                     setStudent({ ...student, branch: e.target.value });
                   }}
                 >
                   <option value="OTHER">OTHER</option>
-                  {student.course.length != 0 &&
-                    courseInfo[`${student.course}`].map((branch, idx) => {
-                      return (
-                        <option value={`${branch}`} key={idx}>
-                          {branch}
-                        </option>
-                      );
-                    })}
+                  {student.course &&
+                    student.course.length !== 0 &&
+                    courseInfo[student.course] &&
+                    courseInfo[student.course].map(
+                      (branch: string, idx: number) => {
+                        return (
+                          <option value={branch} key={idx}>
+                            {branch}
+                          </option>
+                        );
+                      }
+                    )}
                 </select>
               </div>
               <Input
@@ -307,7 +311,7 @@ const Page = () => {
                 htmlFor={"comment"}
                 placeholder={"Enter comment"}
                 value={student.comment}
-                onChange={(e) => {
+                onChange={(e: any) => {
                   setStudent({
                     ...student,
                     comment: e.target.value.toUpperCase(),
@@ -326,7 +330,7 @@ const Page = () => {
               <Button
                 text={"Register"}
                 className=" text-white rounded-sm py-1 bg-green-600 focus:bg-green-800"
-                onClick={(e) => {
+                onClick={(e: any) => {
                   e.preventDefault();
                   registerStudent();
                 }}

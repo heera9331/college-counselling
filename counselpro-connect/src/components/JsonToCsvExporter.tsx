@@ -1,9 +1,12 @@
-"use client"
 import React from "react";
-import Button from "./Button";
 
-class JsonToCsvExporter extends React.Component {
-  constructor(props:any) {
+interface JsonToCsvExporterProps {
+  jsonData: any[]; // Define the prop type for jsonData
+  filename?: string; // Optional prop for filename
+}
+
+class JsonToCsvExporter extends React.Component<JsonToCsvExporterProps> {
+  constructor(props: JsonToCsvExporterProps) {
     super(props);
     console.log("export", props);
     this.state = {
@@ -11,8 +14,9 @@ class JsonToCsvExporter extends React.Component {
     };
   }
 
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    if (this.jsonData != nextProps.jsonData) {
+  shouldComponentUpdate(nextProps: JsonToCsvExporterProps) {
+    // Use this.props.jsonData instead of this.jsonData
+    if (this.props.jsonData !== nextProps.jsonData) {
       return true;
     }
     return false;
@@ -20,8 +24,8 @@ class JsonToCsvExporter extends React.Component {
 
   // Convert JSON to CSV format
   convertJsonToCsv = () => {
-    const items = this.state.json;
-    const replacer = (key, value) => (value === null ? "" : value); // Handle null values
+    const items = this.props.jsonData; // Use this.props.jsonData
+    const replacer = (key:string, value: string) => (value === null ? "" : value); // Handle null values
     const header = Object.keys(items[0]);
     let csv = items.map((row) =>
       header
@@ -57,12 +61,14 @@ class JsonToCsvExporter extends React.Component {
   };
 
   render() {
-    return <button
-      onClick={this.downloadCsv}
-      className="bg-gray-800 text-white font-semibold rounded-sm py-1 px-2"
-    >
-      Export
-    </button>;
+    return (
+      <button
+        onClick={this.downloadCsv}
+        className="bg-gray-800 text-white font-semibold rounded-sm py-1 px-2"
+      >
+        Export
+      </button>
+    );
   }
 }
 

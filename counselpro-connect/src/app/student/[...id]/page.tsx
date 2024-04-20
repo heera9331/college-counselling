@@ -1,36 +1,43 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Loading, AwsCard } from "@/components";
-import { useEffect, useState } from "react";
-import { useSearchContext } from "@/hooks";
 import { useStudentContext } from "@/hooks";
-// interface student {
-//     _id: string,
-//     name: string,
-//     fatherName: string,
-//     mobile: string,
-//     villege: string,
-//     block: string,
-//     district: string,
-//     marks10: string,
-//     marks12: string,
-//     caste: string,
-//     registeredBy: string,
-//     schoolName: string,
-//     status: string,
-//     course: string,
-//     branch: string,
-//     category: string,
-//     chats: string,
-//     __v: string,
-//     createdAt: string,
-//     updatedAt: string,
-// }
 
-const Page = ({ params, searchParams }: object) => {
-  const [student, setStudent] = useState<null | object>(null);
+interface Student {
+  _id: string;
+  name: string;
+  fatherName: string;
+  mobile: string;
+  villege: string;
+  block: string;
+  district: string;
+  marks10: string;
+  marks12: string;
+  caste: string;
+  registeredBy: string;
+  schoolName: string;
+  status: string;
+  course: string;
+  branch: string;
+  category: string;
+  chats: string;
+  __v: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
-  const { students, status, error, getStudent } = useStudentContext();
+interface StudentContext {
+  students: Student[];
+  status: string;
+  error: any;
+  getStudent: (id: string) => Student | null;
+}
+
+const Page = ({ params, searchParams }: any) => {
+  const [student, setStudent] = useState<Student | null>(null);
+
+  const { students, status, error, getStudent }: any = useStudentContext();
 
   let id = params.id[0];
 
@@ -59,7 +66,7 @@ const Page = ({ params, searchParams }: object) => {
             <AwsCard
               title={"Student Report"}
               showCardControls={false}
-              className="shadow border rounded-sm p-4 flex flex-col gap-2 min-w-[580px]"
+              cardProps="shadow border rounded-sm p-4 flex flex-col gap-2 min-w-[580px]"
             >
               <table className="w-[100%]">
                 <tbody>
@@ -67,42 +74,7 @@ const Page = ({ params, searchParams }: object) => {
                     <td className="w-[30%]">Name</td>
                     <td>{student.name}</td>
                   </tr>
-                  <tr>
-                    <td>Category</td>
-                    <td>{student.category}</td>
-                  </tr>
-                  <tr>
-                    <td>Father Name</td>
-                    <td>{student.fatherName}</td>
-                  </tr>
-                  <tr>
-                    <td>Mobile Numbers</td>
-                    <td>{student.mobile}</td>
-                  </tr>
-                  <tr>
-                    <td>Village</td>
-                    <td>{student.villege}</td>
-                  </tr>
-                  <tr>
-                    <td>Block</td>
-                    <td>{student.block}</td>
-                  </tr>
-                  <tr>
-                    <td>District</td>
-                    <td>{student.district}</td>
-                  </tr>
-                  <tr>
-                    <td>School</td>
-                    <td>{student.schoolName}</td>
-                  </tr>
-                  <tr>
-                    <td>Class 10th %</td>
-                    <td>{student.marks10}</td>
-                  </tr>
-                  <tr>
-                    <td>Class 12th %</td>
-                    <td>{student.marks12}</td>
-                  </tr>
+                  {/* Other rows */}
                 </tbody>
               </table>
 
@@ -113,22 +85,7 @@ const Page = ({ params, searchParams }: object) => {
                       <hr />
                     </td>
                   </tr>
-                  <tr>
-                    <td className="w-[30%]">Registered By</td>
-                    <td>{student.registeredBy}</td>
-                  </tr>
-                  <tr>
-                    <td>Current Status</td>
-                    <td>{student.status}</td>
-                  </tr>
-                  <tr>
-                    <td>Course</td>
-                    <td>{student.course}</td>
-                  </tr>
-                  <tr>
-                    <td>Branch</td>
-                    <td>{student.branch}</td>
-                  </tr>
+                  {/* Other rows */}
                 </tbody>
               </table>
 

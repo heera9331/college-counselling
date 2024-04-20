@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-export default function Page(props) {
+export default function Page(props: any) {
   const { data, status } = useSession();
 
   const links = [
