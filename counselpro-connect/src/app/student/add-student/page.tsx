@@ -290,19 +290,12 @@ const Page = () => {
                     setStudent({ ...student, branch: e.target.value });
                   }}
                 >
-                  <option value="OTHER">OTHER</option>
-                  {student.course &&
-                    student.course.length !== 0 &&
-                    courseInfo[student.course] &&
-                    courseInfo[student.course].map(
-                      (branch: string, idx: number) => {
-                        return (
-                          <option value={branch} key={idx}>
-                            {branch}
-                          </option>
-                        );
-                      }
-                    )}
+                  <option value="OTHER">Select Course</option>
+                  {Object.keys(courseInfo).map((course) => (
+                    <option key={course} value={course}>
+                      {course}
+                    </option>
+                  ))}
                 </select>
               </div>
               <Input

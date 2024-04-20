@@ -3,6 +3,10 @@ import { createContext, useState } from "react";
 
 const StudentContext = createContext({});
 
+// interface TypeStudentContext {
+
+// }
+
 const StudentContextProvider = ({ children }: { children: any }) => {
 
     const [state, setState] = useState<{ students: any[], status: string, error: string }>({

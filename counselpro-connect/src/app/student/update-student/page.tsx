@@ -2,7 +2,16 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Input, Loading } from "@/components";
-import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
+import {
+  AwaitedReactNode,
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useState,
+} from "react";
 import { useStudentContext } from "@/hooks";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -16,32 +25,32 @@ const courseInfo = {
 
 interface student {
   comment: string;
-  _id: string,
-  name: string,
-  fatherName: string,
-  mobile: string,
-  villege: string,
-  block: string,
-  district: string,
-  marks10: string,
-  marks12: string,
-  caste: string,
-  registeredBy: string,
-  schoolName: string,
-  status: string,
-  course: string,
-  branch: string,
-  category: string,
-  chats: string,
-  __v: string,
-  createdAt: string,
-  updatedAt: string,
+  _id: string;
+  name: string;
+  fatherName: string;
+  mobile: string;
+  villege: string;
+  block: string;
+  district: string;
+  marks10: string;
+  marks12: string;
+  caste: string;
+  registeredBy: string;
+  schoolName: string;
+  status: string;
+  course: string;
+  branch: string;
+  category: string;
+  chats: string;
+  __v: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export default function Page({ params, searchParams }) {
+export default function Page({ params, searchParams }: any) {
   const [student, setStudent] = useState<student | null>(null);
   const [initial, setInitial] = useState(null);
-  const { getStudent, status }: object = useStudentContext();
+  const { getStudent, status }: any = useStudentContext();
   const [chats, setChats] = useState([]);
   const [chat, setChat] = useState("");
   const [loading, setLoading] = useState(false);
@@ -56,12 +65,14 @@ export default function Page({ params, searchParams }) {
 
     if (comfirm) {
       try {
-        if (student)
-          student.comment = chat;
+        if (student) student.comment = chat;
 
         setLoading(true);
-        let res = await axios.put(`/api/students/${id}`, { student, updatedBy: session?.data?.user?.email });
-        console.log('update res', res);
+        let res = await axios.put(`/api/students/${id}`, {
+          student,
+          updatedBy: session?.data?.user?.email,
+        });
+        console.log("update res", res);
 
         if (res.statusText === "OK") {
           setLoading(false);
@@ -69,14 +80,13 @@ export default function Page({ params, searchParams }) {
           // router.push("/home");
         } else {
           setLoading(false);
-          console.log('error ', error)
           alert("there is some problem can't update, try again later");
         }
         setLoading(false);
       } catch (error) {
         // console.log("error", error);
         setLoading(false);
-        console.log('error ', error)
+        console.log("error ", error);
         alert("there is some problem can't update, try again later");
 
         // router.push("/login");
@@ -89,21 +99,20 @@ export default function Page({ params, searchParams }) {
   const getChat = async () => {
     let res = await axios.get(`/api/students/${id}?field=chats`);
     let student = await res.data.student;
-    console.log('student chat', student.chats);
+    console.log("student chat", student.chats);
     setChats(student.chats);
-  }
+  };
 
   useEffect(() => {
     let student = getStudent(id);
-    console.log('student', student);
+    console.log("student", student);
     setStudent(student);
     setInitial(student);
 
-    ; (async () => {
+    (async () => {
       await getChat();
     })();
-
-  }, [])
+  }, []);
 
   return (
     <div className="">
@@ -319,15 +328,12 @@ export default function Page({ params, searchParams }) {
                           setStudent({ ...student, branch: e.target.value });
                         }}
                       >
-                        <option value="OTHER">OTHER</option>
-                        {student?.course?.length != 0 &&
-                          courseInfo[`${student?.course}`].map((branch: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, idx: Key | null | undefined) => {
-                            return (
-                              <option value={`${branch}`} key={idx}>
-                                {branch}
-                              </option>
-                            );
-                          })}
+                        <option value="OTHER">SELECT OTHER</option>
+                        {Object.keys(courseInfo).map((course) => (
+                          <option key={course} value={course}>
+                            {course}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <Input
@@ -340,7 +346,6 @@ export default function Page({ params, searchParams }) {
                         setChat(e.target.value);
                       }}
                     />
-
                   </div>
 
                   {/* button controls */}
@@ -364,30 +369,26 @@ export default function Page({ params, searchParams }) {
 
                 <div className="m-2 border p-2 rounded-sm">
                   <h2>Previous comments</h2>
-                  {chats && chats.map((chat: object, idx) => {
-                    return (
-                      <div key={idx} className="my-2">
-                        <p className="text-center">
-                          {`${new Date(
-                            chat.updatedAt
-                          ).toLocaleDateString()} - ${new Date(
-                            chat.updatedAt
-                          ).toLocaleTimeString()}`}
-                        </p>
-                        <p className="text-white">
-                          <span
-                            className="bg-gray-800 px-2 text-white rounded-tr-lg rounded-br-lg rounded-bl-lg">
-                            {chat.teacher}
-                          </span>
-                        </p>
-                        <p className="text-right text-white">
-                          <span className="bg-gray-800 px-2 text-white rounded-tl-lg rounded-br-lg rounded-bl-lg">
-                            {chat.msg}
-                          </span>
-                        </p>
-                      </div>
-                    );
-                  })}
+                  {chats &&
+                    chats.map((chat: {msg: string, updatedAt: string, createdAt: string, teacher: string}, idx) => {
+                      return (
+                        <div key={idx} className="my-2">
+                          <p className="text-center">
+                            {`${new Date(chat.updatedAt).toLocaleDateString()} - ${new Date(chat.updatedAt).toLocaleTimeString()}`}
+                          </p>
+                          <p className="text-white">
+                            <span className="bg-gray-800 px-2 text-white rounded-tr-lg rounded-br-lg rounded-bl-lg">
+                              {chat.teacher}
+                            </span>
+                          </p>
+                          <p className="text-right text-white">
+                            <span className="bg-gray-800 px-2 text-white rounded-tl-lg rounded-br-lg rounded-bl-lg">
+                              {chat.msg}
+                            </span>
+                          </p>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             </div>
