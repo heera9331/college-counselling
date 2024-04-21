@@ -11,8 +11,8 @@ export const POST = async (req: NextRequest) => {
     console.log('email', email)
     console.log('password', password)
 
-    if(!email) {
-        return NextResponse.json({msg:"user not found"}, {status: 400});
+    if(!email || !password) {
+        return NextResponse.json({msg:"user/email not found"}, {status: 400});
     }
 
     let user = User.findOne({email, password}).select("-password");
