@@ -4,19 +4,19 @@ import "../globals.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loading, Input, Button, AwsCard } from "@/components";
-import { useRouter, useSearchParams } from "next/navigation"; 
+// import { useRouter, useSearchParams } from "next/navigation"; 
 
 const Page = () => {
   const [user, setUser] = useState({
     email: "admin@gmail.com",
     password: "admin",
   }); 
-  const params = useSearchParams();
+  // const params = useSearchParams();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   let timeout: any = null;
 
@@ -35,13 +35,14 @@ const Page = () => {
   };
 
   useEffect(() => {
-    setError(params.get("error") || "");
-    setSuccess(params.get("success") || "");
+    // setError(params.get("error") || "");
+    // setSuccess(params.get("success") || "");
 
     return () => {
       clearInterval(timeout);
     };
-  }, [params, timeout]);
+  // }, [params, timeout]);
+  }, [timeout]);
 
   // if (session.status === "loading") {
   //   return <Loading />;
