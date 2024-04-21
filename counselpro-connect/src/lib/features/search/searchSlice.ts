@@ -30,8 +30,7 @@ const searchSlice = createSlice({
                 state.students = action.payload;
             })
             .addCase(fetchStudents.rejected, (state, action) => {
-                state.status = "failed";
-                state.error = action.error.message;
+                state.status = "failed"; 
             });
     },
 })

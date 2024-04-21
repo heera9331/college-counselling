@@ -7,7 +7,7 @@ import { useState } from "react";
 import Loading from "@/components/Loading";
 import { useRouter } from "next/navigation";
 import SearchStudents from "@/components/Student/SeachStudents";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 
 import { Input, Button, AwsCard } from "@/components";
 
@@ -20,7 +20,7 @@ const courseInfo = {
 };
 
 const Page = () => {
-  const { status, data } = useSession();
+  // const { status, data } = useSession();
 
   const [student, setStudent] = useState({
     name: "",
@@ -62,7 +62,7 @@ const Page = () => {
   const router = useRouter();
   const registerStudent = async () => {
     try {
-      student.registeredBy = data?.user?.email || "";
+      // student.registeredBy = data?.user?.email || "";
       console.log("student to be registered", student);
       let res = await axios.post(`/api/students`, student);
 

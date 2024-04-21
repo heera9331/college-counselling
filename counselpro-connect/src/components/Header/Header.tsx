@@ -1,8 +1,7 @@
 import { Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import Link from "next/link"; 
 import Image from "next/image";
 import { IoIosLogOut } from "react-icons/io";
 const user = {
@@ -28,7 +27,7 @@ function classNames(...classes: any) {
 }
 
 export default function Header() {
-  const { data, status } = useSession();
+  // const { data, status } = useSession();
 
   return (
     <>
@@ -118,18 +117,18 @@ export default function Header() {
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <>
                               <Menu.Item>
-                                <Link href={`/profile?email=${data?.user?.email}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100">Your Profile</Link>
+                                {/* <Link href={`/profile?email=${data?.user?.email}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100">Your Profile</Link> */}
                               </Menu.Item>
                               <Menu.Item>
                                 <Link href={`/backup`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100">Import/Export</Link>
                               </Menu.Item>
                               <Menu.Item>
                                 <Link href="#" >
-                                  <button onClick={() => signOut()} className="px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-700 hover:text-gray-100">
+                                  {/* <button onClick={() => signOut()} className="px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-700 hover:text-gray-100">
                                     <div className="flex gap-2 items-center">
                                       <IoIosLogOut className="text-xl" /><span>Logout</span>
                                     </div>
-                                  </button>
+                                  </button> */}
                                 </Link>
                               </Menu.Item>
                             </>

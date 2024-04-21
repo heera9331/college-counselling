@@ -1,6 +1,21 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Schema, Model } from "mongoose";
+import { PiDotsThreeCircleVerticalDuotone } from "react-icons/pi";
 
-const userSchema = new mongoose.Schema(
+// Interface for User document
+interface UserDocument extends Document {
+  name: string;
+  isAdmin: boolean;
+  email: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Interface for User model
+interface UserModel extends Model<UserDocument> {}
+
+// Define schema
+const userSchema = new Schema<UserDocument, UserModel>(
   {
     name: {
       type: String,
@@ -8,23 +23,25 @@ const userSchema = new mongoose.Schema(
     },
     isAdmin: {
       type: Boolean,
-      enum: [true, false],
+      required: true,
       default: false,
     },
     email: {
       type: String,
-      unique: true,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
       required: true,
     },
   },
-
   { timestamps: true }
 );
 
-const User = mongoose.models.user || mongoose.model("user", userSchema);
+// Define and export User model
+const User: UserModel =
+  mongoose.models.user ||
+  mongoose.model<UserDocument, UserModel>("user", userSchema);
 
 export default User;

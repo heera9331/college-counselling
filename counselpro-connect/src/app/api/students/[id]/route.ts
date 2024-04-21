@@ -1,7 +1,6 @@
 import { connectDB } from "@/utils";
 import { Student } from "@/models";
-import { NextResponse, NextRequest } from "next/server";
-import { getSession, getCsrfToken } from "next-auth/react";
+import { NextResponse, NextRequest } from "next/server"; 
 // Ensure database connection before handling requests
 
 ; (async () => {

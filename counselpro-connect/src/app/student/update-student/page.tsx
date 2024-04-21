@@ -54,7 +54,7 @@ export default function Page({ params, searchParams }: any) {
   const [chats, setChats] = useState([]);
   const [chat, setChat] = useState("");
   const [loading, setLoading] = useState(false);
-  const session = useSession();
+  // const session = useSession();
 
   let id = searchParams.studentId;
 
@@ -70,7 +70,7 @@ export default function Page({ params, searchParams }: any) {
         setLoading(true);
         let res = await axios.put(`/api/students/${id}`, {
           student,
-          updatedBy: session?.data?.user?.email,
+          // updatedBy: session?.data?.user?.email,
         });
         console.log("update res", res);
 

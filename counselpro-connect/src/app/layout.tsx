@@ -3,8 +3,7 @@ import { useRef } from "react";
 import { Header, Footer } from "@/components";
 
 import Breadcrumbs from "@/components/Breadcrumb";
-import { usePathname } from "next/navigation";
-import { SessionProvider } from "next-auth/react";
+import { usePathname } from "next/navigation"; 
 import { StudentContextProvider } from "@/contexts/StudentContext";
 
 // import { AppStore, makeStore } from '@/lib/store'
@@ -27,7 +26,7 @@ export default function RootLayout({ children, params }: { children: string, par
         <meta name="author" content="Heera Singh Lodhi" />
       </head>
       <body className="m-auto bg-bgWhite-100">
-        <SessionProvider>
+ 
           <StudentContextProvider>
 
             {/* <Provider store={storeRef.current}> */}
@@ -41,7 +40,7 @@ export default function RootLayout({ children, params }: { children: string, par
             </SearchProvider>
             {/* </Provider> */}
           </StudentContextProvider>
-        </SessionProvider>
+  
       </body>
     </html>
   );

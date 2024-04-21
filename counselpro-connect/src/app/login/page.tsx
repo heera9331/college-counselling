@@ -4,15 +4,12 @@ import "../globals.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loading, Input, Button, AwsCard } from "@/components";
-import { useRouter, useSearchParams } from "next/navigation";
-import { getProviders, signIn, useSession } from "next-auth/react";
-
+import { useRouter, useSearchParams } from "next/navigation"; 
 const Page = () => {
   const [user, setUser] = useState({
     email: "admin@gmail.com",
     password: "admin",
-  });
-  const session = useSession();
+  }); 
   const params = useSearchParams();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -26,10 +23,7 @@ const Page = () => {
     try {
       console.log("user to be login", user);
       setLoading(true);
-      signIn("credentials", {
-        email: user.email,
-        password: user.password,
-      });
+      //  signin code
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -48,13 +42,13 @@ const Page = () => {
     };
   }, [params, timeout]);
 
-  if (session.status === "loading") {
-    return <Loading />;
-  }
+  // if (session.status === "loading") {
+  //   return <Loading />;
+  // }
 
-  if (session.status === "authenticated") {
-    router?.push("/home");
-  }
+  // if (session.status === "authenticated") {
+  //   router?.push("/home");
+  // }
 
   return (
     <div className="flex flex-col justify-center h-[70vh]">

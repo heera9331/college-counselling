@@ -1,9 +1,8 @@
-"use client";
-import { useSession } from "next-auth/react";
+"use client"; 
 import Link from "next/link";
 
 export default function Page(props: any) {
-  const { data, status } = useSession();
+  // const { data, status } = useSession();
 
   const links = [
     { path: "/", title: "Main Page" },
@@ -57,12 +56,12 @@ export default function Page(props: any) {
                         View Student - /home/view-student
                     </Link> */}
 
-          <Link
+          {/* <Link
             href={`/profile?email=${data?.user?.email}`}
             className="text-blue-800 underline font-semibold"
           >
             Profile - /profile
-          </Link>
+          </Link> */}
           <Link
             href={`/counselor`}
             className="text-blue-800 underline font-semibold"
