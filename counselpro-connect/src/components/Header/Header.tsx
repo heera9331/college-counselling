@@ -69,11 +69,11 @@ export default function Header() {
                           </Link>
                         ))}
 
-                        {status == "unauthenticated" ?
+                        {/* {status == "unauthenticated" ?
                           <Link href={'/login'} className="g-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-700">
                             Login
                           </Link>
-                          : ""}
+                          : ""} */}
                       </div>
                     </div>
                   </div>

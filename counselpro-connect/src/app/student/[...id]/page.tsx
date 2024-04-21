@@ -37,14 +37,14 @@ interface StudentContext {
 const Page = ({ params, searchParams }: any) => {
   const [student, setStudent] = useState<Student | null>(null);
 
-  const { students, status, error, getStudent }: any = useStudentContext();
+  const { students, error, getStudent }: any = useStudentContext();
 
   let id = params.id[0];
 
   useEffect(() => {
     let student = getStudent(id);
     setStudent(student);
-  }, [id]);
+  }, [getStudent, id]);
 
   return (
     <>
@@ -59,10 +59,7 @@ const Page = ({ params, searchParams }: any) => {
         )}
       </div>
       <div className="flex items-center justify-center min-h-[80vh] ">
-        {status === "loading" ? (
-          <Loading />
-        ) : (
-          student && (
+        {  student && (
             <AwsCard
               title={"Student Report"}
               showCardControls={false}
@@ -108,7 +105,7 @@ const Page = ({ params, searchParams }: any) => {
               </div>
             </AwsCard>
           )
-        )}
+        }
       </div>
     </>
   );

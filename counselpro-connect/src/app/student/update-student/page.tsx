@@ -50,7 +50,7 @@ interface student {
 export default function Page({ params, searchParams }: any) {
   const [student, setStudent] = useState<student | null>(null);
   const [initial, setInitial] = useState(null);
-  const { getStudent, status }: any = useStudentContext();
+  const { getStudent}: any = useStudentContext();
   const [chats, setChats] = useState([]);
   const [chat, setChat] = useState("");
   const [loading, setLoading] = useState(false);
@@ -395,7 +395,7 @@ export default function Page({ params, searchParams }: any) {
           </>
         )}
 
-        {status === "loading" && <Loading />}
+        {/* {status === "loading" && <Loading />} */}
       </div>
     </div>
   );

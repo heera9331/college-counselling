@@ -10,7 +10,7 @@ const Loading: React.FC = ({ message }: InputProps) => {
     <div className="flex items-center justify-center m-auto my-4">
       <div
         aria-label="Loading..."
-        role="status"
+        role="div"
         className="flex items-center space-x-2"
       >
         <svg

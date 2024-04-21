@@ -59,7 +59,7 @@ const Page = (props: any) => {
               <p className="">
                 <span>Take backup of all the students data</span>
                 <span className="text-blue-800 underline px-1">
-                  <JsonToCsvExporter jsonData={students} />
+                  {/* <JsonToCsvExporter jsonData={students} /> */}
                 </span>
               </p>
               <p className="">
