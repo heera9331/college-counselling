@@ -11,30 +11,29 @@ class JsonToCsvExporter extends React.Component<JsonToCsvExporterProps> {
     console.log("export", props);
     this.state = {
       json: this.props.jsonData || [],
+      isIE: false, // Initialize isIE state
+      navRef: null
     };
   }
 
-  shouldComponentUpdate(nextProps: JsonToCsvExporterProps) {
-    // Use this.props.jsonData instead of this.jsonData
-    if (this.props.jsonData !== nextProps.jsonData) {
-      return true;
-    }
-    return false;
+  componentDidMount() {
+    // Check if browser is Internet Explorer
+    const isIE = !!navigator.msSaveBlob;
+    this.setState({ isIE });
   }
 
   // Convert JSON to CSV format
   convertJsonToCsv = () => {
     const items = this.props.jsonData; // Use this.props.jsonData
-    const replacer = (key:string, value: string) => (value === null ? "" : value); // Handle null values
+    const replacer = (key: string, value: string) =>
+      value === null ? "" : value; // Handle null values
     const header = Object.keys(items[0]);
     let csv = items.map((row) =>
-      header
-        .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-        .join(",")
+      header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(",")
     );
     csv.unshift(header.join(","));
-    csv = csv.join("\r\n");
-    return csv;
+    let tmp = csv.join("\r\n");
+    return tmp;
   };
 
   // Download CSV file
@@ -42,32 +41,35 @@ class JsonToCsvExporter extends React.Component<JsonToCsvExporterProps> {
     const csv = this.convertJsonToCsv();
     const filename = this.props.filename || "export.csv";
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    if (navigator.msSaveBlob) {
+
+    if (this.state.isIE) {
       // For IE
       navigator.msSaveBlob(blob, filename);
     } else {
       // For other browsers
       const link = document.createElement("a");
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute("href", url);
-        link.setAttribute("download", filename);
-        link.style.visibility = "hidden";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
   render() {
     return (
-      <button
-        onClick={this.downloadCsv}
-        className="bg-gray-800 text-white font-semibold rounded-sm py-1 px-2"
-      >
-        Export
-      </button>
+      <React.Fragment>
+        {!this.state.isIE && (
+          <button
+            onClick={this.downloadCsv}
+            className="bg-gray-800 text-white font-semibold rounded-sm py-1 px-2"
+          >
+            Export
+          </button>
+        )}
+      </React.Fragment>
     );
   }
 }
