@@ -55,13 +55,13 @@ const RecentRegisteredStudents = () => {
          </div> */}
          
  
-         
+         <div className="mx-2">
+             {students && <Students students={students} />}
+           </div> 
          {/* {status === "loading" ? (
            <Loading />
          ) : (
-           <div className="mx-2">
-             <Students students={students} />
-           </div> 
+           
          )} */}
          {students && (
            <div className="px-2 flex items-center justify-end my-2 gap-2 m-auto table-fixed">

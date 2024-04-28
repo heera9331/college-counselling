@@ -84,7 +84,7 @@ const Page = () => {
       {/* Contact */}
 
       <h2 className="text-3xl text-gray-600 font-semibold pl-2 mt-10">Contact</h2>
-      <div className="my-4 flex gap-2">
+      <div className="my-4 lg:flex gap-2">
         {/* contact form */}
         <div className="min-w-[50%] border-2 p-4 m-2 rounded-md">
           <div className="flex flex-col py-2">
