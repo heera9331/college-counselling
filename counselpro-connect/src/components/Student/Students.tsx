@@ -10,7 +10,7 @@ const Students = ({ students }: { students: any[] }) => {
 
 
     if (!students.length) {
-        return <p>not students</p>
+        return <p>no students</p>
     }
 
     return (

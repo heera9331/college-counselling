@@ -43,13 +43,14 @@ const Page = ({ params, searchParams }: any) => {
 
   useEffect(() => {
     let student = getStudent(id);
+    console.log("view student is", student);
     setStudent(student);
   }, [getStudent, id]);
 
   return (
     <>
       <div>
-        {id !== "undefined" && (
+        {!id && (
           <Link
             href={`/student/update-student?studentId=${id}`}
             className="text-blue-800 underline"
@@ -58,55 +59,65 @@ const Page = ({ params, searchParams }: any) => {
           </Link>
         )}
       </div>
-      <div className="flex items-center justify-center min-h-[80vh] ">
-        {  student && (
-            <AwsCard
-              title={"Student Report"}
-              showCardControls={false}
-              cardProps="shadow border rounded-sm p-4 flex flex-col gap-2 min-w-[580px]"
+      {student && (
+        <AwsCard
+          title={"Student Report"}
+          showCardControls={false}
+          cardProps="flex flex-col gap-2 min-w-[580px]"
+        >
+          <table className="w-[100%]">
+            <tbody>
+              <tr>
+                <td className="w-[30%]">Name</td>
+                <td>{student.name}</td>
+              </tr>
+              <tr>
+                <td className="w-[30%]">Mobile</td>
+                <td>{student.mobile}</td>
+              </tr>
+              {student &&
+                Object.keys(student).map((key, idx) => {
+                  return (
+                    <tr key={idx}>
+                      <td className="w-[30%]">{key.toLocaleUpperCase()}</td>
+                      <td>{student[`${key}`]}</td>
+                    </tr>
+                  );
+                })}
+              {/* Other rows */}
+            </tbody>
+          </table>
+
+          <table className="w-[100%]">
+            <tbody>
+              <tr>
+                <td colSpan={2}>
+                  <hr />
+                </td>
+              </tr>
+              {/* Other rows */}
+            </tbody>
+          </table>
+
+          <div className="flex gap-2 pt-4">
+            <button
+              className="shadow-sm bg-gray-800 rounded-sm text-white font-semibold px-2 py-1"
+              onClick={() => {
+                window.print();
+              }}
             >
-              <table className="w-[100%]">
-                <tbody>
-                  <tr>
-                    <td className="w-[30%]">Name</td>
-                    <td>{student.name}</td>
-                  </tr>
-                  {/* Other rows */}
-                </tbody>
-              </table>
+              Print
+            </button>
 
-              <table className="w-[100%]">
-                <tbody>
-                  <tr>
-                    <td colSpan={2}>
-                      <hr />
-                    </td>
-                  </tr>
-                  {/* Other rows */}
-                </tbody>
-              </table>
-
-              <div className="flex gap-2 pt-4">
-                <button
-                  className="shadow-sm bg-gray-800 rounded-sm text-white font-semibold px-2 py-1"
-                  onClick={() => {
-                    window.print();
-                  }}
-                >
-                  Print
-                </button>
-
-                <Link
-                  href={`/student/update-student?studentId=${id}`}
-                  className="shadow-sm bg-green-700 rounded-sm text-white font-semibold px-2 py-1"
-                >
-                  Contact Again
-                </Link>
-              </div>
-            </AwsCard>
-          )
-        }
-      </div>
+            <Link
+              href={`/student/update-student?studentId=${id}`}
+              className="shadow-sm bg-green-700 rounded-sm text-white font-semibold px-2 py-1"
+            >
+              Contact Again
+            </Link>
+          </div>
+        </AwsCard>
+      )}
     </>
   );
 };

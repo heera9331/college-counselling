@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { apiBaseUrl } from "@/utils";
-import { Students, Loading } from "@/components";
+import { Students, Loading, AwsCard } from "@/components";
 import { useEffect, useState } from "react";
 
 const getUser = async (id: string) => {
@@ -61,42 +61,43 @@ const Page = ({ params }: { params: any }) => {
   }, [id]);
 
   return (
-    <div>
-      {loading && <Loading />}
-      {user && (
-        <>
-          <div>
-            <p>Name - {user.name}</p>
-            <p>Email - {user.email}</p>
-            <p>Position - {user.isAdmin ? "Admin" : "Counselor"}</p>
-            <p>Registered students - {students.length}</p>
-          </div>
-        </>
-      )}
+    <div> 
+      <AwsCard>
+        {user && (
+          <>
+            <div>
+              <p>Name - {user.name}</p>
+              <p>Email - {user.email}</p>
+              <p>Position - {user.isAdmin ? "Admin" : "Counselor"}</p>
+              <p>Registered students - {students.length}</p>
+            </div>
+          </>
+        )}
 
-      <div className="my-2">
-        {loading ? <Loading /> : <Students students={students} />}
-      </div>
-      {students && (
-        <div className="py-2 flex gap-2">
-          <button
-            className="shadow-sm bg-green-600 hover:bg-gray-700 rounded-sm text-white font-semibold px-2 py-1"
-            onClick={() => {
-              window.print();
-            }}
-          >
-            Print
-          </button>
-          <button
-            className="shadow-sm bg-red-600 hover:bg-red-700 rounded-sm text-white font-semibold px-2 py-1"
-            onClick={() => {
-              handleRemove(id);
-            }}
-          >
-            Remove Counselor
-          </button>
+        <div className="my-2">
+          {loading ? <Loading /> : <Students students={students} />}
         </div>
-      )}
+        {students && (
+          <div className="py-2 flex gap-2">
+            <button
+              className="shadow-sm bg-green-600 hover:bg-gray-700 rounded-sm text-white font-semibold px-2 py-1"
+              onClick={() => {
+                window.print();
+              }}
+            >
+              Print
+            </button>
+            <button
+              className="shadow-sm bg-red-600 hover:bg-red-700 rounded-sm text-white font-semibold px-2 py-1"
+              onClick={() => {
+                handleRemove(id);
+              }}
+            >
+              Remove Counselor
+            </button>
+          </div>
+        )}
+      </AwsCard>
     </div>
   );
 };
