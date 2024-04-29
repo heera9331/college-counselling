@@ -4,31 +4,44 @@ import "../globals.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loading, Input, Button, AwsCard } from "@/components";
-// import { useRouter, useSearchParams } from "next/navigation"; 
+import { useAuthContext } from "@/hooks";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Page = () => {
   const [user, setUser] = useState({
     email: "admin@gmail.com",
     password: "admin",
-  }); 
+  });
   // const params = useSearchParams();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const [loading, setLoading] = useState<boolean>(false);
-  // const router = useRouter();
+  const router = useRouter();
+
+  const { status, data, setStatus, setData, resetStatus } = useAuthContext();
 
   let timeout: any = null;
 
   const handleLogin = async () => {
     try {
-      console.log("user to be login", user);
       setLoading(true);
       //  signin code
+      setStatus("unauthenticated");
+      let res = await axios.post("/api/auth/signin", user);
       setLoading(false);
+
+      let resData: any = await res.data;
+      let newUser = { email: resData.email, isAdmin: resData.isAdmin };
+
+      setData(newUser);
+      setStatus("authenticated");
+
+      console.log(data);
+      router.push("/home");
     } catch (error) {
       setLoading(false);
-      alert("Server connection timeout");
+      alert("invalid credentials or Server connection timeout");
       console.error("Error during login:", error);
     }
     setLoading(false);
@@ -41,8 +54,8 @@ const Page = () => {
     return () => {
       clearInterval(timeout);
     };
-  // }, [params, timeout]);
-  }, [timeout]);
+    // }, [params, timeout]);
+  }, [timeout, data]);
 
   // if (session.status === "loading") {
   //   return <Loading />;

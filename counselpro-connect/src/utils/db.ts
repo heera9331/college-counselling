@@ -5,7 +5,7 @@ interface DBConnection {
 }
 
 const connection: DBConnection = {}; // Define the shape of connection object
-const MONGO : string = process.env.MONGO || "";
+const MONGO : string = process.env.MONGO_LOCAL || "";
 
 const connectDB = async () => {
   try {

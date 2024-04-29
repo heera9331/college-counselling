@@ -3,15 +3,21 @@ import { useRef } from "react";
 import { Header, Footer } from "@/components";
 
 import Breadcrumbs from "@/components/Breadcrumb";
-import { usePathname } from "next/navigation"; 
+import { usePathname } from "next/navigation";
 import { StudentContextProvider } from "@/contexts/StudentContext";
-
+import { AuthContextProvider } from "@/contexts/AuthContext";
 // import { AppStore, makeStore } from '@/lib/store'
 // import { Provider } from 'react-redux'
 
 import { SearchProvider } from "@/contexts/search-context/SearchContextProvider";
 
-export default function RootLayout({ children, params }: { children: string, params: string }) {
+export default function RootLayout({
+  children,
+  params,
+}: {
+  children: string;
+  params: string;
+}) {
   const path = usePathname();
   // const storeRef = useRef<AppStore>();
   // if (!storeRef.current) {
@@ -19,16 +25,14 @@ export default function RootLayout({ children, params }: { children: string, par
   //   storeRef.current = makeStore();
   // }
 
-
   return (
     <html lang="en">
       <head>
         <meta name="author" content="Heera Singh Lodhi" />
       </head>
       <body className="m-auto bg-bgWhite-100">
- 
+        <AuthContextProvider>
           <StudentContextProvider>
-
             {/* <Provider store={storeRef.current}> */}
             <SearchProvider>
               <Header />
@@ -40,7 +44,7 @@ export default function RootLayout({ children, params }: { children: string, par
             </SearchProvider>
             {/* </Provider> */}
           </StudentContextProvider>
-  
+        </AuthContextProvider>
       </body>
     </html>
   );

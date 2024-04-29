@@ -6,6 +6,7 @@ https://github.com/balazsorban44/auth-poc-next/blob/main/lib.ts
 -> 1. issue:- chat saving is not working 
 -> 2. redesign of home ✔
 -> 3. nextjs auth
+-> 4. auth context not working
 
 [01-04-2024] chat display done ✔
 [01-04-2024] chat updating not working
@@ -13,3 +14,4 @@ https://github.com/balazsorban44/auth-poc-next/blob/main/lib.ts
 [21-04-2024] build fixes with typescript errors
 [22-04-2024] build fixes with typescript errors
 [22-04-2024] successfully deployed😁
+[29-04-2024] todo: make context like studentcontext
