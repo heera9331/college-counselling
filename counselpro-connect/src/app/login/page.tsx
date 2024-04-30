@@ -33,7 +33,7 @@ const Page = () => {
 
       let resData: any = await res.data;
       let newUser = { email: resData.email, isAdmin: resData.isAdmin };
-
+      
       setData(newUser);
       setStatus("authenticated");
 

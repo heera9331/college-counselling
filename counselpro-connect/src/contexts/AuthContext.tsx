@@ -2,7 +2,7 @@ import React, { createContext, useState, ReactNode, useEffect } from "react";
 
 interface AuthContextType {
   status: string;
-  data: any | null;
+  data: any | null | undefined;
   error: string;
   setStatus: (status: string) => void;
   setData: (data: any | null) => void;
@@ -10,9 +10,15 @@ interface AuthContextType {
   resetStatus: () => void;
 }
 
-const initialAuthState = {
+const initialAuthStateType = {
   status: "unauthenticated",
   data: null,
+  error: "",
+};
+
+const initialAuthState = {
+  status: "unauthenticated",
+  data: { user: JSON.parse(localStorage.getItem("user") || "") },
   error: "",
 };
 
@@ -27,7 +33,7 @@ const AuthContext = createContext<AuthContextType>({
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<{
     status: string;
-    data: any | null;
+    data: any;
     error: string;
   }>(initialAuthState);
 
@@ -37,6 +43,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const setData = (data: any | null) => {
     data = { user: data };
+    localStorage.setItem("user", JSON.stringify(data));
     setState({ ...state, data });
   };
 
@@ -50,9 +57,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const { status, data, error } = state;
 
-  useEffect(()=>{
-    
-  },[state]);
+  useEffect(() => {}, [state]);
 
   return (
     <AuthContext.Provider
