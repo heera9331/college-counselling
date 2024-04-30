@@ -1,23 +1,38 @@
 import { Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Link from "next/link"; 
+import Link from "next/link";
 import Image from "next/image";
 import { IoIosLogOut } from "react-icons/io";
+import { useAuthContext } from "@/hooks";
 const user = {
   name: "Tom Cook",
   email: "tom@example.com",
-  imageUrl:
-    "/images/user2.png",
+  imageUrl: "/images/user2.png",
 };
 
 const navigation = [
-  { name: "Home", href: "/home", current: true },
-  { name: "Dashboard", href: "/dashboard", current: false },
-  { name: "Students", href: "/student", current: false },
-  { name: "Counselor", href: "/counselor", current: false },
-  { name: "View Report", href: "/view-report", current: false },
-  { name: "SiteMap", href: "/sitemap", current: false },
+  { name: "Home", href: "/home", current: true, isRequiredAdmin: false },
+  {
+    name: "Dashboard",
+    href: "/dashboard",
+    current: false,
+    isRequiredAdmin: true,
+  },
+  { name: "Students", href: "/student", current: false, isRequiredAdmin: true },
+  {
+    name: "Counselor",
+    href: "/counselor",
+    current: false,
+    isRequiredAdmin: true,
+  },
+  {
+    name: "View Report",
+    href: "/view-report",
+    current: false,
+    isRequiredAdmin: true,
+  },
+  { name: "SiteMap", href: "/sitemap", current: false, isRequiredAdmin: false },
 ];
 
 const userNavigation: any[] = [];
@@ -27,11 +42,12 @@ function classNames(...classes: any) {
 }
 
 export default function Header() {
-  // const { data, status } = useSession();
+  const { data, status } = useAuthContext();
 
+  useEffect(() => {}, [data]);
+  
   return (
     <>
-
       <div className="min-h-full max-w-full mx-auto">
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
@@ -47,27 +63,51 @@ export default function Header() {
                       />
                     </div> */}
                     <div className="">
-                      <Link href={'/'}>
-                        <h1 className="text-2xl font-bold text-gray-100">CounselPro Connect</h1>
+                      <Link href={"/"}>
+                        <h1 className="text-2xl font-bold text-gray-100">
+                          CounselPro Connect
+                        </h1>
                       </Link>
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-gray-900 text-white"
-                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                              "rounded-md px-3 py-2 text-sm font-medium active:bg-gray-900"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
+                        {navigation.map(
+                          (item) =>
+                            item.isRequiredAdmin &&
+                            data?.user?.isAdmin && (
+                              <Link
+                                key={item.name}
+                                href={item.href}
+                                className={classNames(
+                                  item.current
+                                    ? "bg-gray-900 text-white"
+                                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                  "rounded-md px-3 py-2 text-sm font-medium active:bg-gray-900"
+                                )}
+                                aria-current={item.current ? "page" : undefined}
+                              >
+                                {item.name}
+                              </Link>
+                            )
+                        )}
+                        {navigation.map(
+                          (item) =>
+                            !item.isRequiredAdmin && (
+                              <Link
+                                key={item.name}
+                                href={item.href}
+                                className={classNames(
+                                  item.current
+                                    ? "bg-gray-900 text-white"
+                                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                  "rounded-md px-3 py-2 text-sm font-medium active:bg-gray-900"
+                                )}
+                                aria-current={item.current ? "page" : undefined}
+                              >
+                                {item.name}
+                              </Link>
+                            )
+                        )}
 
                         {/* {status == "unauthenticated" ?
                           <Link href={'/login'} className="g-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-700">
@@ -88,7 +128,6 @@ export default function Header() {
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
 
-
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
@@ -102,7 +141,6 @@ export default function Header() {
                               height={400}
                               className="h-8 w-8 rounded-full"
                             />
-
                           </Menu.Button>
                         </div>
                         <Transition
@@ -117,23 +155,27 @@ export default function Header() {
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <>
                               {/* <Menu.Item> */}
-                                {/* <Link href={`/profile?email=${data?.user?.email}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100">Your Profile</Link> */}
+                              {/* <Link href={`/profile?email=${data?.user?.email}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100">Your Profile</Link> */}
                               {/* </Menu.Item> */}
                               <Menu.Item>
-                                <Link href={`/backup`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100">Import/Export</Link>
+                                <Link
+                                  href={`/backup`}
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100"
+                                >
+                                  Import/Export
+                                </Link>
                               </Menu.Item>
                               {/* <Menu.Item>
                                 <Link href="#" > */}
-                                  {/* <button onClick={() => signOut()} className="px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-700 hover:text-gray-100">
+                              {/* <button onClick={() => signOut()} className="px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-700 hover:text-gray-100">
                                     <div className="flex gap-2 items-center">
                                       <IoIosLogOut className="text-xl" /><span>Logout</span>
                                     </div>
                                   </button> */}
-                                {/* </Link>
+                              {/* </Link>
                               </Menu.Item> */}
                             </>
                           </Menu.Items>
-
                         </Transition>
                       </Menu>
                     </div>
@@ -161,7 +203,6 @@ export default function Header() {
 
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
@@ -177,9 +218,7 @@ export default function Header() {
                     >
                       {item.name}
                     </Disclosure.Button>
-
                   ))}
-
                 </div>
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex items-center px-5">
@@ -191,7 +230,6 @@ export default function Header() {
                         alt="user profile image"
                         className="h-8 w-8 rounded-full"
                       />
-
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">
@@ -221,7 +259,6 @@ export default function Header() {
                         {item.name}
                       </Disclosure.Button>
                     ))}
-
                   </div>
                 </div>
               </Disclosure.Panel>
@@ -246,10 +283,11 @@ export default function Header() {
   );
 }
 
-
-
-{/* student dropdown */ }
-{/* <Menu as="div" className="relative ml-3">
+{
+  /* student dropdown */
+}
+{
+  /* <Menu as="div" className="relative ml-3">
                         <div>
                           <Menu.Button className="relative flex max-w-xs items-center bg-gray-800 text-sm focus:outline-none rounded-md px-3 py-2 font-medium">
                             <span className="absolute -inset-1.5" />
@@ -281,4 +319,5 @@ export default function Header() {
                           </Menu.Items>
 
                         </Transition>
-                      </Menu> */}
+                      </Menu> */
+}

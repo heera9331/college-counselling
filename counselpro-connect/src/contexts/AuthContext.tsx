@@ -10,15 +10,15 @@ interface AuthContextType {
   resetStatus: () => void;
 }
 
-const initialAuthStateType = {
-  status: "unauthenticated",
-  data: null,
-  error: "",
-};
+interface initialAuthStateType {
+  status: string;
+  data: null;
+  error: "";
+}
 
 const initialAuthState = {
   status: "unauthenticated",
-  data: { user: JSON.parse(localStorage.getItem("user") || "") },
+  data: { user: JSON.parse(localStorage.getItem("user") || "null") },
   error: "",
 };
 
@@ -42,7 +42,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const setData = (data: any | null) => {
-    data = { user: data };
+    // data = { user: data };
     localStorage.setItem("user", JSON.stringify(data));
     setState({ ...state, data });
   };
