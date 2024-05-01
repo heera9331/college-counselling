@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { IoIosLogOut } from "react-icons/io";
 import { useAuthContext } from "@/hooks";
+import { useRouter } from "next/navigation";
 
 const user = {
   name: "Tom Cook",
@@ -43,6 +44,13 @@ function classNames(...classes: any) {
 
 export default function Header() {
   const { data, status } = useAuthContext();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    router.push("/login");
+    console.log("logged out");
+  };
 
   useEffect(() => {}, [data]);
 
@@ -159,34 +167,31 @@ export default function Header() {
                       </button>
 
                       {/* Profile dropdown */}
-                      <Menu as="div" className="relative ml-3">
-                        <div>
-                          <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span className="absolute -inset-1.5" />
-                            <span className="sr-only">Open user menu</span>
-                            <Image
-                              src={user.imageUrl}
-                              alt=""
-                              width={400}
-                              height={400}
-                              className="h-8 w-8 rounded-full"
-                            />
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <>
-                              {/* <Menu.Item> */}
-                              {/* <Link href={`/profile?email=${data?.user?.email}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100">Your Profile</Link> */}
-                              {/* </Menu.Item> */}
+                      {status === "authenticated" && (
+                        <Menu as="div" className="relative ml-3">
+                          <div>
+                            <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                              <span className="absolute -inset-1.5" />
+                              <span className="sr-only">Open user menu</span>
+                              <Image
+                                src={user.imageUrl}
+                                alt=""
+                                width={400}
+                                height={400}
+                                className="h-8 w-8 rounded-full"
+                              />
+                            </Menu.Button>
+                          </div>
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                               <Menu.Item>
                                 <Link
                                   href={`/backup`}
@@ -195,19 +200,21 @@ export default function Header() {
                                   Import/Export
                                 </Link>
                               </Menu.Item>
-                              {/* <Menu.Item>
-                                <Link href="#" > */}
-                              {/* <button onClick={() => signOut()} className="px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-700 hover:text-gray-100">
-                                    <div className="flex gap-2 items-center">
-                                      <IoIosLogOut className="text-xl" /><span>Logout</span>
-                                    </div>
-                                  </button> */}
-                              {/* </Link>
-                              </Menu.Item> */}
-                            </>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
+                              <Menu.Item>
+                                <Link
+                                  href={`#`}
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100"
+                                  onClick={() => {
+                                    handleLogout();
+                                  }}
+                                >
+                                  Logout
+                                </Link>
+                              </Menu.Item>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      )}
                     </div>
                   </div>
                   <div className="-mr-2 flex md:hidden">

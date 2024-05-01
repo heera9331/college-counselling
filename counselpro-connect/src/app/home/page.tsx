@@ -2,7 +2,6 @@
 
 import "../globals.css";
 import { useAuthContext } from "@/hooks";
-
 import {
   RecentRegisteredStudents,
   AwsCard,
@@ -10,14 +9,17 @@ import {
 } from "@/components";
 import Link from "next/link";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const auth = useAuthContext();
-  console.log("auth", auth);
+  const {status} = useAuthContext();
+  const router = useRouter();
 
   useEffect(() => {
-     
-  }, [auth]);
+     if(status==="unauthenticated") {
+      router.push("/login");
+     }
+  }, [status, router]);
 
   return (
     <div className="">
