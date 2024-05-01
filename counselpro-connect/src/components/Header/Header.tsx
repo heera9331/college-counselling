@@ -6,6 +6,7 @@ import Image from "next/image";
 import { IoIosLogOut } from "react-icons/io";
 import { useAuthContext } from "@/hooks";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const user = {
   name: "Tom Cook",
@@ -45,12 +46,6 @@ function classNames(...classes: any) {
 export default function Header() {
   const { data, status } = useAuthContext();
   const router = useRouter();
-
-  const handleLogout = () => {
-    localStorage.clear();
-    router.push("/login");
-    console.log("logged out");
-  };
 
   useEffect(() => {}, [data]);
 
@@ -202,10 +197,10 @@ export default function Header() {
                               </Menu.Item>
                               <Menu.Item>
                                 <Link
-                                  href={`#`}
+                                  href={`/logout`}
                                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100"
                                   onClick={() => {
-                                    handleLogout();
+                                    localStorage.clear();
                                   }}
                                 >
                                   Logout

@@ -5,6 +5,7 @@ export { default } from "next-auth/middleware";
 
 export const config = {
   matcher: [
+    "/dashboard",
     "/dashboard/:path*",
     "/profile",
     "/backup",
@@ -13,6 +14,7 @@ export const config = {
     "/profile/:path*",
     "/student/:path*",
     "/view-report/:path*",
+    "/logout",
     "/",
   ],
 };
@@ -25,9 +27,16 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.pathname;
   const token = request.cookies.get("token")?.value;
 
-  console.log("token", token);
+  console.log("current url => ", url);
 
-  //   protected
+  if (url.startsWith("/logout")) {
+    // handle logout
+    request.cookies.clear();
+    console.log("cookies cleared");
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // Protected routes
   if (
     !token &&
     (url.startsWith("/dashboard") ||
@@ -35,8 +44,9 @@ export async function middleware(request: NextRequest) {
       url.startsWith("/counsellor") ||
       url.startsWith("/view-report") ||
       url.startsWith("/profile"))
-  )
+  ) {
     return NextResponse.redirect(new URL("/login", request.url));
+  }
 
   return NextResponse.next();
 }
