@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { IoIosLogOut } from "react-icons/io";
 import { useAuthContext } from "@/hooks";
+
 const user = {
   name: "Tom Cook",
   email: "tom@example.com",
@@ -12,7 +13,7 @@ const user = {
 };
 
 const navigation = [
-  { name: "Home", href: "/home", current: true, isRequiredAdmin: false },
+  { name: "Home", href: "/home", current: false, isRequiredAdmin: false },
   {
     name: "Dashboard",
     href: "/dashboard",
@@ -32,7 +33,6 @@ const navigation = [
     current: false,
     isRequiredAdmin: true,
   },
-  { name: "SiteMap", href: "/sitemap", current: false, isRequiredAdmin: false },
 ];
 
 const userNavigation: any[] = [];
@@ -45,7 +45,7 @@ export default function Header() {
   const { data, status } = useAuthContext();
 
   useEffect(() => {}, [data]);
-  
+
   return (
     <>
       <div className="min-h-full max-w-full mx-auto">
@@ -71,49 +71,79 @@ export default function Header() {
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map(
-                          (item) =>
-                            item.isRequiredAdmin &&
-                            data?.user?.isAdmin && (
-                              <Link
-                                key={item.name}
-                                href={item.href}
-                                className={classNames(
-                                  item.current
-                                    ? "bg-gray-900 text-white"
-                                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                                  "rounded-md px-3 py-2 text-sm font-medium active:bg-gray-900"
-                                )}
-                                aria-current={item.current ? "page" : undefined}
-                              >
-                                {item.name}
-                              </Link>
-                            )
-                        )}
-                        {navigation.map(
-                          (item) =>
-                            !item.isRequiredAdmin && (
-                              <Link
-                                key={item.name}
-                                href={item.href}
-                                className={classNames(
-                                  item.current
-                                    ? "bg-gray-900 text-white"
-                                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                                  "rounded-md px-3 py-2 text-sm font-medium active:bg-gray-900"
-                                )}
-                                aria-current={item.current ? "page" : undefined}
-                              >
-                                {item.name}
-                              </Link>
-                            )
-                        )}
+                        {status === "authenticated" && (
+                          <>
+                            {navigation.map(
+                              (item) =>
+                                !item.isRequiredAdmin && (
+                                  <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className={classNames(
+                                      item.current
+                                        ? "bg-gray-900 text-white"
+                                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                      "rounded-md px-3 py-2 text-sm font-medium active:bg-gray-900"
+                                    )}
+                                    aria-current={
+                                      item.current ? "page" : undefined
+                                    }
+                                  >
+                                    {item.name}
+                                  </Link>
+                                )
+                            )}
+                            {navigation.map(
+                              (item) =>
+                                item.isRequiredAdmin &&
+                                data?.user?.isAdmin && (
+                                  <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className={classNames(
+                                      item.current
+                                        ? "bg-gray-900 text-white"
+                                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                      "rounded-md px-3 py-2 text-sm font-medium active:bg-gray-900"
+                                    )}
+                                    aria-current={
+                                      item.current ? "page" : undefined
+                                    }
+                                  >
+                                    {item.name}
+                                  </Link>
+                                )
+                            )}
 
-                        {/* {status == "unauthenticated" ?
+                            {/* {status == "unauthenticated" ?
                           <Link href={'/login'} className="g-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-700">
                             Login
                           </Link>
                           : ""} */}
+                          </>
+                        )}
+                        {status === "unauthenticated" && (
+                          <Link
+                            href={"/login"}
+                            className={classNames(
+                              "text-gray-300 hover:bg-gray-700 hover:text-white",
+                              "rounded-md px-3 py-2 text-sm font-medium active:bg-gray-900"
+                            )}
+                            aria-current={"page"}
+                          >
+                            Login
+                          </Link>
+                        )}
+                        <Link
+                          href={"/sitemap"}
+                          className={classNames(
+                            "text-gray-300 hover:bg-gray-700 hover:text-white",
+                            "rounded-md px-3 py-2 text-sm font-medium active:bg-gray-900"
+                          )}
+                          aria-current={"page"}
+                        >
+                          Sitemap
+                        </Link>
                       </div>
                     </div>
                   </div>
