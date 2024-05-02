@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 export { default } from "next-auth/middleware";
-// import { cookies } from "next/headers";
+import { Jwt } from "jsonwebtoken";
 
 export const config = {
   matcher: [
@@ -19,6 +19,15 @@ export const config = {
   ],
 };
 
+/**
+ *
+ * @param request get
+ *
+ * admin routes => all routes
+ * normal user routes => profile, student and home, counselor own profile route not all
+ *
+ */
+
 // protected
 
 export async function middleware(request: NextRequest) {
@@ -29,6 +38,10 @@ export async function middleware(request: NextRequest) {
 
   console.log("current url => ", url);
 
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
   if (url.startsWith("/logout")) {
     // handle logout
     request.cookies.clear();
@@ -37,15 +50,40 @@ export async function middleware(request: NextRequest) {
   }
 
   // Protected routes
+  let user = JSON.parse(request.cookies.get("user")?.value || "");
+
+  // normal admin
+
+  // url.startsWith("/dashboard") ||
+  //     url.startsWith("/student") ||
+  //     url.startsWith("/counsellor") ||
+  //     url.startsWith("/view-report") ||
+  //     url.startsWith("/profile")
+
+  /**
+   * admin access all the routes
+   * normal user access limited path
+   */
+
+  // normal user
   if (
-    !token &&
-    (url.startsWith("/dashboard") ||
-      url.startsWith("/student") ||
-      url.startsWith("/counsellor") ||
-      url.startsWith("/view-report") ||
-      url.startsWith("/profile"))
+    !user.isAdmin &&
+    (url.startsWith("/student") ||
+      url.startsWith("/counselor") ||
+      url.startsWith("/home"))
   ) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.next();
+  }
+
+  if (!user.isAdmin) {
+    return NextResponse.json("unauthorized access", { status: 401 });
+  }
+
+  /**
+   * all routes for admin
+   */
+  if (user.isAdmin) {
+    return NextResponse.next();
   }
 
   return NextResponse.next();

@@ -42,5 +42,9 @@ export const POST = async (req: NextRequest) => {
     httpOnly: true,
   });
 
+  response.cookies.set("user",JSON.stringify(user), {
+    httpOnly: true,
+  });
+
   return response;
 };

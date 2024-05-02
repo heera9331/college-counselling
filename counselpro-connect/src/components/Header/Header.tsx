@@ -22,7 +22,12 @@ const navigation = [
     current: false,
     isRequiredAdmin: true,
   },
-  { name: "Students", href: "/student", current: false, isRequiredAdmin: false },
+  {
+    name: "Students",
+    href: "/student",
+    current: false,
+    isRequiredAdmin: false,
+  },
   {
     name: "Counselor",
     href: "/counselor",
@@ -193,6 +198,14 @@ export default function Header() {
                                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100"
                                 >
                                   Import/Export
+                                </Link>
+                              </Menu.Item>
+                              <Menu.Item>
+                                <Link
+                                  href={`/counselor/${data.user?.email}`}
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100"
+                                >
+                                  Your Profile
                                 </Link>
                               </Menu.Item>
                               <Menu.Item>
