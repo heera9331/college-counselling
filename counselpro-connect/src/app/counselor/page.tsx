@@ -28,13 +28,7 @@ const CounsellorRow = ({ idx, user }: { idx: number; user: any }) => {
             className="bg-blue-700 hover:bg-blue-800 text-white"
           />
         </Link>
-        <Link href={`/counselor/${user.email}`}>
-          <Button
-            text="Remove"
-            onClick={(e: any) => {}}
-            className="bg-red-700 hover:text-red-800 text-white"
-          />
-        </Link>
+         
       </td>
     </tr>
   );
