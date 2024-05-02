@@ -65,7 +65,7 @@ const Page = (props: any) => {
     <div>
       <Link
         href={"/counselor/register-counselor"}
-        className="text-blue-800 underline font-semibold p-2"
+        className="text-blue-800 underline font-semibold p-3"
       >
         Appoint New Counselor
       </Link>

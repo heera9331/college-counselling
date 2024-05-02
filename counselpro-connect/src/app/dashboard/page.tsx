@@ -61,7 +61,7 @@ const Page = (props: any) => {
     return (
         <div className="pb-10">
             {/* page heading */}
-            <h1 className="font-semibold text-2xl">Dashboard</h1>
+            <h1 className="font-semibold text-2xl p-3">Dashboard</h1>
             <div className="py-2 flex gap-4 flex-wrap">
                 <div className="border overflow-x-auto p-2 w-fit">
                     <table className="border">

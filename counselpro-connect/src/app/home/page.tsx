@@ -12,13 +12,13 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const {status} = useAuthContext();
+  const { status } = useAuthContext();
   const router = useRouter();
 
   useEffect(() => {
-     if(status==="unauthenticated") {
+    if (status === "unauthenticated") {
       router.push("/login");
-     }
+    }
   }, [status, router]);
 
   return (
@@ -26,7 +26,7 @@ const Page = () => {
       <div className={`mx-2 py-2`}>
         <Link
           href={"/student"}
-          className="text-blue-800 underline font-semibold py-2"
+          className="text-blue-800 underline font-semibold p-4"
         >
           Student Page
         </Link>

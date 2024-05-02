@@ -8,6 +8,7 @@ import { StudentContextProvider } from "@/contexts/StudentContext";
 import { AuthContextProvider } from "@/contexts/AuthContext";
 // import { AppStore, makeStore } from '@/lib/store'
 // import { Provider } from 'react-redux'
+import "./globals.css"
 
 import { SearchProvider } from "@/contexts/search-context/SearchContextProvider";
 

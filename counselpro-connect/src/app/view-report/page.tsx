@@ -5,7 +5,7 @@ const Page = (props: any) => {
 
     return (
         <div>
-            <h1 className="font-semibold text-2xl">View Report</h1>
+            <h1 className="font-semibold text-2xl p-3">View Report</h1>
             <SearchStudents isExportOpen={false} autoSearch={true} emptySearch={true} />
         </div>
     )
