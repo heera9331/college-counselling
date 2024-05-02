@@ -22,7 +22,7 @@ const navigation = [
     current: false,
     isRequiredAdmin: true,
   },
-  { name: "Students", href: "/student", current: false, isRequiredAdmin: true },
+  { name: "Students", href: "/student", current: false, isRequiredAdmin: false },
   {
     name: "Counselor",
     href: "/counselor",
