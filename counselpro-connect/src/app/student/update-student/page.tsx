@@ -14,7 +14,18 @@ import {
 } from "react";
 import { useAuthContext, useStudentContext } from "@/hooks";
 import axios from "axios";
-import { CourseInfoType, courseInfo } from "../add-student/page";
+
+export interface CourseInfoType {
+  [key: string]: string[];
+}
+
+export const courseInfo: CourseInfoType = {
+  BTECH: ["CS", "CE", "ME", "EC", "EE", "AI/ML"],
+  ITI: ["WELDER", "FITTER", "DIESEL MACHENIC", "ELECTRICIAN", "PLUMBER"],
+  DIPLOMA: ["ME", "CE", "EE"],
+  PHARMACY: ["BPHARMA", "DPHARMA"],
+  NURSING: ["BSC", "BMLT", "DMLT"],
+};
 
 interface student {
   comment: string;

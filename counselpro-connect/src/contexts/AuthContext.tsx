@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 
 interface AuthContextType {
@@ -18,7 +19,7 @@ interface initialAuthStateType {
 
 const initialAuthState = {
   status: "unauthenticated",
-  data: { user: JSON.parse(localStorage.getItem("user") || "null") },
+  data: { user: null },
   error: "",
 };
 
@@ -43,8 +44,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const setData = (data: any | null) => {
     // data = { user: data };
-    console.log('set data', data);
-    localStorage.setItem("user", JSON.stringify(data));
+    console.log("set data", data); 
     setState({ ...state, data });
   };
 

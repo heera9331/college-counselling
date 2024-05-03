@@ -1,3 +1,4 @@
+"use client";
 import { Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -213,7 +214,7 @@ export default function Header() {
                                   href={`/logout`}
                                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100"
                                   onClick={() => {
-                                    localStorage.clear();
+                                    console.log("logout");
                                   }}
                                 >
                                   Logout

@@ -13,7 +13,7 @@ import { Input, Button, AwsCard } from "@/components";
 import { useAuthContext } from "@/hooks";
 
 export interface CourseInfoType {
-  [key: string]: string[]; // Assuming course code maps to an array of strings for branches
+  [key: string]: string[];
 }
 
 export const courseInfo: CourseInfoType = {
