@@ -12,11 +12,11 @@ import SearchStudents from "@/components/Student/SeachStudents";
 import { Input, Button, AwsCard } from "@/components";
 import { useAuthContext } from "@/hooks";
 
-interface CourseInfoType {
+export interface CourseInfoType {
   [key: string]: string[]; // Assuming course code maps to an array of strings for branches
 }
 
-const courseInfo: CourseInfoType = {
+export const courseInfo: CourseInfoType = {
   BTECH: ["CS", "CE", "ME", "EC", "EE", "AI/ML"],
   ITI: ["WELDER", "FITTER", "DIESEL MACHENIC", "ELECTRICIAN", "PLUMBER"],
   DIPLOMA: ["ME", "CE", "EE"],
@@ -27,7 +27,7 @@ const courseInfo: CourseInfoType = {
 const Page = () => {
   const { data, error, status } = useAuthContext();
   const [loading, setLoading] = useState(false);
-  
+
   const [student, setStudent] = useState({
     name: "",
     fatherName: "",
@@ -224,6 +224,7 @@ const Page = () => {
                   Select category:
                 </label>
                 <select
+                  value={student.category}
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
                   onClick={(e: any) => {
                     setStudent({ ...student, category: e.target.value });
@@ -241,6 +242,7 @@ const Page = () => {
                   Select Status:
                 </label>
                 <select
+                  value={student.status}
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
                   onClick={(e: any) => {
                     setStudent({ ...student, status: e.target.value });
@@ -257,6 +259,7 @@ const Page = () => {
                   Course:
                 </label>
                 <select
+                  value={student.course}
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
                   onChange={(e: any) => {
                     setStudent({ ...student, course: e.target.value });
@@ -278,6 +281,7 @@ const Page = () => {
                   Branch:
                 </label>
                 <select
+                  value={student.branch}
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
                   onChange={(e: any) => {
                     setStudent({ ...student, branch: e.target.value });

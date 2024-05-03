@@ -57,11 +57,14 @@ export const DELETE = async (req: NextRequest, { params }: { params: { id: strin
         return NextResponse.json({ error: "internal server error" })
     }
 };
+
 export const PUT = async (req: NextRequest, { params }: { params: { id: string } }) => {
     console.log('put -> /api/students/3eriojfdsiof');
     console.log('params -', params);
     let id = params.id;
     let data = await req.json();
+    console.log('data', data);
+    // return;
     let student = data.student;
     let updatedBy = data.updatedBy;
 
@@ -92,6 +95,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { id: string }
         let res = await tmpStudent.save();
         return NextResponse.json({ msg: "updated", ack: res });
     } catch (error) {
-        return NextResponse.json({ error: "internal server error" });
+        console.log('student::put', error);
+        return NextResponse.json({ error }, {status: 500});
     }
 };
