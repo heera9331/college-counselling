@@ -18,7 +18,6 @@ import { CourseInfoType, courseInfo } from "../add-student/page";
 
 interface student {
   comment: string;
-  _id: string;
   name: string;
   fatherName: string;
   mobile: string;
@@ -34,21 +33,52 @@ interface student {
   course: string;
   branch: string;
   category: string;
-  chats: string;
-  __v: string;
-  createdAt: string;
-  updatedAt: string;
+  // chats: string;
 }
 
 export default function Page({ params, searchParams }: any) {
-  const [student, setStudent] = useState<student | null>(null);
-  const [initial, setInitial] = useState(null);
+  const [student, setStudent] = useState<student>({
+    name: "",
+    fatherName: "",
+    mobile: "",
+    villege: "",
+    block: "",
+    district: "",
+    schoolName: "",
+    marks10: "",
+    marks12: "",
+    caste: "",
+    category: "",
+    status: "",
+    course: "",
+    branch: "",
+    comment: "",
+    registeredBy: "",
+  });
+  const [initial, setInitial] = useState({
+    name: "",
+    fatherName: "",
+    mobile: "",
+    villege: "",
+    block: "",
+    district: "",
+    schoolName: "",
+    marks10: "",
+    marks12: "",
+    caste: "",
+    category: "",
+    status: "",
+    course: "",
+    branch: "",
+    comment: "",
+    registeredBy: "",
+  });
   const { getStudent }: any = useStudentContext();
   const [chats, setChats] = useState([]);
   const [chat, setChat] = useState("");
   const [loading, setLoading] = useState(false);
   // const session = useSession();
-  const {status, data, error} = useAuthContext();
+  const { status, data, error } = useAuthContext();
 
   let id = searchParams.studentId;
 
@@ -64,7 +94,7 @@ export default function Page({ params, searchParams }: any) {
         setLoading(true);
         let res = await axios.put(`/api/students/${id}`, {
           student,
-          updatedBy: data?.user.email
+          updatedBy: data?.user.email,
         });
         console.log("update res", res);
 
