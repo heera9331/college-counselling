@@ -1,17 +1,22 @@
 "use client";
 import "@/app/globals.css";
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 
 import { useState } from "react";
-import Loading from "@/components/Loading";
+import { Loading } from "@/components";
 import { useRouter } from "next/navigation";
 import SearchStudents from "@/components/Student/SeachStudents";
 // import { useSession } from "next-auth/react";
 
 import { Input, Button, AwsCard } from "@/components";
+import { useAuthContext } from "@/hooks";
 
-const courseInfo = {
+interface CourseInfoType {
+  [key: string]: string[]; // Assuming course code maps to an array of strings for branches
+}
+
+const courseInfo: CourseInfoType = {
   BTECH: ["CS", "CE", "ME", "EC", "EE", "AI/ML"],
   ITI: ["WELDER", "FITTER", "DIESEL MACHENIC", "ELECTRICIAN", "PLUMBER"],
   DIPLOMA: ["ME", "CE", "EE"],
@@ -20,8 +25,9 @@ const courseInfo = {
 };
 
 const Page = () => {
-  // const { status, data } = useSession();
-
+  const { data, error, status } = useAuthContext();
+  const [loading, setLoading] = useState(false);
+  
   const [student, setStudent] = useState({
     name: "",
     fatherName: "",
@@ -64,7 +70,9 @@ const Page = () => {
     try {
       // student.registeredBy = data?.user?.email || "";
       console.log("student to be registered", student);
+      setLoading(true);
       let res = await axios.post(`/api/students`, student);
+      setLoading(false);
 
       if (res.statusText === "OK") {
         let data = await res.data;
@@ -86,6 +94,21 @@ const Page = () => {
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStudent({
+      ...student,
+      [e.target.name]: e.target.value.toLocaleUpperCase(),
+    });
+  };
+
+  useEffect(() => {
+    setStudent({ ...student, registeredBy: data?.user.email });
+  }, [status, data, error]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="">
       <SearchStudents />
@@ -99,11 +122,8 @@ const Page = () => {
                 htmlFor={"name"}
                 placeholder={"Enter name"}
                 value={student.name}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    name: e.target.value.toUpperCase(),
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
               <Input
@@ -112,11 +132,8 @@ const Page = () => {
                 htmlFor={"fatherName"}
                 placeholder={"Enter father name"}
                 value={student.fatherName}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    fatherName: e.target.value.toUpperCase(),
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
               <Input
@@ -127,11 +144,8 @@ const Page = () => {
                   "Enter mobile number, if you mutliple number, enter ',(comma)' separated"
                 }
                 value={student.mobile}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    mobile: e.target.value,
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
               <Input
@@ -140,11 +154,8 @@ const Page = () => {
                 htmlFor={"schoolName"}
                 placeholder={"Enter school name"}
                 value={student.schoolName}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    schoolName: e.target.value.toUpperCase(),
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
               <Input
@@ -153,11 +164,8 @@ const Page = () => {
                 htmlFor={"marks10"}
                 placeholder={"Enter 10th class marks %"}
                 value={student.marks10}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    marks10: e.target.value,
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
               <Input
@@ -166,11 +174,8 @@ const Page = () => {
                 htmlFor={"marks12"}
                 placeholder={"Enter 12th class marks %"}
                 value={student.marks12}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    marks12: e.target.value,
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
 
@@ -180,11 +185,8 @@ const Page = () => {
                 htmlFor={"villege"}
                 placeholder={"Enter villege"}
                 value={student.villege}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    villege: e.target.value.toUpperCase(),
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
               <Input
@@ -193,11 +195,8 @@ const Page = () => {
                 htmlFor={"block"}
                 placeholder={"Enter block"}
                 value={student.block}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    block: e.target.value.toUpperCase(),
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
               <Input
@@ -206,11 +205,8 @@ const Page = () => {
                 htmlFor={"district"}
                 placeholder={"Enter district"}
                 value={student.district}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    district: e.target.value.toUpperCase(),
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
               <Input
@@ -219,11 +215,8 @@ const Page = () => {
                 htmlFor={"caste"}
                 placeholder={"Enter caste"}
                 value={student.caste}
-                onChange={(e) => {
-                  setStudent({
-                    ...student,
-                    caste: e.target.value.toUpperCase(),
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
               <div className="flex flex-col gap-2 m-2">
@@ -269,7 +262,7 @@ const Page = () => {
                     setStudent({ ...student, course: e.target.value });
                   }}
                 >
-                  <option value="OTHER">OTHER</option>
+                  <option value="">Select Course</option>
                   {Object.keys(courseInfo).map((course, idx) => {
                     return (
                       <option value={`${course}`} key={idx}>
@@ -290,12 +283,16 @@ const Page = () => {
                     setStudent({ ...student, branch: e.target.value });
                   }}
                 >
-                  <option value="OTHER">Select Course</option>
-                  {Object.keys(courseInfo).map((course) => (
-                    <option key={course} value={course}>
-                      {course}
-                    </option>
-                  ))}
+                  <option value="">Select Branch</option>
+                  {courseInfo[student.course]?.map(
+                    (branch: string, idx: number) => {
+                      return (
+                        <option key={idx} value={branch}>
+                          {branch}
+                        </option>
+                      );
+                    }
+                  )}
                 </select>
               </div>
               <Input
@@ -304,11 +301,8 @@ const Page = () => {
                 htmlFor={"comment"}
                 placeholder={"Enter comment"}
                 value={student.comment}
-                onChange={(e: any) => {
-                  setStudent({
-                    ...student,
-                    comment: e.target.value.toUpperCase(),
-                  });
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
                 }}
               />
             </div>
