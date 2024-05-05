@@ -10,8 +10,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 
 const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
+  name: "Admin",
+  email: "admin@gmail.com",
   imageUrl: "/images/user2.png",
 };
 
@@ -52,6 +52,14 @@ function classNames(...classes: any) {
 export default function Header() {
   const { data, status } = useAuthContext();
   const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      console.log("logout"); 
+    } catch (error) {
+      console.log("error catched", error);
+    }
+  };
 
   useEffect(() => {}, [data]);
 
@@ -214,7 +222,7 @@ export default function Header() {
                                   href={`/logout`}
                                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100"
                                   onClick={() => {
-                                    console.log("logout");
+                                    handleLogout();
                                   }}
                                 >
                                   Logout
