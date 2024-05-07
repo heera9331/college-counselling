@@ -43,7 +43,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const setData = (data: any | null) => {
-    // data = { user: data };
+    data = { user: data };
     console.log("set data", data); 
     setState({ ...state, data });
   };
