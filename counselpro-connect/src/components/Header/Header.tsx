@@ -56,9 +56,12 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       console.log("logout");
+      let res = await axios.get('/api/auth/signout');
+      console.log('signout url', res);
       resetState();
     } catch (error) {
       console.log("error catched", error);
+      alert('Error while signingout');
     }
   };
 
