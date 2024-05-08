@@ -7,19 +7,19 @@ import { Loading, Input, Button, AwsCard } from "@/components";
 import { useAuthContext } from "@/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const Page = () => {
+const Page = (props: any) => {
   const [currentUser, setCurrentUser] = useState({
     email: "admin@gmail.com",
     password: "admin",
   });
-  // const params = useSearchParams();
+  const params = useSearchParams();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const { status, user, setStatus, setUser } = useAuthContext();
+  const { status, setStatus, setUser } = useAuthContext();
 
   let timeout: any = null;
 
@@ -28,40 +28,41 @@ const Page = () => {
       setLoading(true);
       //  signin code
       setStatus("unauthenticated");
+      setStatus("loading");
+      console.log("user to be login", currentUser);
       let res = await axios.post("/api/auth/signin", currentUser);
+      setStatus("");
       setLoading(false);
-
       let resData: any = await res.data;
       let newUser = { email: resData.email, isAdmin: resData.isAdmin };
-      console.log('login user', newUser);
+      console.log("login user", newUser);
       setUser(newUser);
       setStatus("authenticated");
       router.push("/home");
     } catch (error) {
       setLoading(false);
-      alert("invalid credentials or Server connection timeout");
+      // alert("invalid credentials or Server connection timeout");
+      setError("invalid credentials or Server connection timeout");
       console.error("Error during login:", error);
     }
     setLoading(false);
   };
 
-  useEffect(() => {
-    // setError(params.get("error") || "");
-    // setSuccess(params.get("success") || "");
+  const handleChange = (e: any) => {
+    setCurrentUser({ ...currentUser, [e.target.name]: e.target.value });
+  };
 
+  useEffect(() => {
+    setError(params.get("error") || "");  
     return () => {
       clearInterval(timeout);
-    };
-    // }, [params, timeout]);
-  }, [timeout, status]);
+    }; 
+  }, [timeout, status, params]);
 
-  // if (session.status === "loading") {
-  //   return <Loading />;
-  // }
-
-  // if (session.status === "authenticated") {
-  //   router?.push("/home");
-  // }
+  if (status === "loading") {
+    return <Loading />;
+  }
+ 
 
   return (
     <div className="flex flex-col justify-center h-[70vh]">
@@ -87,7 +88,7 @@ const Page = () => {
                   }
                   type={"text"}
                   onChange={(e: any) => {
-                    setCurrentUser({ ...user, email: e.target.value });
+                    handleChange(e);
                   }}
                 />
                 <Input
@@ -99,7 +100,7 @@ const Page = () => {
                   className={"bg-gray-100 p-1 rounded-sm focus:outline-none"}
                   type={"password"}
                   onChange={(e) => {
-                    setCurrentUser({ ...user, password: e.target.value });
+                    handleChange(e);
                   }}
                 />
               </>
