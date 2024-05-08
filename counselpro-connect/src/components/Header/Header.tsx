@@ -50,18 +50,19 @@ function classNames(...classes: any) {
 }
 
 export default function Header() {
-  const { data, status } = useAuthContext();
+  const { user, status, resetState } = useAuthContext();
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      console.log("logout"); 
+      console.log("logout");
+      resetState();
     } catch (error) {
       console.log("error catched", error);
     }
   };
 
-  useEffect(() => {}, [data]);
+  useEffect(() => {}, [status]);
 
   return (
     <>
@@ -113,7 +114,7 @@ export default function Header() {
                             {navigation.map(
                               (item) =>
                                 item.isRequiredAdmin &&
-                                data?.user?.isAdmin && (
+                                user?.isAdmin && (
                                   <Link
                                     key={item.name}
                                     href={item.href}
@@ -183,7 +184,7 @@ export default function Header() {
                               <span className="absolute -inset-1.5" />
                               <span className="sr-only">Open user menu</span>
                               <Image
-                                src={user.imageUrl}
+                                src={"/images/user2.png"}
                                 alt=""
                                 width={400}
                                 height={400}
@@ -211,7 +212,7 @@ export default function Header() {
                               </Menu.Item>
                               <Menu.Item>
                                 <Link
-                                  href={`/counselor/${data.user?.email}`}
+                                  href={`/counselor/${user?.email}`}
                                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100"
                                 >
                                   Your Profile
@@ -278,7 +279,7 @@ export default function Header() {
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
                       <Image
-                        src={user.imageUrl}
+                        src={"/images/user2.png"}
                         height={400}
                         width={400}
                         alt="user profile image"
@@ -287,10 +288,10 @@ export default function Header() {
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">
-                        {user.name}
+                        {user?.email}
                       </div>
                       <div className="text-sm font-medium leading-none text-gray-400">
-                        {user.email}
+                        {user?.email}
                       </div>
                     </div>
                     <button

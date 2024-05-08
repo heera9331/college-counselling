@@ -8,7 +8,7 @@ import { useAuthContext } from "@/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const Page = () => {
-  const [user, setUser] = useState({
+  const [currentUser, setCurrentUser] = useState({
     email: "admin@gmail.com",
     password: "admin",
   });
@@ -19,7 +19,7 @@ const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const { status, data, setStatus, setData, resetStatus } = useAuthContext();
+  const { status, user, setStatus, setUser } = useAuthContext();
 
   let timeout: any = null;
 
@@ -28,16 +28,14 @@ const Page = () => {
       setLoading(true);
       //  signin code
       setStatus("unauthenticated");
-      let res = await axios.post("/api/auth/signin", user);
+      let res = await axios.post("/api/auth/signin", currentUser);
       setLoading(false);
 
       let resData: any = await res.data;
       let newUser = { email: resData.email, isAdmin: resData.isAdmin };
-      
-      setData(newUser);
+      console.log('login user', newUser);
+      setUser(newUser);
       setStatus("authenticated");
-
-      console.log(data);
       router.push("/home");
     } catch (error) {
       setLoading(false);
@@ -55,7 +53,7 @@ const Page = () => {
       clearInterval(timeout);
     };
     // }, [params, timeout]);
-  }, [timeout, data]);
+  }, [timeout, status]);
 
   // if (session.status === "loading") {
   //   return <Loading />;
@@ -82,26 +80,26 @@ const Page = () => {
                   inputColor={"text-black"}
                   label={"Email"}
                   htmlFor={"email"}
-                  value={user.email}
+                  value={currentUser.email}
                   placeholder={"email"}
                   className={
                     "bg-gray-100 p-1 text-black rounded-sm focus:outline-none"
                   }
                   type={"text"}
                   onChange={(e: any) => {
-                    setUser({ ...user, email: e.target.value });
+                    setCurrentUser({ ...user, email: e.target.value });
                   }}
                 />
                 <Input
                   inputColor={"text-black"}
                   label={"Password"}
                   htmlFor={"password"}
-                  value={user.password}
+                  value={currentUser.password}
                   placeholder={"Password"}
                   className={"bg-gray-100 p-1 rounded-sm focus:outline-none"}
                   type={"password"}
                   onChange={(e) => {
-                    setUser({ ...user, password: e.target.value });
+                    setCurrentUser({ ...user, password: e.target.value });
                   }}
                 />
               </>

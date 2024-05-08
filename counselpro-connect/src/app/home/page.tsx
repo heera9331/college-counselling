@@ -12,14 +12,16 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const { status } = useAuthContext();
+  const authState = useAuthContext();
   const router = useRouter();
+
+  console.log("authState > ", authState);
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
     }
-  }, [status, router]);
+  }, [router]);
 
   return (
     <div className="">
