@@ -12,13 +12,11 @@ const Page = (props: any) => {
     email: "admin@gmail.com",
     password: "admin",
   });
-  const params = useSearchParams();
+  
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-
   const { status, setStatus, setUser } = useAuthContext();
 
   let timeout: any = null;
@@ -31,7 +29,7 @@ const Page = (props: any) => {
       setStatus("loading");
       console.log("user to be login", currentUser);
       let res = await axios.post("/api/auth/signin", currentUser);
-      setStatus("");
+      setStatus("success");
       setLoading(false);
       let resData: any = await res.data;
       let newUser = { email: resData.email, isAdmin: resData.isAdmin };
@@ -53,11 +51,11 @@ const Page = (props: any) => {
   };
 
   useEffect(() => {
-    setError(params.get("error") || "");  
+       
     return () => {
       clearInterval(timeout);
     }; 
-  }, [timeout, status, params]);
+  }, [timeout, status]);
 
   if (status === "loading") {
     return <Loading />;

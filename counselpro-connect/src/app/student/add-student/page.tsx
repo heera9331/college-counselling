@@ -103,7 +103,7 @@ const Page = () => {
 
   useEffect(() => {
     setStudent({ ...student, registeredBy: data?.user.email });
-  }, [status, data, error]);
+  }, [status, data, error, student]);
 
   if (loading) {
     return <Loading />;
