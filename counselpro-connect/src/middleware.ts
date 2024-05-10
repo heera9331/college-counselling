@@ -36,9 +36,14 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.pathname;
   const token = request.cookies.get("token")?.value;
 
+  // Protected routes
+  let user = JSON.parse(request.cookies.get("user")?.value || "");
+
+  console.log("cookies is - ", request.cookies); 
+
   console.log("current url => ", url);
 
-  if (!token) {
+  if (!token || !user) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -48,9 +53,6 @@ export async function middleware(request: NextRequest) {
     console.log("cookies cleared");
     return NextResponse.redirect(new URL("/login", request.url));
   }
-
-  // Protected routes
-  let user = JSON.parse(request.cookies.get("user")?.value || "");
 
   // normal admin
 
