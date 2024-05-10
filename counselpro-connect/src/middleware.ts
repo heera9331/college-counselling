@@ -14,7 +14,6 @@ export const config = {
     "/profile/:path*",
     "/student/:path*",
     "/view-report/:path*",
-    "/logout",
     "/",
   ],
 };
@@ -36,25 +35,15 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.pathname;
   const token = request.cookies.get("token")?.value;
 
-  // Protected routes
-  let user = JSON.parse(request.cookies.get("user")?.value || "");
-
-  console.log("cookies is - ", request.cookies); 
-
+  console.log("cookies is - ", request.cookies);
   console.log("current url => ", url);
 
-  if (!token || !user) {
+  if (!token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (url.startsWith("/logout")) {
-    // handle logout
-    request.cookies.clear();
-    console.log("cookies cleared");
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // normal admin
+  // Protected routes
+  let user = JSON.parse(request.cookies.get("user")?.value || "");
 
   // url.startsWith("/dashboard") ||
   //     url.startsWith("/student") ||
