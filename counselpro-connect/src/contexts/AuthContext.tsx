@@ -66,8 +66,9 @@
 
 // export { AuthContext, AuthContextProvider };
 // export type { AuthContextType };
-
+"use client"
 import React, { createContext, useState, ReactNode, useReducer } from "react";
+import {useRouter} from "next/navigation";
 
 interface AuthContextType {
   status: string;
@@ -119,6 +120,7 @@ const authReducer = (
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, initialAuthState);
+  const router = useRouter();
 
   const setUser = (user: any) => {
     console.log("got user", user);
@@ -133,6 +135,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const resetState = () => {
+    router.push('/');
     dispatch({ type: "RESET_STATE" });
   };
 

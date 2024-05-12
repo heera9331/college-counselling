@@ -56,12 +56,12 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       console.log("logout");
-      let res = await axios.get('/logout');
-      console.log('signout url', res);
+      let res = await axios.get("/api/auth/signout");
+      console.log("signout url", res);
       resetState();
     } catch (error) {
       console.log("error catched", error);
-      alert('Error while signingout');
+      alert("Error while signingout");
     }
   };
 
@@ -223,7 +223,7 @@ export default function Header() {
                               </Menu.Item>
                               <Menu.Item>
                                 <Link
-                                  href={`/logout`}
+                                  href={`#`}
                                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-gray-100"
                                   onClick={() => {
                                     handleLogout();
