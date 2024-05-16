@@ -1,5 +1,9 @@
 ## Getting Started
 
+## Webapp is host on
+
+https://college-counselling-alpha.vercel.app/
+
 First, run the development server:
 
 ```bash
