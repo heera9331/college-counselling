@@ -89,7 +89,7 @@ export default function Page({ params, searchParams }: any) {
   const [chat, setChat] = useState("");
   const [loading, setLoading] = useState(false);
   // const session = useSession();
-  const { status, data, error } = useAuthContext();
+  const { status, user, error } = useAuthContext();
 
   let id = searchParams.studentId;
 
@@ -105,7 +105,7 @@ export default function Page({ params, searchParams }: any) {
         setLoading(true);
         let res = await axios.put(`/api/students/${id}`, {
           student,
-          updatedBy: data?.user.email,
+          updatedBy: user?.email,
         });
         console.log("update res", res);
 
