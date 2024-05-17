@@ -39,6 +39,7 @@ const Page = (props: any) => {
       router.push("/home");
     } catch (error) {
       setLoading(false);
+      setStatus("success");
       // alert("invalid credentials or Server connection timeout");
       setError("invalid credentials or Server connection timeout");
       console.error("Error during login:", error);
