@@ -25,7 +25,7 @@ export const courseInfo: CourseInfoType = {
 };
 
 const Page = () => {
-  const { data, error, status } = useAuthContext();
+  const { user, error, status } = useAuthContext();
   const [loading, setLoading] = useState(false);
 
   const [student, setStudent] = useState({
@@ -72,6 +72,7 @@ const Page = () => {
       console.log("student to be registered", student);
       setLoading(true);
       let res = await axios.post(`/api/students`, student);
+      console.log("response", res);
       setLoading(false);
 
       if (res.statusText === "OK") {
@@ -102,8 +103,12 @@ const Page = () => {
   };
 
   useEffect(() => {
-    setStudent({ ...student, registeredBy: data?.user.email });
-  }, [status, data, error, student]);
+    if (!user) {
+      router.push("/login");
+    }
+
+    setStudent({ ...student, registeredBy: user?.email });
+  }, []);
 
   if (loading) {
     return <Loading />;
@@ -226,7 +231,7 @@ const Page = () => {
                 <select
                   value={student.category}
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
-                  onClick={(e: any) => {
+                  onChange={(e: any) => { 
                     setStudent({ ...student, category: e.target.value });
                   }}
                 >
@@ -244,7 +249,7 @@ const Page = () => {
                 <select
                   value={student.status}
                   className="p-1 border-2 rounded-sm focus: outline-none text-black"
-                  onClick={(e: any) => {
+                  onChange={(e: any) => {
                     setStudent({ ...student, status: e.target.value });
                   }}
                 >
