@@ -14,7 +14,6 @@ export const config = {
     "/profile/:path*",
     "/student/:path*",
     "/view-report/:path*",
-    "/",
   ],
 };
 
