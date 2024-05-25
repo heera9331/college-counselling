@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* defining utility libraries */
+
 /* backgrounds */
 .bg-primary {
   background-color: rgb(25, 47, 89);

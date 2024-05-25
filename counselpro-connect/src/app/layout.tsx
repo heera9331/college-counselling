@@ -1,16 +1,33 @@
 "use client";
-import { useRef } from "react";
+
+/**
+ * overal app layout, which have header and footer with dark
+ * background
+ */
+
 import { Header, Footer } from "@/components";
 
 import Breadcrumbs from "@/components/Breadcrumb";
 import { usePathname } from "next/navigation";
-import { StudentContextProvider } from "@/contexts/StudentContext";
-import { AuthContextProvider } from "@/contexts/AuthContext";
+
+
+/**
+ * importing redux libraries
+ */
+
 // import { AppStore, makeStore } from '@/lib/store'
 // import { Provider } from 'react-redux'
+
 import "./globals.css"
 
+
+/**
+ * importing my search context provider and other providers
+ */
 import { SearchProvider } from "@/contexts/search-context/SearchContextProvider";
+import { StudentContextProvider } from "@/contexts/StudentContext";
+import { AuthContextProvider } from "@/contexts/AuthContext";
+
 
 export default function RootLayout({
   children,
@@ -28,7 +45,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <head>
+      <head> 
         <meta name="author" content="Heera Singh Lodhi" />
       </head>
       <body className="m-auto bg-bgWhite-100">
